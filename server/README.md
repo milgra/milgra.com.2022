@@ -8,6 +8,11 @@ url legyen minden cikkhez hogy keresheto legyen, search bar lefgelul baloldalt,
 cikk.md-be path, tags legyen, path arbitrary length, abbol generalja a main-sub-sub kategoriakat dinaikusan a site.
 kell a kottaknak is egy online nézőke ezt használva
 story section minden apphoz - html, css reader, etc
+amig sublistat scrollozod, apa element mindig maradjon fixen fent
+
+opened articles on top of list?
+
+add comment functionality / captcha?
 
 blog/apps/cv overlapping pages
 

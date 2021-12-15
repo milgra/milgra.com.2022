@@ -9,7 +9,7 @@ zen_list_attach = function (list,
     list.full = 0 // list is full, no fillup needed currently
     list.top = 0.0 // current position of top list
     list.speed = 0.0 // current scroll speed
-    list.preload_size = 20 // preload distance from top and bottom
+    list.preload_size = 100 // preload distance from top and bottom
     list.repos // list needs element repositioning
     
     list.item_func = item_func   // item generator
@@ -23,7 +23,6 @@ zen_list_wheel = function (event)
     let list = event.currentTarget
     
     list.speed -= event.deltaY / 8
-    list.full = false
     //zen_list_update(list)
 }
 
@@ -31,11 +30,6 @@ zen_log_item = function (ni,lr)
 {
     let nir = ni.getBoundingClientRect()
     console.log(ni.id,"from top",nir.top - lr.top,"from bot",nir.bottom-lr.top)
-}
-
-zen_list_continue = function (list)
-{
-    list.full = false
 }
 
 zen_list_reset = function (list)
@@ -53,29 +47,44 @@ zen_list_reset = function (list)
     list.bot_ind = list.top_ind
 }
 
-zen_list_refill = function ( list , index )
+zen_list_insert = function ( list, index, size )
 {
-    list.full = false
-
-    for (let i = 0 ; i < list.items.length ; i++)
+    console.log("zen_list_insert",index,size)
+    // insert items from index, animate other items down or up
+    
+    if (list.top_ind < index  && index < list.bot_ind)
     {
-	if (list.top_ind + i > index)
-	{
-	    let item = list.items[i]
+	start_ind = index - list.top_ind
+	next_item = list.items[ start_ind ]
 
-	    list.removeChild(item)
-	    list.destroy_func(item)
+	let ind
+	let hth = 0
+	for (ind = start_ind ; ind < start_ind + size ; ind++)
+	{
+	    let ni = list.item_func(list,ind)
+	    
+	    if (ni)
+	    {
+		ni.style.position = "relative"
+		
+		list.insertBefore(ni,next_item)
+		list.items.splice(start_ind - list.top_ind,0,ni)
+
+		hth += ni.getBoundingClientRect().height
+	    }
+	}
+
+	list.bot_ind += size
+	list.repos = true
+
+	// set animation position for remaining items
+
+	for (ind = start_ind + size ; ind < list.items.length ; ind++)
+	{
+	    let ni = list.items[ind]
+	    ni.setAttribute("delta" , hth)
 	}
     }
-    
-    list.items.splice(index - list.top_ind)
-    list.top_ind = index + 1
-    list.bot_ind = index + 1
-}
-
-zen_list_update_item_positions = function ( list )
-{
-
 }
 
 zen_list_update = function (list)
@@ -188,9 +197,10 @@ zen_list_update = function (list)
 	list.speed *= 0.8
 	if (list.speed > 0.01 || list.speed < -0.01) list.repos = true
 
-	if (list.repos)
-	{
+	// if (list.repos)
+	// {
 	    list.repos = false
+	    list.full = false
 
 	    fi = list.items[0]
 	    fir = fi.getBoundingClientRect()
@@ -204,11 +214,27 @@ zen_list_update = function (list)
 	    // bounce bottom
 	    // if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
 	    	    
-	    for (ci of list.items)
+	for (ci of list.items)
+	{
+	    if (ci.hasAttribute("delta"))
+	    {
+
+		let delta = parseInt(ci.getAttribute("delta"))
+		delta += -delta / 6
+
+		ci.setAttribute("delta",delta)
+
+		ci.style.top = Math.round(list.top) - delta + "px"
+
+		if (Math.abs(delta) < 0.001) ci.removeAttribute("delta")
+	    }
+	    else
 	    {
 		ci.style.top = Math.round(list.top) + "px"
 	    }
+
 	}
+	// }
     }
 }
 

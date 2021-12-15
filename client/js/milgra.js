@@ -24,8 +24,9 @@ milgra_insert_items = function ( newItems )
 	    let item = items[i]
 	    if (fi.includes(item))
 	    {
-		items.splice(i + 1,0,...newItems)
-		zen_list_reset( lists[0] )
+		items.splice(i + 1, 0, ... newItems)
+		
+		zen_list_insert( lists[0] , i + 1 , newItems.length )
 		return
 	    }
 	}
@@ -99,6 +100,8 @@ milgra_destroy_item = function( item )
     item.removeEventListener( "click" , milgra_item_click )
 }
 
+colors = [ "#CE5555", "#EE5555", "#AACEAA", "#AABEAA", "#AAAACE", "#AAAABE" ]
+
 milgra_item_for_index = function( list, index )
 {
     if ( items.length > 0 && index < items.length && -1 < index)
@@ -106,17 +109,31 @@ milgra_item_for_index = function( list, index )
 	let item = items[index]
 	let elem = document.createElement("div")
 
+	let parts = item.split("/")
+	
 	console.log("ITEM",item)
 	
 	elem.id = item
 	elem.innerText = item
 
-	elem.style.width = "600px"
+	elem.style.width = "880px"
 	elem.style.padding = "5px"
 	elem.style.margin = "5px"
-	elem.style.backgroundColor = "green"
-	if (index % 2 == 0) elem.style.backgroundColor = "yellow"
 
+	elem.style.backgroundColor = colors[0]
+	if (index % 2 == 0) elem.style.backgroundColor = colors[1]
+
+	if (parts.length == 3)
+	{
+	    elem.style.backgroundColor = colors[2]
+	    if (index % 2 == 0) elem.style.backgroundColor = colors[3]
+	}
+
+	if (parts.length > 3)
+	{
+	    elem.style.backgroundColor = colors[4]
+	    if (index % 2 == 0) elem.style.backgroundColor = colors[5]
+	}
 
 	if (item.endsWith(">"))
 	{
@@ -136,7 +153,8 @@ milgra_item_for_index = function( list, index )
 	}
 	else
 	{
-	    elem.style.height = "70px"
+	    elem.style.height = "60px"
+	    elem.style.fontSize = "50px"
 	    elem.addEventListener( "click", milgra_item_click )
 	}
 	
@@ -154,9 +172,8 @@ milgra_init = function ()
     list.id = "main_list"
     list.style.position = "absolute"
     list.style.overflow = "hidden"
-    list.style.top = "150px"
-    list.style.width = "620px"
-    list.style.height = "600px"
+    list.style.width = "900px"
+    list.style.height = "98%"
     list.style.backgroundColor = "gray"
 
     document.body.appendChild(list)
