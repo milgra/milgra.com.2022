@@ -87,6 +87,45 @@ zen_list_insert = function ( list, index, size )
     }
 }
 
+zen_list_delete = function (list , index , size)
+{
+    console.log("zen_list_delete", index, size)
+    
+    if (list.top_ind < index  && index < list.bot_ind)
+    {
+	let start_ind = index - list.top_ind
+	let hth = 0
+	let ind
+	
+	for (ind = 0 ; ind < size ; ind++)
+	{
+	    if (start_ind  < list.items.length)
+	    {
+		// remove actual item
+		
+		let ni = list.items[start_ind]
+		hth += ni.getBoundingClientRect().height
+		
+		list.removeChild(ni)
+		list.bot_ind -= 1
+		list.full = false
+		list.destroy_func(ni)
+
+		list.items.splice(start_ind ,1)
+
+	    }
+	}
+
+	// set closing animation for remaining items
+
+	for (ind=start_ind; ind < list.items.length; ind++)
+	{
+	    let ni = list.items[ind]
+	    ni.setAttribute("delta" , -hth)
+	}
+    }
+}
+
 zen_list_update = function (list)
 {
     let lr = list.getBoundingClientRect() // list rect

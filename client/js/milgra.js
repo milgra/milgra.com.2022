@@ -37,17 +37,26 @@ milgra_delete_items = function ( oldItem )
 {
     if (items.length > 0)
     {
-	let i = items.length
-	while (i--)
+	let ind = items.length
+	let cnt = 0 // deleted count
+	let fix = -1
+	
+	while (ind--)
 	{
-	    let item = items[i]
+	    let item = items[ind]
 	    
 	    if (item.includes(oldItem) && item != oldItem)
 	    {
-		items.splice(i,1)
+		items.splice(ind,1)
+		cnt++
+		fix = ind
 	    } 
 	}
-	zen_list_reset( lists[0] )
+
+	console.log("items",items)
+
+	if ( fix > -1 ) zen_list_delete( lists[0] , fix , cnt)
+	// zen_list_reset( lists[0] )
     }
 }
 
