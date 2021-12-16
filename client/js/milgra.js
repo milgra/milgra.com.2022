@@ -56,7 +56,7 @@ milgra_delete_items = function ( oldItem )
 	console.log("items",items)
 
 	if ( fix > -1 ) zen_list_delete( lists[0] , fix , cnt)
-	// zen_list_reset( lists[0] )
+
     }
 }
 
@@ -64,8 +64,6 @@ milgra_delete_items = function ( oldItem )
 milgra_item_click = function( event )
 {
     let elem = event.currentTarget
-
-    console.log("opened",elem,elem.id,opened[elem.id])
     
     if (opened[ elem.id ])
     {
@@ -74,6 +72,19 @@ milgra_item_click = function( event )
 	opened[ elem.id ] = false
 
 	milgra_delete_items( elem.id )
+
+	// remove all opened keys that contain the removed id
+
+	let keys = Object.keys(opened)
+	let key
+	
+	for (key of keys)
+	{
+	    if (key.includes(elem.id))
+	    {
+		delete opened[key]
+	    }
+	}
     }
     else
     {
@@ -151,8 +162,6 @@ milgra_item_for_index = function( list, index )
 		    .then((response) => response.text())
 		    .then((html) => {
 			this.innerHTML = html
-			// update list row positions
-			zen_list_update_item_positions( lists[0] )
 		    })
 	    }
 
