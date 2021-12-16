@@ -44,7 +44,7 @@ milgra_delete_items = function ( oldItem )
 	    
 	    if (item.includes(oldItem) && item != oldItem)
 	    {
-		items.splice(i ,1)
+		items.splice(i,1)
 	    } 
 	}
 	zen_list_reset( lists[0] )
@@ -56,32 +56,32 @@ milgra_item_click = function( event )
 {
     let elem = event.currentTarget
 
-    console.log(elem.innerText)
-
-    if (opened[elem.innerText])
+    console.log("opened",elem,elem.id,opened[elem.id])
+    
+    if (opened[ elem.id ])
     {
 	// remove items
-	
-	milgra_delete_items(elem.innerText)
-	
-	delete opened[elem.innerText]
+		
+	opened[ elem.id ] = false
+
+	milgra_delete_items( elem.id )
     }
     else
     {
-	opened[elem.innerText] = true
+	opened[ elem.id ] = true
 
-	if (elem.innerText.endsWith(".html"))
+	if (elem.id.endsWith(".html"))
 	{
 	    // add html as an openable item
 	    
-	    milgra_insert_items( [ elem.innerText + ">"  ] )
+	    milgra_insert_items( [ elem.id + ">"  ] )
 	}
 	else
 	{
 	
 	    // load moar items
 	    
-	    let url = "http://localhost:3000/items/" + elem.innerText
+	    let url = "http://localhost:3000/items/" + elem.id
 	    
 	    fetch(url)
 		.then((response) => response.json())
@@ -111,10 +111,8 @@ milgra_item_for_index = function( list, index )
 
 	let parts = item.split("/")
 	
-	console.log("ITEM",item)
-	
 	elem.id = item
-	elem.innerText = item
+	elem.innerText = item.substring(item.lastIndexOf('/') + 1)
 
 	elem.style.width = "880px"
 	elem.style.padding = "5px"
@@ -149,7 +147,7 @@ milgra_item_for_index = function( list, index )
 		    })
 	    }
 
-	    elem.load( "http://localhost:3000/" + item.substring(0,item.length - 1))
+	    elem.load( "http://localhost:3000/" + item.substring( 0, item.length - 1 ))
 	}
 	else
 	{
