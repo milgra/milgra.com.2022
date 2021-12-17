@@ -1,0 +1,202 @@
+Ray Tracing Part Three
+2019-05-01T13:23:00
+3D,C,Coding
+
+We will add an other rectangle, shadow and animated camera in this part.
+
+To use an arbitrary number of rectangles we will need a rectangle structure and an array that holds them. A rectangle  is defined by it's base point, side point and it's normal vector. We will pre-calculate the width and height of the rectangle. We  need members for transparency, diffuse and specular color also.
+
+```
+#include <stdio.h>
+
+typedef struct
+{
+
+	v3_t base_p;
+	v3_t side_p;
+	v3_t norm_v;
+
+	float wth;
+	float hth;
+
+	float transparency_c;
+
+	uint32v_t col_diff_u;
+	uint32_t col_spec_u;
+
+} rect_t;
+
+int rect_cnt_i = 2;
+rect_t rectangles[ 2 ];
+```
+
+With this we can organize intersection detection to a separate function that returns the nearest rect intersecting with the given line.
+
+
+```
+#include <stdio.h>
+
+nearest_res_t get_nearest_rect( v3_t start_p , v3_t end_p , rect_t* exclude_r )
+{
+
+	nearest_res_t result = { 0 };
+	float dist_f = FLT_MAX;
+	
+	if ( rect_cnt_i > 0 )
+	{
+
+		// iterate through all rectangles
+			
+		for ( int index_r = 0 ; index_r < rect_cnt_i ; index_r ++ )
+		{
+
+			rect_t* rect = &rectangles[ index_r ];
+
+			if ( rect == exclude_r ) continue;
+
+			// project ray from camera focus point through window grid point to square plane
+
+			v3_t isect_p = line_plane_intersection( start_p , end_p , rect->base_p , rect->norm_v );
+
+			if ( isect_p.x != FLT_MAX )
+			{
+
+				// let's find if intersection point is in the rectangle
+
+				v3_t proj_p = point_line_projection( rect->side_p , rect->base_p , isect_p );
+
+				// check x and y distance of intersection point from square center
+
+				float dist_x = v3_length_squared( v3_sub( proj_p , rect->base_p ) );
+				float dist_y = v3_length_squared( v3_sub( proj_p , isect_p ) );
+
+				// compare squared distances with squared distances of rectangle
+
+				if ( dist_x < ( rect->wth / 2.0 ) * ( rect->wth / 2.0 ) && 
+					 dist_y < ( rect->hth / 2.0 ) * ( rect->hth / 2.0 ) )
+				{
+					// cross point is inside square, let's calculate it's color based on light reflection angle
+
+					float distance = v3_length_squared( v3_sub( isect_p , start_p ) );
+
+					if ( distance < dist_f )
+					{
+
+						result.rect = rect;
+						result.isect_p = isect_p;
+
+						dist_f = distance;
+
+					}
+					
+				}
+
+			}
+
+		}
+
+	}
+
+	return result;
+	
+}
+```
+
+To introduce shadows we need to modify the window grid iteration loop a little. If there is an obstacle ( rectangle ) between the intersection point and the light we set that point to the shadow color, if not we calculate diffuse and specular color.
+
+```
+#include <stdio.h>
+
+// create rays going through the camera window quad starting from the top left corner
+
+for ( int row_i = 0 ; row_i < grid_rows_i ; row_i++ )
+{
+
+	for ( int col_i = 0 ; col_i < grid_cols_i ; col_i++ )
+	{
+	
+		v3_t window_grid_v = camera_target_p;
+
+		window_grid_v = v3_add( window_grid_v , v3_scale( window_stepx_v , grid_cols_i / 2 - col_i ) );
+		window_grid_v = v3_add( window_grid_v , v3_scale( window_stepy_v , - grid_rows_i / 2 + row_i ) );
+		
+		// ray/pixel location on screen
+
+		int screen_grid_x = screen_step_size_f * col_i;
+		int screen_grid_y = screen_step_size_f * row_i;
+
+		// check for intersection
+
+		uint32_t color = 0x000000FF;	// background color
+
+		nearest_res_t result = get_nearest_rect( camera_focus_p , window_grid_v , NULL );
+
+		if ( result.rect != NULL )
+		{
+
+			// check for direct connection with light for diffuse color
+
+			nearest_res_t blocker_r = get_nearest_rect( result.isect_p , light_p , result.rect );
+
+			if ( blocker_r.rect == NULL ) 
+			{
+				// diffuse color
+
+				color = result.rect->col_diff_u;
+
+				// specular color
+
+				// mirror light point on normal vector to get perfect reflection
+
+				v3_t light_mirr_p = point_line_mirror( result.isect_p , v3_add( result.isect_p , result.rect->norm_v ) , light_p );
+
+				v3_t tofocus = v3_sub( camera_focus_p , result.isect_p );
+				v3_t tomirrored = v3_sub( light_mirr_p , result.isect_p );
+
+				float angle = v3_angle( tomirrored , tofocus );
+
+				// the smaller the angle the closer the mirrored ray and the real ray are - reflection 
+
+				float colorsp_f = ( float ) 0xFF * ( ( M_PI - angle ) / M_PI );
+				uint32_t colorsp_u = ( uint8_t ) colorsp_f;
+				colorsp_u = colorsp_u << 24 | colorsp_u << 16 | colorsp_u << 8 | 0xFF;
+
+				color = color_average( color , colorsp_u );
+
+			}
+			else 
+			{
+				// shadow
+
+				color = 0x111111FF;
+			}
+
+			// if rect is transparent calculate refraction and check for further intersections
+
+			// reflect ray on intersection point and check for further intersections
+		
+		}
+	
+		framebuffer_drawsquare( screen_grid_x , screen_grid_y , screen_step_size_f , color );
+		
+	}
+
+}
+```
+
+Finally let's make the camera movable with the arrow keys. Let's put the whole grid iteration in an infinite loop and check for keypress in every iteration.
+
+```
+#include <stdio.h>
+
+int code = getch( );
+
+if ( code == 67 ) camera_focus_p.x += 10.0;
+if ( code == 68 ) camera_focus_p.x -= 10.0;
+```
+
+Final result :
+
+![raytrace](/images/20190501_raytrace.png)
+
+Download the code : [raytrace_part_three.c](/downloads/raytrace/raytrace_part_three.c)

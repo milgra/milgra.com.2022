@@ -2,6 +2,9 @@
 
 stop frame request when idle
 
+14 subdirs
+15 files
+
 big data scroller
 milgra.com ket oszlop, scrollozhato title-k, alatta nyilik a cikk, static md, legfelsok nyitva,
 url legyen minden cikkhez hogy keresheto legyen, search bar lefgelul baloldalt,
@@ -9,6 +12,8 @@ cikk.md-be path, tags legyen, path arbitrary length, abbol generalja a main-sub-
 kell a kottaknak is egy online nézőke ezt használva
 story section minden apphoz - html, css reader, etc
 amig sublistat scrollozod, apa element mindig maradjon fixen fent
+
+scroll esemeny inditsa animationframe-et, kifutaskor alljon le
 
 opened articles on top of list?
 

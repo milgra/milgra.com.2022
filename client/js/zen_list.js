@@ -22,7 +22,7 @@ zen_list_wheel = function (event)
 {
     let list = event.currentTarget
     
-    list.speed -= event.deltaY / 8
+    list.speed -= event.deltaY / 4
     //zen_list_update(list)
 }
 

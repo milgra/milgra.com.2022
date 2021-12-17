@@ -120,7 +120,8 @@ milgra_destroy_item = function( item )
     item.removeEventListener( "click" , milgra_item_click )
 }
 
-colors = [ "#CE5555", "#EE5555", "#AACEAA", "#AABEAA", "#AAAACE", "#AAAABE" ]
+colors = [ "#88AACC", "#99BBDD", "#AACCEE" ]
+months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
 
 milgra_item_for_index = function( list, index )
 {
@@ -128,29 +129,31 @@ milgra_item_for_index = function( list, index )
     {
 	let item = items[index]
 	let elem = document.createElement("div")
-
 	let parts = item.split("/")
 	
 	elem.id = item
 	elem.innerText = item.substring(item.lastIndexOf('/') + 1)
+	if (elem.innerText.length == 2) elem.innerText = months[ parseInt(elem.innerText) - 1 ]
 
-	elem.style.width = "880px"
-	elem.style.padding = "5px"
-	elem.style.margin = "5px"
-
+	elem.style.width = "100%"
+	elem.style.padding = "10px"
+	elem.style.textAlign = "left"
+	elem.style.paddingLeft = 10 + (parts.length - 1) * 10 + "px"
+	elem.style.marginBottom = "1px"
+	
 	elem.style.backgroundColor = colors[0]
-	if (index % 2 == 0) elem.style.backgroundColor = colors[1]
+	// if (index % 2 == 0) elem.style.backgroundColor = colors[1]
 
 	if (parts.length == 3)
 	{
-	    elem.style.backgroundColor = colors[2]
-	    if (index % 2 == 0) elem.style.backgroundColor = colors[3]
+	    elem.style.backgroundColor = colors[1]
+	    // if (index % 2 == 0) elem.style.backgroundColor = colors[3]
 	}
 
 	if (parts.length > 3)
 	{
-	    elem.style.backgroundColor = colors[4]
-	    if (index % 2 == 0) elem.style.backgroundColor = colors[5]
+	    elem.style.backgroundColor = colors[2]
+	    // if (index % 2 == 0) elem.style.backgroundColor = colors[5]
 	}
 
 	if (item.endsWith(">"))
@@ -169,8 +172,8 @@ milgra_item_for_index = function( list, index )
 	}
 	else
 	{
-	    elem.style.height = "60px"
-	    elem.style.fontSize = "50px"
+	    elem.style.height = "40px"
+	    elem.style.fontSize = "30px"
 	    elem.addEventListener( "click", milgra_item_click )
 	}
 	
@@ -188,9 +191,8 @@ milgra_init = function ()
     list.id = "main_list"
     list.style.position = "absolute"
     list.style.overflow = "hidden"
-    list.style.width = "900px"
+    list.style.width = "100%"
     list.style.height = "98%"
-    list.style.backgroundColor = "gray"
 
     document.body.appendChild(list)
 
