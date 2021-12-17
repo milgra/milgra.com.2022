@@ -60,7 +60,6 @@ milgra_delete_items = function ( oldItem )
     }
 }
 
-
 milgra_item_click = function( event )
 {
     let elem = event.currentTarget
@@ -192,7 +191,7 @@ milgra_init = function ()
     list.style.position = "absolute"
     list.style.overflow = "hidden"
     list.style.width = "100%"
-    list.style.height = "98%"
+    list.style.height = "100%"
 
     document.body.appendChild(list)
 

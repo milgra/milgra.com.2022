@@ -2,4 +2,8 @@
 body {
     margin: 0px;
     background-color: #000000;
+
+    font-size : 18px;
+    font-family : -apple-system,BlinkMacSystemFont,Avenir,Avenir Next,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+
 }

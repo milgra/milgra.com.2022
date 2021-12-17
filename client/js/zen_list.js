@@ -68,7 +68,7 @@ zen_list_insert = function ( list, index, size )
 		ni.style.position = "relative"
 		
 		list.insertBefore(ni,next_item)
-		list.items.splice(start_ind - list.top_ind,0,ni)
+		list.items.splice(ind - list.top_ind,0,ni)
 
 		hth += ni.getBoundingClientRect().height
 	    }
@@ -77,11 +77,17 @@ zen_list_insert = function ( list, index, size )
 	list.bot_ind += size
 	list.repos = true
 
+	for (ind = 0 ; ind < list.items.length ; ind++)
+	{
+	    console.log(ind,list.items[ind].id)
+	}
+	
 	// set animation position for remaining items
 
-	for (ind = start_ind + size ; ind < list.items.length ; ind++)
+	for (ind = start_ind + size  ; ind < list.items.length ; ind++)
 	{
 	    let ni = list.items[ind]
+	    // console.log("set delta",ni,ind,hth)
 	    ni.setAttribute("delta" , hth)
 	}
     }
