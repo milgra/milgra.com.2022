@@ -135,10 +135,8 @@ milgra_item_for_index = function( list, index )
 	if (elem.innerText.length == 2) elem.innerText = months[ parseInt(elem.innerText) - 1 ]
 
 	elem.style.width = "100%"
-	elem.style.padding = "10px"
-	elem.style.textAlign = "left"
-	elem.style.paddingLeft = 10 + (parts.length - 1) * 10 + "px"
-	elem.style.marginBottom = "1px"
+	// elem.style.paddingLeft = 10 + (parts.length - 1) * 10 + "px"
+	// elem.style.marginBottom = "1px"
 	
 	elem.style.backgroundColor = colors[0]
 	// if (index % 2 == 0) elem.style.backgroundColor = colors[1]
@@ -157,7 +155,10 @@ milgra_item_for_index = function( list, index )
 
 	if (item.endsWith(">"))
 	{
-	    elem.style.display = "block"
+	    elem.style.boxSizing = "border-box"
+	    elem.style.width = "100%"
+	    elem.style.padding = "40px"
+	    elem.style.textAlign = "justify"
 	    elem.load = function ( contentUrl )
 	    {
 		fetch(contentUrl)
@@ -171,8 +172,10 @@ milgra_item_for_index = function( list, index )
 	}
 	else
 	{
-	    elem.style.height = "40px"
-	    elem.style.fontSize = "30px"
+	    elem.style.textAlign = "left"
+	    elem.style.padding = "15px"
+	    elem.style.height = "25px"
+	    elem.style.fontSize = "20px"
 	    elem.addEventListener( "click", milgra_item_click )
 	}
 	
@@ -188,12 +191,13 @@ milgra_init = function ()
     let list = document.createElement("div")
 
     list.id = "main_list"
-    list.style.position = "absolute"
     list.style.overflow = "hidden"
-    list.style.width = "100%"
+    // list.style.margin = "0px auto"
+    // list.style.width = "800px"
     list.style.height = "100%"
+    // list.style.backgroundColor = "#223344"
 
-    document.body.appendChild(list)
+    document.getElementById("center").appendChild(list)
 
     lists.push(list)
 

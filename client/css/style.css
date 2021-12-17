@@ -1,9 +1,46 @@
-/* some style */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
+html {
+    height: 100%;
+}
+
 body {
     margin: 0px;
-    background-color: #000000;
+    height: 100%;
+    background-color: #223355;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
 
-    font-size : 18px;
-    font-family : -apple-system,BlinkMacSystemFont,Avenir,Avenir Next,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+#main {
+  display: flex;
+  height: 100%;
+  margin: 0px;
+  width: 100%;
+}
 
+#logo {
+    float: right;
+    font-size: 140px;
+    font-weight: 900;
+    text-align: right;
+    color: #FFFFFF;
+    transform: translate(-145px , 0px ) rotate(-90deg);
+    transform-origin: top right;
+}
+
+#left {
+    flex: 1 0 100px;
+    overflow: hidden;
+}
+
+#center {
+    background: #334466;
+    flex: 0 0 800px;
+    margin: 0px;
+    height: 100%;
+}
+
+#right {
+    flex: 1 0 100px;
 }
