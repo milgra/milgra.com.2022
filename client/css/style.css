@@ -29,18 +29,57 @@ body {
     transform-origin: top right;
 }
 
-#left {
-    flex: 1 0 100px;
-    overflow: hidden;
-}
-
 #center {
     background: #334466;
     flex: 0 0 800px;
     margin: 0px;
     height: 100%;
+    overflow: hidden;
+}
+
+#center-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#menu {
+    flex: 0 0 50px;
+    display: flex;
+}
+
+#list {
+    flex: 1 1 100px;
+}
+
+#left {
+    flex: 1 0 100px;
+    overflow: hidden;
 }
 
 #right {
     flex: 1 0 100px;
+}
+
+.btn {
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+#btn_a {
+    flex: 1 1;
+    background-color: #5566CC;
+}
+#btn_b {
+    flex: 1 1;
+    background-color: #6677DD;
+}
+#btn_c {
+    flex: 1 1;
+    background-color: #7788EE;
+}
+#btn_d {
+    flex: 1 1;
+    background-color: #8899FF;
 }

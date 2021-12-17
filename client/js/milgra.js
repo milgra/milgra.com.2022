@@ -159,6 +159,7 @@ milgra_item_for_index = function( list, index )
 	    elem.style.width = "100%"
 	    elem.style.padding = "40px"
 	    elem.style.textAlign = "justify"
+	    elem.style.backgroundColor = "#BBDDFF"
 	    elem.load = function ( contentUrl )
 	    {
 		fetch(contentUrl)
@@ -184,7 +185,9 @@ milgra_item_for_index = function( list, index )
     else return null;
 }
 
-milgra_init = function ()
+
+
+milgra_init = function ( )
 {
     // create list
     
@@ -197,25 +200,26 @@ milgra_init = function ()
     list.style.height = "100%"
     // list.style.backgroundColor = "#223344"
 
-    document.getElementById("center").appendChild(list)
+    document.getElementById("list").appendChild(list)
+
+    zen_list_attach(list,
+		    milgra_item_for_index,
+		    milgra_destroy_item)
 
     lists.push(list)
 
     window.requestAnimationFrame(milgra_step)
+}
 
-    // load initial items
-
-    let url = "http://localhost:3000/items/blog"
-
+milgra_load = function ( path )
+{
+    let url = "http://localhost:3000/items/" + path
+    
     fetch(url)
 	.then((response) => response.json())
 	.then((data) => {
 	    items = data
-
-	    // load list base
 	    
-	    zen_list_attach(list,
-			    milgra_item_for_index,
-			    milgra_destroy_item)
+	    zen_list_reset(lists[0])
 	})
 }

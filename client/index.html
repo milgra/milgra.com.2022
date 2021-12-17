@@ -13,9 +13,22 @@
       <div id="left">
 	<div id="logo">milgra.com</div>
       </div>
-      <div id="center"></div>
+      <div id="center">
+	<div id="center-content">
+	  <div id="menu">
+	    <div id="btn_a" class="btn" onclick="milgra_load('blog')">BLOG</div>
+	    <div id="btn_b" class="btn" onclick="milgra_load('apps')">APPS</div>
+	    <div id="btn_c" class="btn" onclick="milgra_load('cv')">CV</div>
+	    <div id="btn_d" class="btn" onclick="milgra_load('tabs')">TABS</div>
+	  </div>
+	  <div id="list"></div>
+	</div>
+      </div>
       <div id="right"></div>
     </div>
-    <script>milgra_init();</script>
+    <script>
+      milgra_init();
+      milgra_load("blog");
+    </script>
   </body>
 </html>

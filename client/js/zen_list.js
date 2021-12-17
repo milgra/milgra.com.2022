@@ -36,6 +36,8 @@ zen_list_reset = function (list)
 {
     list.full = false
 
+    console.log("ITEMS",typeof list.items)
+    
     let li
     for (li of list.items)
     {
@@ -44,7 +46,9 @@ zen_list_reset = function (list)
     }
 
     list.items = []
-    list.bot_ind = list.top_ind
+    list.bot_ind = 0
+    list.top_ind = 0
+    list.top = 0
 }
 
 zen_list_insert = function ( list, index, size )
@@ -141,144 +145,140 @@ zen_list_update = function (list)
     let ni  // new item
     let nir // new item rect
     
-    if (list.items)
-    {
-	if (!list.full)
-	{    
-	    if (list.items.length == 0)
-	    {
-		// first item
-		
-		ni = list.item_func(list,list.top_ind)
+    if (!list.full)
+    {    
+	if (list.items.length == 0)
+	{
+	    // first item
+	    
+	    ni = list.item_func(list,list.top_ind)
 
+	    if (ni)
+	    {
+		ni.style.position = "relative"
+		
+		list.appendChild(ni)
+		list.items.push(ni)
+		list.repos = true
+	    }
+	    else list.full = true
+	}
+	else
+	{		
+	    fi = list.items[0]
+	    fir = fi.getBoundingClientRect()
+	    
+	    if (fir.top >= prel_top)
+	    {
+		// fill up head if needed
+
+		ni = list.item_func(list,list.top_ind - 1)
+		
 		if (ni)
 		{
 		    ni.style.position = "relative"
 		    
-		    list.appendChild(ni)
-		    list.items.push(ni)
+		    list.insertBefore(ni,fi)
+		    list.items.unshift(ni)
+		    
+		    list.top -= ni.getBoundingClientRect().height
+		    list.top_ind -= 1
 		    list.repos = true
 		}
 		else list.full = true
 	    }
-	    else
-	    {		
-		fi = list.items[0]
-		fir = fi.getBoundingClientRect()
-		
-		if (fir.top >= prel_top)
-		{
-		    // fill up head if needed
+	    else if (fir.bottom < prel_top && list.items.length > 1)
+	    {
+		// remove head if needed
 
-		    ni = list.item_func(list,list.top_ind - 1)
-		    
-		    if (ni)
-		    {
-			ni.style.position = "relative"
-			
-			list.insertBefore(ni,fi)
-			list.items.unshift(ni)
-			
-			list.top -= ni.getBoundingClientRect().height
-			list.top_ind -= 1
-			list.repos = true
-		    }
-		    else list.full = true
-		}
-		else if (fir.bottom < prel_top && list.items.length > 1)
-		{
-		    // remove head if needed
+		list.removeChild(fi)
+		list.items.shift()
+		list.top += fir.height
+		list.top_ind += 1
+		list.full = false
+		list.repos = true
 
-		    list.removeChild(fi)
-		    list.items.shift()
-		    list.top += fir.height
-		    list.top_ind += 1
-		    list.full = false
-		    list.repos = true
-
-		    list.destroy_func(fi,lr)
-		}
-		
-		li = list.items[list.items.length - 1]
-		lir = li.getBoundingClientRect()
-
-		if (lir.bottom <= prel_bot)
-		{
-		    // fill up tail if needed
-		    
-		    ni = list.item_func(list,list.bot_ind + 1)
-
-		    if (ni)
-		    {
-			ni.style.position = "relative"
-
-			list.appendChild(ni)
-			list.items.push(ni)
-			
-			list.bot_ind += 1
-			list.full = 0
-			list.repos = true
-		    }
-		    else list.full = true
-		}
-		else if (lir.top > prel_bot && list.items.length > 1)
-		{
-		    // remove tail if needed
-
-		    list.removeChild(li)
-		    list.items.pop()
-		    list.bot_ind -= 1
-		    list.full = false
-
-		    list.destroy_func(li)
-		}	
+		list.destroy_func(fi,lr)
 	    }
-	}
-
-	// move
-
-	list.top += list.speed
-	list.speed *= 0.8
-	if (list.speed > 0.01 || list.speed < -0.01) list.repos = true
-
-	// if (list.repos)
-	// {
-	    list.repos = false
-	    list.full = false
-
-	    fi = list.items[0]
-	    fir = fi.getBoundingClientRect()
-
+	    
 	    li = list.items[list.items.length - 1]
 	    lir = li.getBoundingClientRect()
 
-	    // bounce top
-	    // if (fir.top > lr.top) list.top += ( lr.top - fir.top ) / 5;
-
-	    // bounce bottom
-	    // if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
-	    	    
-	for (ci of list.items)
-	{
-	    if (ci.hasAttribute("delta"))
+	    if (lir.bottom <= prel_bot)
 	    {
+		// fill up tail if needed
+		
+		ni = list.item_func(list,list.bot_ind + 1)
 
-		let delta = parseInt(ci.getAttribute("delta"))
-		delta += -delta / 6
+		if (ni)
+		{
+		    ni.style.position = "relative"
 
-		ci.setAttribute("delta",delta)
-
-		ci.style.top = Math.round(list.top) - delta + "px"
-
-		if (Math.abs(delta) < 0.001) ci.removeAttribute("delta")
+		    list.appendChild(ni)
+		    list.items.push(ni)
+		    
+		    list.bot_ind += 1
+		    list.full = 0
+		    list.repos = true
+		}
+		else list.full = true
 	    }
-	    else
+	    else if (lir.top > prel_bot && list.items.length > 1)
 	    {
-		ci.style.top = Math.round(list.top) + "px"
-	    }
+		// remove tail if needed
 
+		list.removeChild(li)
+		list.items.pop()
+		list.bot_ind -= 1
+		list.full = false
+
+		list.destroy_func(li)
+	    }	
 	}
-	// }
+    }
+
+    // move
+
+    list.top += list.speed
+    list.speed *= 0.8
+    if (list.speed > 0.01 || list.speed < -0.01) list.repos = true
+
+    // if (list.repos)
+    // {
+    list.repos = false
+    list.full = false
+
+    // fi = list.items[0]
+    // fir = fi.getBoundingClientRect()
+
+    // li = list.items[list.items.length - 1]
+    // lir = li.getBoundingClientRect()
+
+    // bounce top
+    // if (fir.top > lr.top) list.top += ( lr.top - fir.top ) / 5;
+
+    // bounce bottom
+    // if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
+    
+    for (ci of list.items)
+    {
+	if (ci.hasAttribute("delta"))
+	{
+
+	    let delta = parseInt(ci.getAttribute("delta"))
+	    delta += -delta / 6
+
+	    ci.setAttribute("delta",delta)
+
+	    ci.style.top = Math.round(list.top) - delta + "px"
+
+	    if (Math.abs(delta) < 0.001) ci.removeAttribute("delta")
+	}
+	else
+	{
+	    ci.style.top = Math.round(list.top) + "px"
+	}
+
     }
 }
 
