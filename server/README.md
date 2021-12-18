@@ -4,6 +4,7 @@ stop frame request when idle
 
 14 subdirs
 15 files
+date for articles
 
 big data scroller
 milgra.com ket oszlop, scrollozhato title-k, alatta nyilik a cikk, static md, legfelsok nyitva,

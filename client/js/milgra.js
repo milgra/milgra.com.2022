@@ -134,6 +134,7 @@ milgra_item_for_index = function( list, index )
 	elem.innerText = item.substring(item.lastIndexOf('/') + 1)
 	if (elem.innerText.length == 2) elem.innerText = months[ parseInt(elem.innerText) - 1 ]
 
+	elem.style.boxSizing = "border-box"
 	elem.style.width = "100%"
 	// elem.style.paddingLeft = 10 + (parts.length - 1) * 10 + "px"
 	// elem.style.marginBottom = "1px"
@@ -155,8 +156,6 @@ milgra_item_for_index = function( list, index )
 
 	if (item.endsWith(">"))
 	{
-	    elem.style.boxSizing = "border-box"
-	    elem.style.width = "100%"
 	    elem.style.padding = "40px"
 	    elem.style.textAlign = "justify"
 	    elem.style.backgroundColor = "#BBDDFF"
@@ -175,7 +174,6 @@ milgra_item_for_index = function( list, index )
 	{
 	    elem.style.textAlign = "left"
 	    elem.style.padding = "15px"
-	    elem.style.height = "25px"
 	    elem.style.fontSize = "20px"
 	    elem.addEventListener( "click", milgra_item_click )
 	}
