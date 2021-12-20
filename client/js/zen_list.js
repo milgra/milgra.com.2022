@@ -9,7 +9,7 @@ zen_list_attach = function (list,
     list.full = 0 // list is full, no fillup needed currently
     list.top = 0.0 // current position of top list
     list.speed = 0.0 // current scroll speed
-    list.preload_size = 100 // preload distance from top and bottom
+    list.preload_size = 0 // preload distance from top and bottom
     list.repos // list needs element repositioning
     
     list.item_func = item_func   // item generator
@@ -23,6 +23,7 @@ zen_list_wheel = function (event)
     let list = event.currentTarget
     
     list.speed -= event.deltaY / 4
+    list.full = false
     //zen_list_update(list)
 }
 
@@ -36,8 +37,6 @@ zen_list_reset = function (list)
 {
     list.full = false
 
-    console.log("ITEMS",typeof list.items)
-    
     let li
     for (li of list.items)
     {
@@ -53,26 +52,32 @@ zen_list_reset = function (list)
 
 zen_list_insert = function ( list, index, size )
 {
-    console.log("zen_list_insert",index,size)
+    let ind
+
+    // for (ind = 0 ; ind < list.items.length ; ind++)
+    // {
+    // 	console.log("A",ind,list.items[ind].id)
+    // 	console.log("B",ind,list.childNodes[ind].id)
+    // }
+
     // insert items from index, animate other items down or up
     
-    if (list.top_ind < index  && index < list.bot_ind)
+    if (list.top_ind <= index  && index <= list.bot_ind)
     {
 	start_ind = index - list.top_ind
 	next_item = list.items[ start_ind ]
-
-	let ind
+	
 	let hth = 0
 	for (ind = start_ind ; ind < start_ind + size ; ind++)
 	{
-	    let ni = list.item_func(list,ind)
+	    let ni = list.item_func(list,ind + list.top_ind)
 	    
 	    if (ni)
 	    {
 		ni.style.position = "relative"
 		
 		list.insertBefore(ni,next_item)
-		list.items.splice(ind - list.top_ind,0,ni)
+		list.items.splice(ind ,0,ni)
 
 		hth += ni.getBoundingClientRect().height
 	    }
@@ -83,7 +88,8 @@ zen_list_insert = function ( list, index, size )
 
 	for (ind = 0 ; ind < list.items.length ; ind++)
 	{
-	    console.log(ind,list.items[ind].id)
+	    console.log("A",ind,list.items[ind].id)
+	    console.log("B",ind,list.childNodes[ind].id)
 	}
 	
 	// set animation position for remaining items
@@ -95,6 +101,24 @@ zen_list_insert = function ( list, index, size )
 	    ni.setAttribute("delta" , hth)
 	}
     }
+    else if (index == list.bot_ind + 1)
+    {
+	list.repos = true
+	for (ind = 0 ; ind < size ; ind++)
+	{
+	    list.bot_ind += 1
+	    let ni = list.item_func(list,list.bot_ind)
+	    
+	    if (ni)
+	    {
+		ni.style.position = "relative"
+		
+		list.appendChild(ni)
+		list.items.push(ni)
+	    }
+	}
+    }
+    else list.full = false
 }
 
 zen_list_delete = function (list , index , size)
@@ -180,10 +204,13 @@ zen_list_update = function (list)
 		    
 		    list.insertBefore(ni,fi)
 		    list.items.unshift(ni)
+
+		    console.log("HEIGHT",ni.getBoundingClientRect().height,ni.id)
 		    
 		    list.top -= ni.getBoundingClientRect().height
 		    list.top_ind -= 1
 		    list.repos = true
+		    list.full = false
 		}
 		else list.full = true
 	    }
@@ -195,8 +222,7 @@ zen_list_update = function (list)
 		list.items.shift()
 		list.top += fir.height
 		list.top_ind += 1
-		list.full = false
-		list.repos = true
+		list.full = true
 
 		list.destroy_func(fi,lr)
 	    }
@@ -218,7 +244,7 @@ zen_list_update = function (list)
 		    list.items.push(ni)
 		    
 		    list.bot_ind += 1
-		    list.full = 0
+		    list.full = false
 		    list.repos = true
 		}
 		else list.full = true
@@ -230,7 +256,7 @@ zen_list_update = function (list)
 		list.removeChild(li)
 		list.items.pop()
 		list.bot_ind -= 1
-		list.full = false
+		list.full = true
 
 		list.destroy_func(li)
 	    }	
@@ -241,12 +267,16 @@ zen_list_update = function (list)
 
     list.top += list.speed
     list.speed *= 0.8
-    if (list.speed > 0.01 || list.speed < -0.01) list.repos = true
+    if (list.speed > 0.01 || list.speed < -0.01)
+    {
+	list.full = false
+	list.repos = true
+    }
 
     // if (list.repos)
     // {
-    list.repos = false
-    list.full = false
+    // list.repos = false
+    // list.full = false
 
     // fi = list.items[0]
     // fir = fi.getBoundingClientRect()
@@ -259,26 +289,27 @@ zen_list_update = function (list)
 
     // bounce bottom
     // if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
-    
-    for (ci of list.items)
+
+    if (list.repos)
     {
-	if (ci.hasAttribute("delta"))
+	for (ci of list.items)
 	{
+	    if (ci.hasAttribute("delta"))
+	    {
+		let delta = parseInt(ci.getAttribute("delta"))
+		delta += -delta / 6
 
-	    let delta = parseInt(ci.getAttribute("delta"))
-	    delta += -delta / 6
+		ci.setAttribute("delta",delta)
 
-	    ci.setAttribute("delta",delta)
+		ci.style.top = Math.round(list.top) - delta + "px"
 
-	    ci.style.top = Math.round(list.top) - delta + "px"
-
-	    if (Math.abs(delta) < 0.001) ci.removeAttribute("delta")
+		if (Math.abs(delta) < 0.001) ci.removeAttribute("delta")
+	    }
+	    else
+	    {
+		ci.style.top = Math.round(list.top) + "px"
+	    }
 	}
-	else
-	{
-	    ci.style.top = Math.round(list.top) + "px"
-	}
-
     }
 }
 

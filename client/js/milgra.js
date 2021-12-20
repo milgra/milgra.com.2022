@@ -1,6 +1,7 @@
 lists = []
 items = []
 opened = {}
+open = []
 
 // [ [0,100,item] ]
 // [ [0,20,item][20,80,subitem][80,160,item]]
@@ -25,12 +26,14 @@ milgra_insert_items = function ( newItems )
 	    if (fi.includes(item))
 	    {
 		items.splice(i + 1, 0, ... newItems)
-		
+
 		zen_list_insert( lists[0] , i + 1 , newItems.length )
+
 		return
 	    }
 	}
     }
+    console.log("items",items)
 }
 
 milgra_delete_items = function ( oldItem )
@@ -53,64 +56,81 @@ milgra_delete_items = function ( oldItem )
 	    } 
 	}
 
-	console.log("items",items)
-
 	if ( fix > -1 ) zen_list_delete( lists[0] , fix , cnt)
 
     }
 }
 
-milgra_item_click = function( event )
+milgra_item_open = function ( item )
 {
-    let elem = event.currentTarget
-    
-    if (opened[ elem.id ])
+    if (item.endsWith(".html"))
     {
-	// remove items
-		
-	opened[ elem.id ] = false
-
-	milgra_delete_items( elem.id )
-
-	// remove all opened keys that contain the removed id
-
-	let keys = Object.keys(opened)
-	let key
-	
-	for (key of keys)
+	if (opened[ item ])
 	{
-	    if (key.includes(elem.id))
-	    {
-		delete opened[key]
-	    }
-	}
-    }
-    else
-    {
-	opened[ elem.id ] = true
+	    // remove items
 
-	if (elem.id.endsWith(".html"))
-	{
-	    // add html as an openable item
+	    milgra_delete_items( item )
+
+	    opened[ item ] = false
+	    delete opened[ item ]
 	    
-	    milgra_insert_items( [ elem.id + ">"  ] )
 	}
 	else
 	{
-	
-	    // load moar items
-	    
-	    let url = "http://localhost:3000/items/" + elem.id
-	    
-	    fetch(url)
-		.then((response) => response.json())
-		.then((data) => {
-		    milgra_insert_items(data)
-		})
+	    // add html as an openable item
+
+	    opened[ item ] = true
+	    milgra_insert_items( [ item + ">"  ] )
 	}
     }
+	
+    // 	milgra_delete_items( item )
+
+    // 	// remove all opened keys that contain the removed id
+
+    // 	let keys = Object.keys(opened)
+    // 	let key
+	
+    // 	for (key of keys)
+    // 	{
+    // 	    if (key.includes(item))
+    // 	    {
+    // 		delete opened[key]
+    // 	    }
+    // 	}
+    // }
+    // else
+    // {
+    // 	opened[ item ] = true
+
+	// if (item.endsWith(".html"))
+	// {
+	//     // add html as an openable item
+	    
+	//     milgra_insert_items( [ item + ">"  ] )
+	// }
+	// else
+	// {
+	
+	//     // load moar items
+	    
+	//     let url = "http://localhost:3000/items/" + item
+	    
+	//     fetch(url)
+	// 	.then((response) => response.json())
+	// 	.then((data) => {
+	// 	    milgra_insert_items(data)
+	// 	})
+	// }
+    // }
 }
 
+milgra_item_click = function( event )
+{
+    let elem = event.currentTarget
+
+    milgra_item_open(elem.id)
+}
 
 milgra_destroy_item = function( item )
 {
@@ -124,6 +144,8 @@ months = [ "January", "February", "March", "April", "May", "June", "July", "Augu
 
 milgra_item_for_index = function( list, index )
 {
+    // console.log("item for index",index,items[index])
+    
     if ( items.length > 0 && index < items.length && -1 < index)
     {
 	let item = items[index]
@@ -131,8 +153,9 @@ milgra_item_for_index = function( list, index )
 	let parts = item.split("/")
 	
 	elem.id = item
-	elem.innerText = item.substring(item.lastIndexOf('/') + 1)
-	if (elem.innerText.length == 2) elem.innerText = months[ parseInt(elem.innerText) - 1 ]
+	elem.innerText = item
+	//elem.innerText = item.substring(item.lastIndexOf('/') + 1)
+	//if (elem.innerText.length == 2) elem.innerText = months[ parseInt(elem.innerText) - 1 ]
 
 	elem.style.boxSizing = "border-box"
 	elem.style.width = "100%"
@@ -169,6 +192,7 @@ milgra_item_for_index = function( list, index )
 	    }
 
 	    elem.load( "http://localhost:3000/" + item.substring( 0, item.length - 1 ))
+	
 	}
 	else
 	{
@@ -193,12 +217,12 @@ milgra_init = function ( )
 
     list.id = "main_list"
     list.style.overflow = "hidden"
-    // list.style.margin = "0px auto"
-    // list.style.width = "800px"
+    list.style.margin = "0px auto"
+    list.style.width = "800px"
     list.style.height = "100%"
-    // list.style.backgroundColor = "#223344"
+    list.style.backgroundColor = "#88AACC"
 
-    document.getElementById("list").appendChild(list)
+    document.getElementById("center").appendChild(list)
 
     zen_list_attach(list,
 		    milgra_item_for_index,
@@ -209,7 +233,7 @@ milgra_init = function ( )
     window.requestAnimationFrame(milgra_step)
 }
 
-milgra_load = function ( path )
+milgra_load = function ( path , reverse )
 {
     let url = "http://localhost:3000/items/" + path
     
@@ -217,6 +241,42 @@ milgra_load = function ( path )
 	.then((response) => response.json())
 	.then((data) => {
 	    items = data
+
+	    console.log("reverse",reverse)
+
+	    if (reverse) items.reverse()
+
+	    // extract folders
+
+	    let folders = new Set()
+
+	    for (let i=0;i<items.length;i++)
+	    {
+		let item = items[i]
+		let parts = item.split("/")
+
+		let path = "/"
+		for ( let p=1; p<parts.length-1; p++ )
+		{
+		    path += parts[p] + "/"
+		    folders.add(path)
+		}
+	    }
+
+	    // insert folders into items
+
+	    for (let folder of folders)
+	    {
+		for (let i=0;i<items.length;i++)
+		{
+		    let item = items[i]
+		    if (item.search(folder) > -1)
+		    {
+			items.splice(i,0,folder)
+			break;
+		    }
+		}
+	    }
 	    
 	    zen_list_reset(lists[0])
 	})

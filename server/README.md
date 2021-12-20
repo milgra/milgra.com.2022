@@ -1,41 +1,15 @@
-# server
-
+fix row load errors
+add row load in a loop
 stop frame request when idle
+add additional infos to row - 14 subdirs 15 files date for articles
 
-14 subdirs
-15 files
-date for articles
+search
+comment
 
-big data scroller
-milgra.com ket oszlop, scrollozhato title-k, alatta nyilik a cikk, static md, legfelsok nyitva,
-url legyen minden cikkhez hogy keresheto legyen, search bar lefgelul baloldalt,
-cikk.md-be path, tags legyen, path arbitrary length, abbol generalja a main-sub-sub kategoriakat dinaikusan a site.
-kell a kottaknak is egy online nézőke ezt használva
+url legyen minden cikkhez hogy keresheto legyen, search bar lefgelul
+
 story section minden apphoz - html, css reader, etc
 amig sublistat scrollozod, apa element mindig maradjon fixen fent
-
-scroll esemeny inditsa animationframe-et, kifutaskor alljon le
-
 opened articles on top of list?
-
 add comment functionality / captcha?
 
-blog/apps/cv overlapping pages
-
-FIXME
-
-## Prerequisites
-
-You will need [Leiningen][] 2.0.0 or above installed.
-
-[leiningen]: https://github.com/technomancy/leiningen
-
-## Running
-
-To start a web server for the application, run:
-
-    lein ring server
-
-## License
-
-Copyright © 2021 FIXME

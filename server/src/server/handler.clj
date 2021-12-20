@@ -1,6 +1,7 @@
 (ns server.handler
   (:require
-    [clojure.java.io :as io]
+   [clojure.java.io :as io]
+   [clojure.pprint]
     [compojure.core :refer :all]
     [compojure.route :as route]
     [ring.middleware.cors :refer [wrap-cors]]
@@ -11,9 +12,11 @@
 (defroutes app-routes
 
   (GET "/items/*" {params :route-params :as request}
-       (let [path (str "resources/public/" (:* params))]
-       (map #(str (:* params) "/" %)  (reverse (sort (seq (.list (io/file path))))))))
-
+       (let [path (str "resources/public/" (:* params))
+             file (io/file path)
+             prefix (.getAbsolutePath file)
+             result (sort (map #(clojure.string/replace-first (.getCanonicalPath %) prefix (:* params)) (filter #(.isFile %) (file-seq file))))]
+         result))
   (route/not-found "Not Found"))
 
 

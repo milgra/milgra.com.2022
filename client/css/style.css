@@ -15,10 +15,22 @@ body {
 }
 
 #main {
-  display: flex;
-  height: 100%;
-  margin: 0px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0px;
+    width: 100%;
+}
+
+#main_top {
+    flex: 0 0 40px;
+    background-color: #445577;
+}
+
+#main_bottom {
+    flex: 1 1 100%;
+    display: flex;
+    overflow: hidden;
 }
 
 #logo {
@@ -36,7 +48,8 @@ body {
     font-weight: 500;
     text-align: left;
     color: #334466;
-    transform: translate(-50px , -140px ) rotate(0deg);
+    letter-spacing: -20px;
+    transform: translate(-50px , -230px ) rotate(0deg);
 }
 
 #center {
@@ -47,63 +60,53 @@ body {
     overflow: hidden;
 }
 
-#center-content {
-    width: 800px;
-    margin: auto;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 #menu {
-    flex: 0 0 30px;
+    flex: 0 0 40px;
     display: flex;
+    width : 800px;
+    margin: auto;
 }
 
 #list {
-    flex: 1 1 100px;
+    flex: 1 1 100%;
 }
 
 #left {
-    flex: 1 0 100px;
+    flex: 1 1;
     overflow: hidden;
 }
 
 #right {
     z-index: -1;
-    flex: 1 0 100px;
+    flex: 1 1;
+    overflow: hidden;
 }
 
 .btn {
     text-align: center;
-    line-height: 30px;
+    line-height: 40px;
     cursor: pointer;
     font-weight: 300;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #btn_a {
-    flex: 1 1;
     color: white;
-    margin: 1px;
-    margin-left: 0px;
-    background-color: #445577;
 }
 #btn_b {
-    flex: 1 1;
     color: white;
-    margin: 1px;
-    background-color: #445577;
 }
 #btn_c {
-    flex: 1 1;
     color: white;
-    margin: 1px;
-    background-color: #445577;
 }
 #btn_d {
-    flex: 1 1;
     color: white;
-    margin: 1px;
-    margin-right: 0px;
-    background-color: #445577;
+}
+#btn_e {
+    margin-left: auto;
+    color: white;
+}
+#btn_f {
+    color: white;
 }
