@@ -16,6 +16,29 @@ zen_list_attach = function (list,
     list.destroy_func = destroy_func // item destroyer
     
     list.addEventListener("wheel",zen_list_wheel,{ passive : true })
+    list.addEventListener('touchstart', zen_list_touch_start, { passive : true })
+    list.addEventListener('touchmove', zen_list_touch_move, { passive : true })
+}
+
+var lastY = 0
+
+zen_list_touch_start = function (event)
+{
+    let list = event.currentTarget
+
+    lastY = event.touches[0].pageY
+}
+
+zen_list_touch_move = function (event)
+{
+    let list = event.currentTarget
+    
+    let deltaY = lastY - event.touches[0].pageY
+
+    lastY = event.touches[0].pageY
+
+    list.speed -= deltaY / 4
+    list.full = false
 }
 
 zen_list_wheel = function (event)

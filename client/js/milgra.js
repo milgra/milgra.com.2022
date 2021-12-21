@@ -234,8 +234,8 @@ milgra_init = function ( )
 
     list.id = "main_list"
     list.style.overflow = "hidden"
-    list.style.margin = "0px auto"
-    list.style.width = "800px"
+    // list.style.margin = "0px auto"
+    list.style.width = "100%"
     list.style.height = "100%"
     list.style.backgroundColor = "#88AACC"
 
