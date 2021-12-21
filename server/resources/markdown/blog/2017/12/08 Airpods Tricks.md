@@ -1,6 +1,5 @@
-Airpods Tricks
-2017-12-08T20:41:00
-Apple,Mac
+#Airpods Tricks
+_Apple,Mac_
 
 As soon as Airpods entered the market back in 2016 November I ordered one because I really needed reliable wireless earphones for running after a year with a terrible JBL. And it lived up to the expectations, I never heard any cracking sound or breaking music during running any more which is super cool. But controls were a little bit limited - bringing up siri with a double tap was totally useless for me and I never checked Airpods settings for more options because I'm lazy. How wrong was I!
 

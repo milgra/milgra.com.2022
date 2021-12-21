@@ -1,6 +1,5 @@
-Ray Tracing Part Two
-2019-04-24T16:53:00
-3D,C,Coding
+#Ray Tracing Part Two
+_3D,C,Coding_
 
 Let's create a movable camera first. In the first part we fixed the camera to the z axis and the camera window was lying on the xy plane so it was simple to build up the camera window grid. But if we want to move the focus point or the target point to an arbitrary place in the 3D space we have to build up the camera window grid in the 3D space.
 We get the camera window normal by substracting the focus point from the target point. To get the camera window horizontal axis we have to get the cross product of a vector lying on the xy plane ( 0 , 1 , 0 ) and the normal vector.
@@ -8,7 +7,8 @@ With that we can get the vertical axis with another cross product. If we have th
 
 ![raytrace](/images/20190424_camera.png)
 
-```
+
+<code>
 #include <stdio.h>
 
 v3_t camera_focus_p = { 40.0 , 20.0 , 100.0 };
@@ -37,11 +37,11 @@ for ( int row_i = 0 ; row_i < grid_rows_i ; row_i++ )
 		v3_t window_grid_v = camera_target_p;
 		window_grid_v = v3_add( window_grid_v , v3_scale( window_stepx_v , grid_cols_i / 2 - col_i ) );
 		window_grid_v = v3_add( window_grid_v , v3_scale( window_stepy_v , - grid_rows_i / 2 + row_i ) );
-```
+</code>
 
 Let's draw squares instead of dots to make the result better looking.
 
-```
+<code>
 #include <stdio.h>
 
 void framebuffer_drawsquare( int sx , int sy , int size , uint32_t color )
@@ -62,12 +62,12 @@ void framebuffer_drawsquare( int sx , int sy , int size , uint32_t color )
 		}
 	}
 }
-```
+</code>
 
 Finally let's create a light source and let's create a specularish reflection of the light from the surface. It's quite simple, we will mirror the light ray on the surface normal and check if the resulting vector'angle is close enought to the focus point - intersection point vector's angle.
 
 
-```
+<code>
 #include <stdio.h>
 
 // set up light
@@ -75,7 +75,7 @@ Finally let's create a light source and let's create a specularish reflection of
 v3_t light_p = { 0.0 , 30.0 , 0.0 };
 
 //
-...
+
 //
 
 v3_t light_proj_p = point_line_projetion( isect_p , v3_add( isect_p , rect_normal_v ) , light_p );
@@ -97,7 +97,7 @@ uint32_t color = coloru << 24 | coloru << 16 | coloru << 8 | 0xFF;
 
 framebuffer_drawsquare( screen_grid_x , screen_grid_y , screen_step_size_f , color );
 
-```
+</code>
 
 Final result :
 

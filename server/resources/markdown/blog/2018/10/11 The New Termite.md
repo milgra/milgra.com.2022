@@ -1,6 +1,5 @@
-The New Termite
-2018-10-11T21:55:00
-Games
+#The New Termite
+_Games_
 
 Back in 2009 I released my first iOS game, Termite. There wasn't that many apps back then so it reached a wide audience and a lot of people loved it, they wrote heart-warming reviews. My favorite one was "Super game, it taught me a lot about teamwork!".
 

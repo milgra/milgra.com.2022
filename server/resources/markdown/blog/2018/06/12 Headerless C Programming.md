@@ -1,6 +1,5 @@
-Headerless C programming
-2018-06-12T13:42:00
-C,Coding
+#Headerless C programming
+_C,Coding_
 
 Header files in C can be painful. They duplicate the file count, increase complexity heavily, make refactoring painful. There are solutions to get rid of them. It's possible to use header generators ( https://www.hwaci.com/sw/mkhdr/ - makeheaders ), write you own headerless c dialect with a precompiler like me ( https://github.com/milgra/clc class-c ) or use `"#ifdef FOO_IMPLEMENTATION"` blocks inside header files to define everything in one file but they are unelegant and confusing and have a lot of other problems.
 
@@ -9,7 +8,8 @@ The ultimate solution seems to be using the `__INCLUDE_LEVEL__` preprocessor mac
 So just create a single file, write the header declarations at the top, write the implementation under that and guard the implementation with an `#if __INCLUDE_LEVEL__ == 0` macro and you never have to use header files again. You can include all files written this way as header files and add these files as source files to the compiler, everything will work as before.
 
 Example : mtvec.c
-```
+
+<code>
 #ifndef mtvec_h
 #define mtvec_h
 
@@ -61,7 +61,7 @@ void mtvec_reset( mtvec_t* vector )
 }
 
 #endif
-```
+</code>
 
 At the moment I don't see any pitfalls in this solution, do you? Please add your thoughts in the issues, thank you.
 

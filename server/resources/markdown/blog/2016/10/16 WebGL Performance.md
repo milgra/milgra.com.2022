@@ -1,10 +1,11 @@
-WebGL Performance
-2016-10-16T00:00:00
-3D,C,WebGL
+#WebGL Performance
+_3D,C,WebGL_
 
 I'm working on a multi-platform C and OpenGL based UI renderer and displaying things in 60 fps is essential. 
 
+<p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/LEnWsJc9S-o" allow="fullscreen"></iframe>
+</p>
 
 It works well on desktop and mobile OS's and it looks good in WebGL on my non-retina Macbook Air but sadly on retina Macbook Pro's the framerate is dying in case of big browser windows ( ~more than 50% of the screen ).
 

@@ -170,7 +170,7 @@ zen_list_update = function (list)
     let nir // new item rect
     
     if (!list.full)
-    {    
+    {
 	if (list.items.length == 0)
 	{
 	    // first item
@@ -204,8 +204,6 @@ zen_list_update = function (list)
 		    
 		    list.insertBefore(ni,fi)
 		    list.items.unshift(ni)
-
-		    console.log("HEIGHT",ni.getBoundingClientRect().height,ni.id)
 		    
 		    list.top -= ni.getBoundingClientRect().height
 		    list.top_ind -= 1
@@ -226,6 +224,7 @@ zen_list_update = function (list)
 
 		list.destroy_func(fi,lr)
 	    }
+	    else list.full = true
 	    
 	    li = list.items[list.items.length - 1]
 	    lir = li.getBoundingClientRect()
@@ -259,7 +258,8 @@ zen_list_update = function (list)
 		list.full = true
 
 		list.destroy_func(li)
-	    }	
+	    }
+	    else list.full = true
 	}
     }
 
@@ -278,20 +278,23 @@ zen_list_update = function (list)
     // list.repos = false
     // list.full = false
 
-    // fi = list.items[0]
-    // fir = fi.getBoundingClientRect()
-
-    // li = list.items[list.items.length - 1]
-    // lir = li.getBoundingClientRect()
-
-    // bounce top
-    // if (fir.top > lr.top) list.top += ( lr.top - fir.top ) / 5;
-
-    // bounce bottom
-    // if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
 
     if (list.repos)
     {
+
+	fi = list.items[0]
+	fir = fi.getBoundingClientRect()
+	
+	// li = list.items[list.items.length - 1]
+	// lir = li.getBoundingClientRect()
+	
+	// bounce top
+	if (fir.top > lr.top) list.top += ( lr.top - fir.top ) / 5;
+	
+	// bounce bottom
+	// if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
+
+	    
 	for (ci of list.items)
 	{
 	    if (ci.hasAttribute("delta"))

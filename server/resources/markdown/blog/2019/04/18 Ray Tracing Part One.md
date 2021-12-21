@@ -1,6 +1,5 @@
-Ray Tracing Part One
-2019-04-18T15:26:00
-3D,C,Coding
+#Ray Tracing Part One
+_3D,C,Coding_
 
 Let's create a simple ray tracing engine just for fun and to showcase how simple and how CPU intensive the underlying algorithm is compared to rasterization.
 We won't use any libraries, frameworks, GPU drivers and other terrible things, let's stick with the linux framebuffer and the standard C libraries, it still can be done within a hundred code lines.
@@ -9,7 +8,7 @@ We need two things in our scene : a camera, defined by a focus point and a camer
 
 Check out the code :
 
-```
+<code>
 #include <stdio.h>
 #include <stdint.h>	// for uint8 and uint32
 #include <fcntl.h>		// for open()
@@ -221,7 +220,7 @@ int main( )
 
 	return 0;
 }
-```
+</code>
 
 In the upper part of the code we define a vector structure with three members for three dimensions and a few functions to manipulate them. ( addition, substraction, dot product, scaling and length ).
 

@@ -1,6 +1,5 @@
-What did I learn from porting my game to Clojurescript / WebGL
-2020-04-29T18:22:57
-Clojure,Coding
+#What did I learn from porting my game to Clojurescript / WebGL
+_Clojure,Coding_
 
 I ported Brawl written in C/OpenGL to Cljs/WebGL to see how is it possible to write real-time / heavily stateful apps in a lisp/with pure functions.
 

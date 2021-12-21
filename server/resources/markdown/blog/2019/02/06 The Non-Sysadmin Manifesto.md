@@ -1,6 +1,5 @@
-The Non-Sysadmin Manifesto
-2019-02-06T16:52:00
-Coding
+#The Non-Sysadmin Manifesto
+_Coding_
 
 I’m a computer user. 90 percent of the developed countries is a computer user in some way.
 
@@ -12,7 +11,7 @@ Software industry is pretty much a mess no matter what architecture and operatin
 
 But we can make it better!
 
-**We need absolute standalone applications independent from the OS version and the shared library versions the OS have**
+_We need absolute standalone applications independent from the OS version and the shared library versions the OS have_
 
 Problems : App doesn’t start, quits or hangs immediately or during runtime, installation fails because of missing software or dependency hell
 
@@ -26,7 +25,7 @@ What OS’s can do to make using a computer safer is provide total transparency!
 
 With these rules computers can be perfect, safe and stable production instruments.
 
-**We need absolute standalone development projects**
+_We need absolute standalone development projects_
 
 Modern software projects are a hell to set up. Dependencies, dependencies of dependencies, parameters, settings scattered between a thousand config files, makefiles, old project files using old IDE versions, old scripts using old script language versions and old dependencies…
 

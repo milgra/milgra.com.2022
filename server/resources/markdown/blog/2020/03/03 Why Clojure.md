@@ -1,10 +1,9 @@
-Why Clojure?
-2020-03-03T10:30:00
-Clojure,Coding
+#Why Clojure?
+_Clojure,Coding_
 
 This will be the post where I try to explain why Clojure is an awesome language, It will be updated continuously.
 
-** Clojure forces you to do fantastic things!!! **
+Clojure forces you to do fantastic things!!!
 
 Instead of just lazily throwing in operations and function calls in the function body and fucking up the code you have to think everything out thoroughly. 
 
@@ -18,7 +17,7 @@ It forces you to use maps for everything. You cannot store pointers or reference
 
 It forces you to prepare data before manipulating it. For example you can't iterate over a list or vector with a for loop and use the counter as index so if you want to have the index of an element ( in a map or reduce ) you have to index your source vector first ( with map-indexed for example ) and use the result in map or reduce, and you just avoided an ugly imperative for loop this way.
 
-** Inline evaluation **
+Inline evaluation
 
 Checking the actual state of a function with inline evaluation right inside your IDE makes development so much faster and easier. You can call it with different parameters inline so you can test your function thoroughly while you are writing it. Awesome!
 

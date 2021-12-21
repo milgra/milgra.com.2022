@@ -1,7 +1,7 @@
 lists = []
 items = []
 opened = {}
-open = []
+counts = {}
 
 // [ [0,100,item] ]
 // [ [0,20,item][20,80,subitem][80,160,item]]
@@ -151,35 +151,82 @@ milgra_item_for_index = function( list, index )
 	let item = items[index]
 	let elem = document.createElement("div")
 	let parts = item.split("/")
+
+	let paddingLeft = 0
+	
+	console.log(item,"PARTS",parts)
 	
 	elem.id = item
-	elem.innerText = item
-	//elem.innerText = item.substring(item.lastIndexOf('/') + 1)
-	//if (elem.innerText.length == 2) elem.innerText = months[ parseInt(elem.innerText) - 1 ]
+	elem.style.cursor = "pointer"
+	
+	if (item.endsWith("/"))
+	{
+	    let text = item
+	    
+	    if (parts.length == 3)
+	    {
+		text = parts[1]
+		elem.style.backgroundColor = colors[0]
+	    }
+	    else if (parts.length == 4)
+	    {
+		text = months[parseInt(parts[2]) - 1]
+		paddingLeft = 20
+		elem.style.backgroundColor = colors[1]
 
+	    }
+	    elem.innerText = text 
+	    elem.style.fontStyle = "italic"
+
+	    let info = document.createElement("div")
+	    
+	    info.style.display = "relative"
+	    info.style.float = "right"
+	    info.innerText = counts[item] + " items"
+	    elem.appendChild(info)
+
+	}
+	else
+	{
+	    if (parts.length == 4)
+	    {
+		let text = parts[3]
+		text = text.substring(3, text.indexOf('.html'))
+		elem.innerText = text
+
+		if (item.endsWith(">"))
+		{
+		    // elem.style.fontWeight = "300"
+		    paddingLeft = 30
+		    elem.style.cursor = "auto"
+		}
+		else
+		{
+		    elem.style.backgroundColor = colors[2]
+		    // elem.style.fontWeight = "500"
+		    paddingLeft = 40
+
+		    let info = document.createElement("div")
+		    
+		    info.style.display = "relative"
+		    info.style.float = "right"
+		    info.innerText = item.substring(13,15)
+		    info.style.fontStyle = "italic"
+		    elem.appendChild(info)
+		}
+		
+	    }
+	    else elem.innerText = item
+	}
+	
 	elem.style.boxSizing = "border-box"
 	elem.style.width = "100%"
-	// elem.style.paddingLeft = 10 + (parts.length - 1) * 10 + "px"
-	// elem.style.marginBottom = "1px"
-	
-	elem.style.backgroundColor = colors[0]
-	// if (index % 2 == 0) elem.style.backgroundColor = colors[1]
-
-	if (parts.length == 3)
-	{
-	    elem.style.backgroundColor = colors[1]
-	    // if (index % 2 == 0) elem.style.backgroundColor = colors[3]
-	}
-
-	if (parts.length > 3)
-	{
-	    elem.style.backgroundColor = colors[2]
-	    // if (index % 2 == 0) elem.style.backgroundColor = colors[5]
-	}
 
 	if (item.endsWith(">"))
 	{
 	    elem.style.padding = "40px"
+	    elem.style.paddingTop = "10px"
+	    elem.style.paddingBottom = "10px"
 	    elem.style.textAlign = "justify"
 	    elem.style.backgroundColor = "#BBDDFF"
 	    elem.load = function ( contentUrl )
@@ -201,7 +248,9 @@ milgra_item_for_index = function( list, index )
 	    elem.style.fontSize = "20px"
 	    elem.addEventListener( "click", milgra_item_click )
 	}
-	
+
+	elem.style.paddingLeft = 10 + paddingLeft + "px"
+
 	return elem
     }
     else return null;
@@ -242,10 +291,12 @@ milgra_load = function ( path , reverse )
 	.then((data) => {
 	    items = data
 
-	    console.log("reverse",reverse)
-
 	    if (reverse) items.reverse()
 
+	    console.log("items",items)
+
+	    milgra_item_open(items[0])
+	    
 	    // extract folders
 
 	    let folders = new Set()
@@ -255,12 +306,29 @@ milgra_load = function ( path , reverse )
 		let item = items[i]
 		let parts = item.split("/")
 
-		let path = "/"
+		let path = "blog/"
 		for ( let p=1; p<parts.length-1; p++ )
 		{
 		    path += parts[p] + "/"
 		    folders.add(path)
 		}
+	    }
+
+	    // count folders
+
+	    for (let folder of folders)
+	    {
+		let count = 0
+		for (let i=0;i<items.length;i++)
+		{
+		    let item = items[i]
+		    if (item.search(folder) > -1)
+		    {
+			count++
+		    }
+		}
+		
+		counts[folder] = count
 	    }
 
 	    // insert folders into items
@@ -277,7 +345,9 @@ milgra_load = function ( path , reverse )
 		    }
 		}
 	    }
+
 	    
 	    zen_list_reset(lists[0])
+
 	})
 }

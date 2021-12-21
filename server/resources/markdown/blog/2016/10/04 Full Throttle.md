@@ -1,6 +1,5 @@
-Full Throttle
-2016-10-04T15:15:00
-Bikes
+#Full Throttle
+_Bikes_
 
 I've been learning to wheelie for 6 months now. I always wanted to do it but never took it too seriously before.
 
@@ -14,13 +13,17 @@ I bought it in this state on purpose because I didn't have the heart to hurt my 
 
 I watched a few videos on youtube about wheelieing and decided to start practicing on an uphill.
 
+<p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/i3ob0kEKk-4" allow="fullscreen"></iframe>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aGBIt0GByfY" allow="fullscreen"></iframe>
+</p>
 
 The best uphill around Szeged with a decent surface is in the Oil Fields of Algyő, Hungary's biggest and only oil field with a lot of service roads, it's a paradise for cyclist and bikers in the summer. There are a few overpasses over the M40 highway, the one with the less traffic is the closest one to the Tisza Bridge.
 
+<p align="center">
 <iframe align="center" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2929.1443974017398!2d20.226096115700305!3d46.29311727911938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x474462577474150f%3A0x47c379b926816cde!2sSzeged%2C+M43%2C+6753!5e1!3m2!1shu!2shu!4v1475586470021" width="600" height="450" allow="fullscreen"></iframe>
+</p>
 
 So I started there in May. It is super frightening. Your body is prepared to fall back and jump off and it's pretty hard at the beginning to force your hands to throw the clutch out. ( after a few near-fallback experiences ).
 

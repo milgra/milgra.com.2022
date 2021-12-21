@@ -1,6 +1,5 @@
-Shockwaves of a quickly written app
-2017-12-08T21:23:00
-Coding,Life
+#Shockwaves of a quickly written app
+_Coding,Life_
 
 High Sierra Media Key Enabler is the most successful app in my life and it took the shortest time to write. It soon reaches ten thousand downloads and it took me about 30 minutes to write it and test it. Funny. Sometimes you really have to be in the right place at the right time - wrong place at the right time or wrong time in the right place is not enough :)
 

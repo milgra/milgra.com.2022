@@ -4,3 +4,4 @@ find public -type f -name "*.md" -exec markdown -b "http://localhost:3000" -o {}
 find public -type f -name "*.md" -exec rm {} \; 
 find public -type f -name "*.html" -exec rename .md.html .html {} \;
 cp -r images public/images
+cp -r downloads public/downloads

@@ -1,15 +1,14 @@
-MilGraPi
-2019-01-04T18:03:00
-Coding,Raspberry
+#MilGraPi
+_Coding,Raspberry_
 
 Preparing a Raspberry Pi for OpenCV development is really time consuming, OpenCV takes hours to compile and a lot of other things have to be set up, so I just share my SD Card image here to speed up Raspberry OpenCV development for others. 
 
-**For Raspberry Pi 3 Model B :**
+_For Raspberry Pi 3 Model B :_
 
 I shrank the root partition to 7GB to make it suitable for smaller SD cards. It has 300MB free space only so you better expand it to fit on the target SD card. You can do this right on your raspberry with an additional USB-SD card stick and gparted. User/pass is pi/raspberry.
 After startup it autologins directly to OpenBox. Right click -> Terminal emulator to open a terminal. To test and run the OpenCV examples type "workon cv" to activate the python virtual environment, go into "/home/pi/Desktop/OpenCV-Face-Recognition-master/FacialRecognition" and type "python 03_face_recognition.py" . If you have a raspberry camera installed and enabled with raspi-config, a camera window should pop up and face detection should start. For a usb camera you have to modify the scripts a little.
 
-**For Raspberry Pi 3 Model B+ :**
+_For Raspberry Pi 3 Model B+ :_
 
 It is a 16 Gbyte SD image file in Mac dmg format, balenaEtcher can handle it.
 User/pass is pi/raspberry.
@@ -17,7 +16,7 @@ After login you can start the GUI by typing startx. Right click -> Terminal emul
 
 If you find this image useful please donate at the top of the page.
 
-**What does it contain**
+_What does it contain_
 
 *Base System*
 
@@ -46,4 +45,4 @@ If you find this image useful please donate at the top of the page.
 
 * Scratch, Termite, Cortex, Brawl for short rests ( enable full KMS OpenGL support in raspi-config to play them )  - Model B only
 
-**<a href="downloads/milgrapi" target="_blank">Download</a>**
+_<a href="downloads/milgrapi" target="_blank">Download</a>_

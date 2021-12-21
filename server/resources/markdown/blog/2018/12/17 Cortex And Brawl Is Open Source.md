@@ -1,6 +1,5 @@
-Cortex And Brawl Is Open Source
-2018-12-17T11:30:00
-C,Coding,Games
+#Cortex And Brawl Is Open Source
+_C,Coding,Games_
 
 And finally, my second and third game, Cortex and Brawl, is also open-source!!! Check them out.
 
