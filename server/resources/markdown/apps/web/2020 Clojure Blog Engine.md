@@ -1,6 +1,5 @@
-Clojure Blog Engine
-2020-03-02T14:00:00
-Clojure,Datomic,Web
+#Clojure Blog Engine
+_Clojure,Datomic,Web_
 
 I've written this blog to learn full-stack web development in clojure and to share the source code with the community. There will be a step-by-step tutorial also, but for now check out the source and experiment :
 

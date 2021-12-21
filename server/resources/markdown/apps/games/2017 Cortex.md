@@ -1,6 +1,5 @@
-Cortex
-2017-11-23T12:00:00
-Action,Ambient,Reflex
+#Cortex
+_Action,Ambient,Reflex_
 
 ![Icon](/images/cortex_icon.png)
 
@@ -16,7 +15,7 @@ A minimalistic-ambient reflex game with a 60 frames per second flow experiencean
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aHDo_f014rc" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
 
-**I want it now!**
+_I want it now!_
 
 <a href="https://store.steampowered.com/app/998820/Cortex/" target="_blank">for Windows/MacOS/Linux - Steam Store link</a>
 

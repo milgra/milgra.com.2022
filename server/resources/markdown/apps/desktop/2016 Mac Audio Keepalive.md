@@ -1,6 +1,5 @@
-Mac Audio Keepalive
-2016-12-21T00:00:00
-C,Mac,Music
+#Mac Audio Keepalive
+_C,Mac,Music_
 
 ![Icon](/images/mak_icon.png)
 
@@ -12,7 +11,7 @@ Mac Audio Keepalive is a menu bar application. Just click on the menu bar icon a
 
 Enjoy!
 
-**I want it now!**
+_I want it now!_
 
 [Downloads](https://github.com/milgra/macaudiokeepalive/releases/tag/1.0)
 

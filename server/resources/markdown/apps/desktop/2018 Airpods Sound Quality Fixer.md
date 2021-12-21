@@ -1,6 +1,5 @@
-AirPods Sound Quality Fixer
-2018-11-12T12:00:00
-Audio,C,Coding
+#AirPods Sound Quality Fixer
+_Audio,C,Coding_
 
 ![Icon](/images/asqf_icon.png)
 

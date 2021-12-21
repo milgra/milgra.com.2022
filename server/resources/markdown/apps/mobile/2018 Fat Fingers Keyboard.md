@@ -1,6 +1,5 @@
-Fat Fingers Keyboard
-2018-11-09T12:00:00
-Utility,iOS
+#Fat Fingers Keyboard
+_Utility,iOS_
 
 ![Icon](/images/fatfingers_icon.png)
 
@@ -40,4 +39,6 @@ I created Fat Fingers Keyboard because I have three main problems with soft keyb
 
 How to enable the keyboard and remap buttons :
 
+<p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/HGBVBMO95N8" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
+</p>

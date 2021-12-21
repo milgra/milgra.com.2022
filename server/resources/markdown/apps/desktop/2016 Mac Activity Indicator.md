@@ -1,13 +1,12 @@
-Mac Activity Indicator
-2016-12-21T12:00:00
-C,Mac
+#Mac Activity Indicator
+_C,Mac_
 
 ![Icon](/images/mai_icon.png)
 
 Do you have a super silent MacBook and sometimes you have no idea whether it is working or not? Or you just interested what tasks MacOS does in the background? Or you are a developer and you need to see what your application is doing in the background?
 Mac Activity Indicator puts an icon in your menubar that switches it's led between green and red when activity happens. If you click on the icon a window appears where you can see the last 100 files touched by the operating system.
 
-**I want it now!**
+_I want it now!_
 
 [Downloads](https://github.com/milgra/macactivityindicator/releases/tag/1.0)
 

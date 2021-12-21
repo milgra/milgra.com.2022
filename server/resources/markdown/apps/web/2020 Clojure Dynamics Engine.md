@@ -1,6 +1,5 @@
-Clojure Dynamics Engine
-2020-03-02T12:00:00
-Clojure,Dynamics
+#Clojure Dynamics Engine
+_Clojure,Dynamics_
 
 Mass Point dynamics engine for clojurescript.
 

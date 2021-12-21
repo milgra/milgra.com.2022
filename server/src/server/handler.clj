@@ -2,21 +2,25 @@
   (:require
    [clojure.java.io :as io]
    [clojure.pprint]
-    [compojure.core :refer :all]
-    [compojure.route :as route]
-    [ring.middleware.cors :refer [wrap-cors]]
-    [ring.middleware.json :refer [wrap-json-response]]
-    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
+   [compojure.core :refer :all]
+   [compojure.route :as route]
+   [ring.util.response :as resp]
+   [ring.middleware.cors :refer [wrap-cors]]
+   [ring.middleware.json :refer [wrap-json-response]]
+   [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
 
 
 (defroutes app-routes
-
+  (GET "/" []
+       (println "ROOT" (resp/redirect "index.html"))
+       (resp/redirect "index.html"))
   (GET "/items/*" {params :route-params :as request}
        (let [path (str "resources/public/" (:* params))
              file (io/file path)
              prefix (.getAbsolutePath file)
              result (sort (map #(clojure.string/replace-first (.getCanonicalPath %) prefix (:* params)) (filter #(.isFile %) (file-seq file))))]
          result))
+  
   (route/not-found "Not Found"))
 
 

@@ -1,6 +1,5 @@
-Termite
-2018-10-12T15:00:00
-2D,3D,Action,Real-Time,Strategy
+#Termite
+_2D,3D,Action,Real-Time,Strategy_
 
 ![Icon](/images/termite_icon.png)
 
@@ -24,7 +23,7 @@ With Termite you get :
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IKEbf5sHz5U" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
 
-**I want it now!**
+_I want it now!_
 
 <a href="https://store.steampowered.com/app/972560/Termite/" target="_blank">for Windows/MacOS/Linux - Steam Store link</a>
 

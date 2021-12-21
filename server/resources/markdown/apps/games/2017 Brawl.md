@@ -1,6 +1,5 @@
-Brawl
-2017-11-23T12:00:00
-2D,Action,C,Coding,Sidescroller
+#Brawl
+_2D,Action,C,Coding,Sidescroller_
 
 ![Icon](/images/brawl_icon.png)
 
@@ -18,9 +17,11 @@ FEATURES
 
 <a href="https://github.com/milgra/brawl" target="_blank">Brawl is open-source, feel free to learn how to write muti-platform C games here</a> 
 
+<p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Mss_YiEboMs" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
+</p>
 
-**I want it now!**
+_I want it now!_
 
 <a href="https://store.steampowered.com/app/1007820/Brawl/">Steam Store link ( for MacOS/Windows/Linux )</a>
 

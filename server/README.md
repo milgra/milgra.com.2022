@@ -1,7 +1,7 @@
-fix row load errors
 add row load in a loop
 stop frame request when idle
 add additional infos to row - 14 subdirs 15 files date for articles
+mobile version
 
 search
 comment
@@ -13,3 +13,4 @@ amig sublistat scrollozod, apa element mindig maradjon fixen fent
 opened articles on top of list?
 add comment functionality / captcha?
 
+rsync -avP --exclude project.clj /home/milgra/Projects/milgra.com root@116.203.87.141:/root/ 

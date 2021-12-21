@@ -82,47 +82,7 @@ milgra_item_open = function ( item )
 	    opened[ item ] = true
 	    milgra_insert_items( [ item + ">"  ] )
 	}
-    }
-	
-    // 	milgra_delete_items( item )
-
-    // 	// remove all opened keys that contain the removed id
-
-    // 	let keys = Object.keys(opened)
-    // 	let key
-	
-    // 	for (key of keys)
-    // 	{
-    // 	    if (key.includes(item))
-    // 	    {
-    // 		delete opened[key]
-    // 	    }
-    // 	}
-    // }
-    // else
-    // {
-    // 	opened[ item ] = true
-
-	// if (item.endsWith(".html"))
-	// {
-	//     // add html as an openable item
-	    
-	//     milgra_insert_items( [ item + ">"  ] )
-	// }
-	// else
-	// {
-	
-	//     // load moar items
-	    
-	//     let url = "http://localhost:3000/items/" + item
-	    
-	//     fetch(url)
-	// 	.then((response) => response.json())
-	// 	.then((data) => {
-	// 	    milgra_insert_items(data)
-	// 	})
-	// }
-    // }
+    }	
 }
 
 milgra_item_click = function( event )
@@ -188,10 +148,15 @@ milgra_item_for_index = function( list, index )
 	}
 	else
 	{
-	    if (parts.length == 4)
+	    
+	    if (parts.length == 4 || parts.length == 3 || parts.length == 2)
 	    {
-		let text = parts[3]
-		text = text.substring(3, text.indexOf('.html'))
+		let text = parts[parts.length - 1]
+		
+		if (parts.length == 4) text = text.substring(3, text.indexOf('.html'))
+		//else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
+		else text = text.substring(0,text.indexOf(".html"))
+		
 		elem.innerText = text
 
 		if (item.endsWith(">"))
@@ -210,7 +175,10 @@ milgra_item_for_index = function( list, index )
 		    
 		    info.style.display = "relative"
 		    info.style.float = "right"
+		    
 		    info.innerText = item.substring(13,15)
+
+		    if (parts.length == 3) info.innerText = parts[2].substring(0, 4)		    
 		    info.style.fontStyle = "italic"
 		    elem.appendChild(info)
 		}
@@ -238,7 +206,7 @@ milgra_item_for_index = function( list, index )
 		    })
 	    }
 
-	    elem.load( "http://localhost:3000/" + item.substring( 0, item.length - 1 ))
+	    elem.load( item.substring( 0, item.length - 1 ))
 	
 	}
 	else
@@ -282,9 +250,9 @@ milgra_init = function ( )
     window.requestAnimationFrame(milgra_step)
 }
 
-milgra_load = function ( path , reverse )
+milgra_load = function ( path , reverse , open)
 {
-    let url = "http://localhost:3000/items/" + path
+    let url = "items/" + path
     
     fetch(url)
 	.then((response) => response.json())
@@ -293,24 +261,22 @@ milgra_load = function ( path , reverse )
 
 	    if (reverse) items.reverse()
 
-	    console.log("items",items)
-
-	    milgra_item_open(items[0])
+	    if (open) milgra_item_open(items[0])
 	    
 	    // extract folders
 
 	    let folders = new Set()
 
-	    for (let i=0;i<items.length;i++)
+	    for ( let i = 0; i < items.length;i++)
 	    {
 		let item = items[i]
 		let parts = item.split("/")
 
-		let path = "blog/"
-		for ( let p=1; p<parts.length-1; p++ )
+		let spath = path + "/"
+		for ( let p = 1; p < parts.length-1; p++ )
 		{
-		    path += parts[p] + "/"
-		    folders.add(path)
+		    spath += parts[p] + "/"
+		    folders.add(spath)
 		}
 	    }
 
@@ -346,6 +312,7 @@ milgra_load = function ( path , reverse )
 		}
 	    }
 
+	    console.log("items",items)
 	    
 	    zen_list_reset(lists[0])
 

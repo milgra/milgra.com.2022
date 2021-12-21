@@ -1,6 +1,5 @@
-Mac Media Key Forwarder
-2017-10-05T12:00:00
-C,Coding,Music
+#Mac Media Key Forwarder
+_C,Coding,Music_
 
 ![Icon](/images/mmkf_icon.png)
 
@@ -8,11 +7,11 @@ Forwards media keys to iTunes or Spotify directly.
 
 You can prioritize which app you would like to control or you can go with the default behaviour which controls the running app. The app runs in the menu bar.
 
-**Installation**
+_Installation_
 
 [Check installation steps here](https://github.com/milgra/macmediakeyforwarder)
 
-**Issues you should know about**
+_Issues you should know about_
 
 The app listens on the event tap for key events. This causes problems in some rare cases, like 
 
@@ -22,7 +21,7 @@ The app listens on the event tap for key events. This causes problems in some ra
 
 In these cases simply pause Mac Media Key Forwarder from it's menu.
 
-**I want it now!**
+_I want it now!_
 
 [Downloads](https://github.com/milgra/macmediakeyforwarder/releases)
 
