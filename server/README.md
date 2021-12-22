@@ -1,7 +1,9 @@
 
 redirect http to https
-add row load in a loop
 stop frame request when idle
+open/close
+
+add row load in a loop
 add additional infos to row - 14 subdirs 15 files date for articles
 mobile version
 
