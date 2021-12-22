@@ -109,12 +109,6 @@ zen_list_insert = function ( list, index, size )
 	list.bot_ind += size
 	list.repos = true
 
-	for (ind = 0 ; ind < list.items.length ; ind++)
-	{
-	    console.log("A",ind,list.items[ind].id)
-	    console.log("B",ind,list.childNodes[ind].id)
-	}
-	
 	// set animation position for remaining items
 
 	for (ind = start_ind + size  ; ind < list.items.length ; ind++)
