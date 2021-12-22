@@ -29,8 +29,16 @@
                file (io/file path)
                prefix (.getAbsolutePath file)
                result (sort (map #(clojure.string/replace-first (.getCanonicalPath %) prefix (:* params)) (filter #(.isFile %) (file-seq file))))]
-             result)))
-  
+           result)))
+
+  (POST "/comment" {params :route-params :as request}
+        (println "COMMENT" params)
+        ;; check ip and location of request, check ip blacklist
+        ;; check comment file existence under comments
+        ;; create if needed
+        ;; append new comment
+        )
+
   (route/not-found "No Comments"))
 
 

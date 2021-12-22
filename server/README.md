@@ -14,6 +14,8 @@ caache
 
 1 search / day from one ip
 
+access control milgra.com!
+
 url legyen minden cikkhez hogy keresheto legyen, search bar lefgelul
 
 story section minden apphoz - html, css reader, etc

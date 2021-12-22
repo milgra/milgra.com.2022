@@ -2,6 +2,8 @@ lists = []
 items = []
 opened = {}
 counts = {}
+colors = [ "#88AACC", "#99BBDD", "#AACCEE" ]
+months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
 
 milgra_step = function( timestamp )
 {
@@ -59,6 +61,11 @@ milgra_delete_items = function ( oldItem )
     }
 }
 
+milgra_comment_send = function ( item )
+{
+    console.log("SEND")
+}
+
 milgra_item_open = function ( item )
 {
     if (item.endsWith(".html"))
@@ -90,15 +97,43 @@ milgra_item_click = function( event )
     milgra_item_open(elem.id)
 }
 
+milgra_comment_click = function( event )
+{
+    let elem = event.currentTarget.parentNode
+
+    let button = document.createElement("div")
+
+    button.style.cursor = "pointer"
+    button.addEventListener("click",milgra_comment_send)
+    
+    button.innerText = "Send"
+    
+    elem.insertBefore(button,elem.childNodes[0])
+
+    let editor = document.createElement("input")
+    editor.id = "editor"
+    editor.value = "comment"
+    editor.style.width = "100%"
+    editor.style.height = "100px"
+    
+    elem.insertBefore(editor,elem.childNodes[0])
+
+    let nick = document.createElement("input")
+    nick.id = "nick"
+    nick.value = "nick"
+    nick.style.width = "100%"
+
+    elem.insertBefore(nick,elem.childNodes[0])
+
+    event.currentTarget.remove()
+}
+
 milgra_destroy_item = function( item )
 {
     item.id = null
     item.loadContent = null
     item.removeEventListener( "click" , milgra_item_click )
 }
-
-colors = [ "#88AACC", "#99BBDD", "#AACCEE" ]
-months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
 
 milgra_item_for_index = function( list, index )
 {
@@ -162,6 +197,8 @@ milgra_item_for_index = function( list, index )
 		    // elem.style.fontWeight = "300"
 		    paddingLeft = 30
 		    elem.style.cursor = "auto"
+
+
 		}
 		else
 		{
@@ -200,7 +237,29 @@ milgra_item_for_index = function( list, index )
 		fetch(contentUrl)
 		    .then((response) => response.text())
 		    .then((html) => {
-			this.innerHTML = html
+
+			if (html != "No Comments") this.innerHTML = html
+			else this.innerHTML = ""
+
+			if (item.startsWith("comment"))
+			{
+			    console.log("COMMENT",item)
+			    
+			    let button = document.createElement("div")
+			    
+			    button.style.display = "absolute"
+			    button.style.width = "100%"
+			    button.style.padding = "10px"
+			    button.style.backgroundColor = "#446688"
+			    button.style.cursor = "pointer"
+			    button.addEventListener("click",milgra_comment_click)
+			    
+			    button.innerHTML = "New Comment"
+			    
+			    this.insertBefore(button,this.childNodes[0])
+
+			    elem.style.backgroundColor = "#AACCEE"
+}
 		    })
 	    }
 
