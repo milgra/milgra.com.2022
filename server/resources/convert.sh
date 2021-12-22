@@ -5,4 +5,5 @@ find public -type f -name "*.md" -exec rm {} \;
 find public -type f -name "*.html" -exec rename .md.html .html {} \;
 cp -r images public/images
 cp -r downloads public/downloads
+cp -r comments public/comments
 cp -r ../../client/* public/

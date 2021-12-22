@@ -10,6 +10,10 @@ mobile version
 search
 comment
 
+caache
+
+1 search / day from one ip
+
 url legyen minden cikkhez hogy keresheto legyen, search bar lefgelul
 
 story section minden apphoz - html, css reader, etc

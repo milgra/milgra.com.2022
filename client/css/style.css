@@ -57,6 +57,10 @@ textarea, input {
     #margin-bottom: 20px;                        
 }
 
+textarea:focus, input:focus{
+    outline: none;
+}
+
 #main {
     display: flex;
     flex-direction: column;

@@ -3,10 +3,6 @@ items = []
 opened = {}
 counts = {}
 
-// [ [0,100,item] ]
-// [ [0,20,item][20,80,subitem][80,160,item]]
-// [ [0,20,item][20,80,subitem][8[81,81,content]1,161,item]]
-
 milgra_step = function( timestamp )
 {
     for ( const list of lists ) zen_list_update( list )
@@ -18,18 +14,20 @@ milgra_insert_items = function ( newItems )
 {
     if (newItems.length > 0)
     {
-	let fi = newItems[0]
-	
-	for (let i = items.length - 1 ; i > -1 ; i--)
-	{
-	    let item = items[i]
-	    if (fi.includes(item))
+	let fi
+	for (fi of newItems)
+	{	    
+	    for (let i = items.length - 1 ; i > -1 ; i--)
 	    {
-		items.splice(i + 1, 0, ... newItems)
-
-		zen_list_insert( lists[0] , i + 1 , newItems.length )
-
-		return
+		let item = items[i]
+		if (fi.includes(item))
+		{
+		    items.splice(i + 1, 0, ... newItems)
+		    
+		    zen_list_insert( lists[0] , i + 1 , newItems.length )
+		    
+		    return
+		}
 	    }
 	}
     }
@@ -80,7 +78,7 @@ milgra_item_open = function ( item )
 	    // add html as an openable item
 
 	    opened[ item ] = true
-	    milgra_insert_items( [ item + ">"  ] )
+	    milgra_insert_items( [ item + ">"  , "comments/" + item + ">" ] )
 	}
     }	
 }
@@ -149,7 +147,7 @@ milgra_item_for_index = function( list, index )
 	else
 	{
 	    
-	    if (parts.length == 4 || parts.length == 3 || parts.length == 2)
+	    if (parts.length == 5 || parts.length == 4 || parts.length == 3 || parts.length == 2)
 	    {
 		let text = parts[parts.length - 1]
 		
@@ -248,6 +246,15 @@ milgra_init = function ( )
     lists.push(list)
 
     window.requestAnimationFrame(milgra_step)
+
+    let search = document.getElementById("search")
+
+    search.addEventListener("keyup", ({key}) => {
+	if (key === "Enter") {
+	    milgra_search(search.value)
+	    search.blur()
+	}
+    })
 }
 
 milgra_load = function ( path , reverse , open)
@@ -316,5 +323,21 @@ milgra_load = function ( path , reverse , open)
 	    
 	    zen_list_reset(lists[0])
 
+	})
+}
+
+
+milgra_search = function ( text )
+{
+    console.log("search",text)
+
+    let url = "items/search=" + text
+    
+    fetch(url)
+	.then((response) => response.json())
+	.then((data) => {
+	    items = data
+	    	    
+	    zen_list_reset(lists[0])
 	})
 }
