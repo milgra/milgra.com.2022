@@ -115,9 +115,6 @@ milgra_search = function ( text )
 milgra_comment_send = function ( path, nick, editor )
 {
     console.log("SEND", path,nick,editor)
-
-    let url = "items/search=" + text
-    
 }
 
 
