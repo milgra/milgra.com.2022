@@ -254,154 +254,279 @@ milgra_destroy_item = function( item )
     item.removeEventListener( "click" , milgra_item_click )
 }
 
+milgra_folder_item = function ( item )
+{
+    let elem = document.createElement("div")
+    let info = document.createElement("div")
+    let parts = item.path.split("/")
+    let paddingLeft = 0
+		
+    elem.appendChild(info)
+    elem.addEventListener( "click", milgra_item_click )
+
+    elem.style.boxSizing = "border-box"
+    elem.style.width = "100%"
+    elem.style.fontStyle = "italic"    
+    elem.style.cursor = "pointer"
+    elem.style.textAlign = "left"
+    elem.style.padding = "15px"
+    elem.style.fontSize = "20px"
+
+    elem.id = item.path
+    elem.listItem = item
+
+    info.style.display = "relative"
+    info.style.float = "right"
+
+    // we will be a folder item
+    
+    let text
+    
+    if (parts.length == 3)
+    {
+	// in case of blog, we show the year
+	text = parts[1]
+	elem.style.backgroundColor = colors[0]
+    }
+    else if (parts.length == 4)
+    {
+	// in case of blog, we show the month name
+	text = months[ parseInt( parts[2] ) - 1 ]
+	elem.style.backgroundColor = colors[1]
+	paddingLeft = 20
+    }
+    else
+    {
+	// else we show the full path
+	text = item.folder
+    }
+
+    elem.innerText = text
+
+    // show folder/file count in info block
+    elem.style.paddingLeft = 10 + paddingLeft + "px"
+    
+    info.innerText = counts[item] + " items"    
+
+    return elem
+}
+
+milgra_file_item = function ( item )
+{
+    let elem = document.createElement("div")
+    let info = document.createElement("div")
+    let parts = item.path.split("/")
+    let paddingLeft = 0
+    
+    elem.appendChild(info)
+    elem.addEventListener( "click", milgra_item_click )
+
+    elem.style.boxSizing = "border-box"
+    elem.style.width = "100%"
+    
+    elem.style.cursor = "pointer"
+    elem.style.textAlign = "left"
+    elem.style.padding = "15px"
+    elem.style.fontSize = "20px"
+
+    elem.id = item.path
+    elem.listItem = item
+    
+    info.style.display = "relative"
+    info.style.float = "right"
+    
+    // we will be a file item
+    
+    if (parts.length == 5 || parts.length == 4 || parts.length == 3 || parts.length == 2)
+    {
+	let text = parts[parts.length - 1]
+	
+	// show name without extension
+	
+	if (parts.length == 4) text = text.substring(3, text.indexOf('.html'))
+	//else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
+	else text = text.substring(0,text.indexOf(".html"))
+	
+	elem.innerText = text
+	
+	if (item.type == "file" )
+	{
+	    elem.style.backgroundColor = colors[2]
+	    // elem.style.fontWeight = "500"
+	    paddingLeft = 40
+	    
+	    // show day in the info view
+	    
+	    info.innerText = item.path.substring(13,15)
+	    
+	    if (parts.length == 3) info.innerText = parts[2].substring(0, 4)		    
+	    
+	    info.style.fontStyle = "italic"
+	}
+	
+    }
+    else elem.innerText = item.path
+    
+    elem.style.paddingLeft = 10 + paddingLeft + "px"    
+
+    return elem
+}
+
+milgra_viewer_item = function ( item )
+{
+    let elem = document.createElement("div")
+    let info = document.createElement("div")
+    let parts = item.path.split("/")
+    let paddingLeft = 0
+    
+    elem.appendChild(info)
+    elem.style.boxSizing = "border-box"
+    elem.style.width = "100%"
+    elem.id = item.path
+    elem.listItem = item
+    
+    info.style.display = "relative"
+    info.style.float = "right"
+    
+    // we will be a file item
+    
+    if (parts.length == 5 || parts.length == 4 || parts.length == 3 || parts.length == 2)
+    {
+	let text = parts[parts.length - 1]
+	
+	// show name without extension
+	
+	if (parts.length == 4) text = text.substring(3, text.indexOf('.html'))
+	//else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
+	else text = text.substring(0,text.indexOf(".html"))
+	
+	elem.innerText = text
+	
+    }
+    else elem.innerText = item.path
+
+    paddingLeft = 30
+    elem.style.cursor = "auto"
+    elem.style.padding = "40px"
+    elem.style.paddingTop = "10px"
+    elem.style.paddingBottom = "10px"
+    elem.style.textAlign = "justify"
+    elem.style.backgroundColor = "#BBDDFF"	
+
+    elem.style.paddingLeft = 10 + paddingLeft + "px"
+    
+    if (item.type == "viewer" || item.type == "comment")
+    {
+	elem.load = function ( contentUrl )
+	{
+	    fetch(contentUrl)
+		.then((response) => response.text())
+		.then((html) => {
+		    
+		    // show response if it is "No Comments"
+		    
+		    if (html != "No Comments") this.innerHTML = html
+		    else this.innerHTML = ""
+		})
+	}
+	
+	elem.load( item.path )
+    }
+
+    return elem
+}
+
+milgra_comment_item = function ( item )
+{
+    let elem = document.createElement("div")
+    let info = document.createElement("div")
+    let parts = item.path.split("/")
+    let paddingLeft = 0
+    
+    elem.appendChild(info)
+    elem.style.boxSizing = "border-box"
+    elem.style.width = "100%"
+    elem.id = item.path
+    elem.listItem = item
+    
+    info.style.display = "relative"
+    info.style.float = "right"
+    
+    // we will be a file item
+    
+    if (parts.length == 5 || parts.length == 4 || parts.length == 3 || parts.length == 2)
+    {
+	let text = parts[parts.length - 1]
+	
+	// show name without extension
+	
+	if (parts.length == 4) text = text.substring(3, text.indexOf('.html'))
+	//else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
+	else text = text.substring(0,text.indexOf(".html"))
+	
+	elem.innerText = text
+	
+    }
+    else elem.innerText = item.path
+
+    paddingLeft = 30
+    elem.style.cursor = "auto"
+    elem.style.padding = "40px"
+    elem.style.paddingTop = "10px"
+    elem.style.paddingBottom = "10px"
+    elem.style.textAlign = "justify"
+    elem.style.backgroundColor = "#BBDDFF"	
+
+    elem.style.paddingLeft = 10 + paddingLeft + "px"
+    
+    if (item.type == "viewer" || item.type == "comment")
+    {
+	elem.load = function ( contentUrl )
+	{
+	    fetch(contentUrl)
+		.then((response) => response.text())
+		.then((html) => {
+		    
+		    // show response if it is "No Comments"
+		    
+		    if (html != "No Comments") this.innerHTML = html
+		    else this.innerHTML = ""
+		    
+		    // add comment button in case of comment item
+		    
+		    let button = document.createElement("div")
+		    
+		    button.style.display = "absolute"
+		    button.style.width = "100%"
+		    button.style.padding = "10px"
+		    button.style.backgroundColor = "#446688"
+		    button.style.cursor = "pointer"
+		    button.addEventListener("click",milgra_comment_click)
+		    
+		    button.innerHTML = "New Comment"
+		    
+		    this.insertBefore( button, this.childNodes[0] )
+		    
+		    elem.style.backgroundColor = "#AACCEE"
+		    
+		})
+	}
+	
+	elem.load( item.path )
+    }
+    
+    return elem
+}
+
 milgra_item_for_index = function( list, index )
 {
     if ( items.length > 0 && index < items.length && -1 < index)
     {
-	let item = items[ index ]
-	let elem = document.createElement("div")
-	let info = document.createElement("div")
-	let parts = item.path.split("/")
-	let paddingLeft = 0
-		
-	elem.appendChild(info)
-	elem.style.boxSizing = "border-box"
-	elem.style.width = "100%"
-	elem.id = item.path
-	elem.listItem = item
-
-	info.style.display = "relative"
-	info.style.float = "right"
-	
-	if ( item.type == "folder" )
-	{
-	    // we will be a folder item
- 	    
-	    let text
-	    
-	    if (parts.length == 3)
-	    {
-		// in case of blog, we show the year
-		text = parts[1]
-		elem.style.backgroundColor = colors[0]
-	    }
-	    else if (parts.length == 4)
-	    {
-		// in case of blog, we show the month name
-		text = months[ parseInt( parts[2] ) - 1 ]
-		elem.style.backgroundColor = colors[1]
-		paddingLeft = 20
-	    }
-	    else
-	    {
-		// else we show the full path
-		text = item.folder
-	    }
-
-	    // show folder/file count in info block
-	    
-	    info.innerText = counts[item] + " items"
-
-	    elem.innerText = text 
-	    elem.style.fontStyle = "italic"
-	}
-	else
-	{
-	    // we will be a file item
-	    
-	    if (parts.length == 5 || parts.length == 4 || parts.length == 3 || parts.length == 2)
-	    {
-		let text = parts[parts.length - 1]
-
-		// show name without extension
-		
-		if (parts.length == 4) text = text.substring(3, text.indexOf('.html'))
-		//else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
-		else text = text.substring(0,text.indexOf(".html"))
-		
-		elem.innerText = text
-
-		if (item.type == "file" )
-		{
-		    elem.style.backgroundColor = colors[2]
-		    // elem.style.fontWeight = "500"
-		    paddingLeft = 40
-
-		    // show day in the info view
-		    
-		    info.innerText = item.path.substring(13,15)
-
-		    if (parts.length == 3) info.innerText = parts[2].substring(0, 4)		    
-
-		    info.style.fontStyle = "italic"
-		}
-		
-	    }
-	    else elem.innerText = item.path
-	}
-
-	// additional css setup
-	
-	if (item.type == "viewer")
-	{
-	    paddingLeft = 30
-	    elem.style.cursor = "auto"
-	    elem.style.padding = "40px"
-	    elem.style.paddingTop = "10px"
-	    elem.style.paddingBottom = "10px"
-	    elem.style.textAlign = "justify"
-	    elem.style.backgroundColor = "#BBDDFF"	
-	}
-	else
-	{
-	    elem.style.cursor = "pointer"
-	    elem.style.textAlign = "left"
-	    elem.style.padding = "15px"
-	    elem.style.fontSize = "20px"
-	    elem.addEventListener( "click", milgra_item_click )
-	}
-
-	elem.style.paddingLeft = 10 + paddingLeft + "px"
-
-	if (item.type == "viewer" || item.type == "comment")
-	{
-	    elem.load = function ( contentUrl )
-	    {
-		fetch(contentUrl)
-		    .then((response) => response.text())
-		    .then((html) => {
-
-			// show response if it is "No Comments"
-			
-			if (html != "No Comments") this.innerHTML = html
-			else this.innerHTML = ""
-
-			if (item.type == "comment")
-			{
-			    // add comment button in case of comment item
-			    
-			    let button = document.createElement("div")
-			    
-			    button.style.display = "absolute"
-			    button.style.width = "100%"
-			    button.style.padding = "10px"
-			    button.style.backgroundColor = "#446688"
-			    button.style.cursor = "pointer"
-			    button.addEventListener("click",milgra_comment_click)
-			    
-			    button.innerHTML = "New Comment"
-			    
-			    this.insertBefore( button, this.childNodes[0] )
-
-			    elem.style.backgroundColor = "#AACCEE"
-			}
-		    })
-	    }
-
-	    elem.load( item.path )
-	}
-	
-	return elem
+	const item = items[index]
+	if (item.type == "file") return milgra_file_item( item )
+	if (item.type == "folder") return milgra_folder_item( item )
+	if (item.type == "viewer") return milgra_viewer_item( item )
+	if (item.type == "comment") return milgra_comment_item( item )
     }
     else return null;
 }
