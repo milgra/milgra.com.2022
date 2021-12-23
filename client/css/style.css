@@ -130,6 +130,27 @@ textarea:focus, input:focus{
     font-size: 20px;
 }
 
+.file_item {
+    box-sizing: border-box;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    padding: 15px;
+    font-size: 20px;
+}
+
+.viewer_item {
+    box-sizing: border-box;
+    width: 100%;
+    cursor: auto;
+    text-align: justify;
+    padding: 40px;
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #BBDDFF;
+}
+
 .item_info {
     display: relative;
     float: right;
