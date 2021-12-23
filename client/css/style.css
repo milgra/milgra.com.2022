@@ -113,6 +113,28 @@ textarea:focus, input:focus{
 #    transform-origin: top left;
 }
 
+#main_list {
+    overflow: "hidden";
+    width: "100%";
+    height: "100%";
+    background-color: "#88AACC";
+}
+
+.folder_item {
+    box-sizing: border-box;
+    width: 100%;
+    font-style: italic;    
+    cursor: pointer;
+    text-align: left;
+    padding: 15px;
+    font-size: 20px;
+}
+
+.item_info {
+    display: relative;
+    float: right;
+}
+
 #center {
     background: #334466;
     max-width: 800px;

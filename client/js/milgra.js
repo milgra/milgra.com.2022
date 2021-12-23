@@ -9,25 +9,15 @@ months = [ "January", "February", "March", "April", "May", "June", "July", "Augu
 
 milgra_init = function ( )
 {
-    list = document.createElement("div")
-
+    list = document.createElement( "div" )
     list.id = "main_list"
-    list.style.overflow = "hidden"
-    list.style.width = "100%"
-    list.style.height = "100%"
-    list.style.backgroundColor = "#88AACC"
 
-    document.getElementById("center").appendChild(list)
+    zen_list_attach( list, milgra_item_for_index, milgra_destroy_item )
 
-    zen_list_attach(list,
-		    milgra_item_for_index,
-		    milgra_destroy_item)
+    window.requestAnimationFrame( milgra_step )
 
-    window.requestAnimationFrame(milgra_step)
-
-    let search = document.getElementById("search")
-
-    search.addEventListener("keyup", ({key}) => {
+    document.getElementById( "center" ).appendChild( list )
+    document.getElementById( "search" ).addEventListener( "keyup" , ({key}) => {
 	if (key === "Enter") {
 	    milgra_search(search.value)
 	    search.blur()
@@ -259,54 +249,32 @@ milgra_folder_item = function ( item )
     let elem = document.createElement("div")
     let info = document.createElement("div")
     let parts = item.path.split("/")
-    let paddingLeft = 0
-		
-    elem.appendChild(info)
+ 
     elem.addEventListener( "click", milgra_item_click )
-
-    elem.style.boxSizing = "border-box"
-    elem.style.width = "100%"
-    elem.style.fontStyle = "italic"    
-    elem.style.cursor = "pointer"
-    elem.style.textAlign = "left"
-    elem.style.padding = "15px"
-    elem.style.fontSize = "20px"
-
-    elem.id = item.path
+    elem.className = "folder_item"
     elem.listItem = item
+    elem.id = item.path
 
-    info.style.display = "relative"
-    info.style.float = "right"
+    info.className = "item_info"
+    info.innerText = counts[ item.path ] + " items"    
 
-    // we will be a folder item
+    let left = 0
+    let text = parts[1]
+    let color = colors[0]
     
-    let text
-    
-    if (parts.length == 3)
-    {
-	// in case of blog, we show the year
-	text = parts[1]
-	elem.style.backgroundColor = colors[0]
-    }
-    else if (parts.length == 4)
+    if (parts.length == 4)
     {
 	// in case of blog, we show the month name
 	text = months[ parseInt( parts[2] ) - 1 ]
-	elem.style.backgroundColor = colors[1]
-	paddingLeft = 20
+	color = colors[1]
+	left = 30	
     }
-    else
-    {
-	// else we show the full path
-	text = item.folder
-    }
+
+    elem.style.backgroundColor = color
+    elem.style.paddingLeft = left + "px"
 
     elem.innerText = text
-
-    // show folder/file count in info block
-    elem.style.paddingLeft = 10 + paddingLeft + "px"
-    
-    info.innerText = counts[item] + " items"    
+    elem.appendChild( info )
 
     return elem
 }
