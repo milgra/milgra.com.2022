@@ -112,12 +112,31 @@ milgra_search = function ( text )
 }
 
 
-milgra_comment_send = function ( path, nick, editor )
+milgra_comment_send = function ( path, nick, comment )
 {
-    console.log("SEND", path,nick,editor)
+    console.log("SEND", path,nick,comment)
 
-    let url = "items/search=" + text
+    let body = JSON.stringify(
+	{
+	    "path" : path ,
+	    "nick" : nick ,
+	    "comment" : comment
+	})
+    let url = "comment"
+    let params = {
+	headers : { "content-type":"application/json" } ,
+	method : "POST" ,
+	body : body
+    }
     
+    fetch(url,params)
+	.then((response) => response.json())
+	.then((data) => {
+	    milgra_delete_item({"path" : path , "type" : "comment"})
+	    milgra_insert_items([{"path" : path , "type" : "comment"}])
+	})
+	.catch((error) => console.log("send comment error", error))
+
 }
 
 
@@ -357,7 +376,7 @@ milgra_item_open = function ( { path, type } )
 	    // add viewer and comment list item
 	    
 	    milgra_insert_items( [ {"path" : path , "type" : "viewer" }  ,
-				   {"path" : "comment/" + path , "type" : "comment" } ] )
+				   {"path" : "comments/" + path , "type" : "comment" } ] )
 	}
     }	
 }
@@ -402,7 +421,7 @@ milgra_delete_item = function ( item )
 	{
 	    const { path: onePath , type: oneType } = items[ind]
 	    
-	    if ( onePath.includes( path ) && type != oneType)
+	    if ( onePath.includes( path ))
 	    {
 		items.splice( ind, 1 )
 		count++

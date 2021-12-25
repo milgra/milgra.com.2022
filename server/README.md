@@ -1,6 +1,3 @@
-search fucked up mobile view
-
-redirect http to https
 stop frame request when idle
 open/close
 

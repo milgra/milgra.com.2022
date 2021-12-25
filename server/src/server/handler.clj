@@ -4,15 +4,18 @@
    [clojure.pprint]
    [compojure.core :refer :all]
    [compojure.route :as route]
-   [ring.util.response :as resp]
+   [ring.util.response :as response]
    [ring.middleware.cors :refer [wrap-cors]]
-   [ring.middleware.json :refer [wrap-json-response]]
+   [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
+
+
+(def ips (atom {}))
 
 
 (defroutes app-routes
   (GET "/" []
-       (resp/redirect "index.html"))
+       (response/redirect "index.html"))
   (GET "/items/*" {params :route-params :as request}
        (if (clojure.string/starts-with? (:* params) "search=")
          (let [text (nth (clojure.string/split (:* params) #"=") 1)
@@ -30,22 +33,35 @@
                prefix (.getAbsolutePath file)
                result (sort (map #(clojure.string/replace-first (.getCanonicalPath %) prefix (:* params)) (filter #(.isFile %) (file-seq file))))]
            result)))
-
-  (POST "/comment" {params :route-params :as request}
-        (println "COMMENT" params)
-        ;; check ip and location of request, check ip blacklist
-        ;; check comment file existence under comments
-        ;; create if needed
-        ;; append new comment
-        )
+  
+  (POST "/comment" {{:keys [path nick comment]} :body :as request}
+        ;; todo check original post existence
+        (if (or (clojure.string/starts-with? path "/")
+                (clojure.string/includes? path "..")) 
+          (response/response {"error" "not today"}) ;; avoid hackers to create files outside www folder
+          (let [unix (System/currentTimeMillis)
+                time (get @ips (:remote-addr request))
+                okay (if time
+                       (> (- unix time) (* 1000 60 60 24))
+                       true)]
+            (if okay ;; check if request came within 24 hours
+              (let [path (str "resources/public/" path)]
+                (io/make-parents path)
+                (swap! ips assoc (:remote-addr request) unix) ;; store timestamp for ip
+                (with-open [wrtr (io/writer path :append true)]
+                  (.write wrtr (str "<br>Nick:" nick "<br>"))
+                  (.write wrtr (str comment "<br>"))
+                (response/response {"success" "true"}))
+              (response/response {"error" "ip is locked for 24 hours"}))))))
 
   (route/not-found "No Comments"))
 
 
 (def app
   (-> app-routes
-      (wrap-defaults site-defaults)
+      (wrap-defaults (assoc-in site-defaults [:security :anti-forgery] false))
       (wrap-json-response)
+      (wrap-json-body {:key-fn keyword})
       (wrap-cors
        :access-control-allow-origin [#".*"]
-       :access-control-allow-methods [:get])))
+       :access-control-allow-methods [:get :post])))
