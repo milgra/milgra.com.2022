@@ -14,8 +14,10 @@
 
 
 (defroutes app-routes
+
   (GET "/" []
        (response/redirect "index.html"))
+
   (GET "/items/*" {params :route-params :as request}
        (if (clojure.string/starts-with? (:* params) "search=")
          (let [text (nth (clojure.string/split (:* params) #"=") 1)
@@ -44,7 +46,7 @@
                 okay (if time
                        (> (- unix time) (* 1000 60 60 24))
                        true)]
-            (if okay ;; check if request came within 24 hours
+            (if true ;; check if request came within 24 hours
               (let [path (str "resources/public/" path)]
                 (io/make-parents path)
                 (swap! ips assoc (:remote-addr request) unix) ;; store timestamp for ip

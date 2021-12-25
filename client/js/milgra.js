@@ -1,5 +1,6 @@
 root = null // path root ( blog, apps, tabs, work )
 list = null // infinite scroller
+anim = false // animate?
 items = [] // current items
 opened = {} // opened items
 counts = {} // folder counter
@@ -13,9 +14,11 @@ milgra_init = function ( )
     list = document.createElement( "div" )
     list.id = "main_list"
 
-    zen_list_attach( list, milgra_item_for_index, milgra_destroy_item )
-
-    window.requestAnimationFrame( milgra_step )
+    zen_list_attach( list,
+		     milgra_item_for_index,
+		     milgra_destroy_item,
+		     milgra_start_anim,
+		     milgra_stop_anim )
 
     document.getElementById( "center" ).appendChild( list )
     document.getElementById( "search" ).onkeyup = function ({key}) {
@@ -26,6 +29,25 @@ milgra_init = function ( )
     }
 }
 
+milgra_start_anim = function ( )
+{
+    console.log("START ANIM")
+    if (!anim) window.requestAnimationFrame( milgra_step )
+    anim = true
+}
+
+milgra_stop_anim = function ( )
+{
+    console.log("STOP ANIM")
+    anim = false
+}
+
+milgra_step = function( timestamp )
+{
+    zen_list_update( list )
+
+    if (anim) window.requestAnimationFrame( milgra_step )
+}
 
 milgra_load = function ( pRoot , pReverse , pOpen)
 {
@@ -139,13 +161,6 @@ milgra_comment_send = function ( path, nick, comment )
 
 }
 
-
-milgra_step = function( timestamp )
-{
-    zen_list_update( list )
-
-    window.requestAnimationFrame( milgra_step )
-}
 
 // list handling
 
@@ -420,13 +435,29 @@ milgra_delete_item = function ( item )
 	while ( ind-- )
 	{
 	    const { path: onePath , type: oneType } = items[ind]
-	    
-	    if ( onePath.includes( path ))
+
+	    if (onePath.includes( path ))
 	    {
-		items.splice( ind, 1 )
-		count++
-		index = ind
-	    } 
+
+		if (type == "file")
+		{
+		    if (oneType == "viewer" || oneType == "comment")
+		    {
+			items.splice( ind, 1 )
+			count++
+			index = ind
+			
+		    }
+		}
+		if (type == "comment")
+		{
+		    items.splice( ind, 1 )
+		    count++
+		    index = ind
+		}
+		
+	    }
+	    
 	}
 	
 	// remove items from list

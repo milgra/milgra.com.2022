@@ -1,6 +1,8 @@
 zen_list_attach = function (list,
 			    item_func,
-			    destroy_func)
+			    destroy_func,
+			    anim_start_func,
+			    anim_stop_func)
 {
     list.items = [] // item html elements
     list.top_ind = 0 // current top index
@@ -14,6 +16,8 @@ zen_list_attach = function (list,
     
     list.item_func = item_func   // item generator
     list.destroy_func = destroy_func // item destroyer
+    list.anim_start_func = anim_start_func
+    list.anim_stop_func = anim_stop_func
     
     list.addEventListener("wheel",zen_list_wheel,{ passive : true })
     list.addEventListener('touchstart', zen_list_touch_start, { passive : true })
@@ -39,6 +43,8 @@ zen_list_touch_move = function (event)
 
     list.speed -= deltaY / 4
     list.full = false
+
+    list.anim_start_func()
 }
 
 zen_list_wheel = function (event)
@@ -47,6 +53,9 @@ zen_list_wheel = function (event)
     
     list.speed -= event.deltaY / 4
     list.full = false
+
+    list.anim_start_func()
+
     //zen_list_update(list)
 }
 
@@ -71,6 +80,8 @@ zen_list_reset = function (list)
     list.bot_ind = 0
     list.top_ind = 0
     list.top = 0
+
+    list.anim_start_func()
 }
 
 zen_list_insert = function ( list, index, size )
@@ -289,6 +300,8 @@ zen_list_update = function (list)
 	list.full = false
 	list.repos = true
     }
+    else list.anim_stop_func()
+
 
     // if (list.repos)
     // {
