@@ -22,7 +22,10 @@ milgra_init = function ( )
 		     milgra_stop_anim )
 
     document.getElementById( "center" ).appendChild( list )
-    document.getElementById( "search" ).onkeyup = function ({key}) {
+
+    let search = document.getElementById( "milgra_search_input" )
+    
+    search.onkeyup = function ({key}) {
 	if (key === "Enter") {
 	    milgra_search(search.value)
 	    search.blur()
