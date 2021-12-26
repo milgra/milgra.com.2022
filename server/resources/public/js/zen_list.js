@@ -191,6 +191,25 @@ zen_list_update = function (list)
     let prel_top = list_rect.top - list.preload_size // preload top
     let prel_bot = list_rect.bottom + list.preload_size // preload bottom
 
+    // check if any item's height is changed in the meantime
+    
+    if (list.speed > 0.01) 
+    {
+	let changed = false
+	for (let item of list.items)
+	{
+	    let rect = item.getBoundingClientRect()
+	    if (item.old_height < rect.height)
+	    {
+		list.top_pos -= rect.height - item.old_height
+		item.old_height = rect.height
+		changed = true
+	    }
+	}
+
+	if (changed) for (item of list.items) item.style.top = Math.round(list.top_pos) + "px"
+    }
+    
     while (!list.full)
     {
 	list.full = true
@@ -239,7 +258,7 @@ zen_list_update = function (list)
 		    list.repos = true
 		    list.full = false
 
-		   item.old_height = item.getBoundingClientRect().height
+		    item.old_height = item.getBoundingClientRect().height
 
 		    // apply new top to all items
 
@@ -317,20 +336,6 @@ zen_list_update = function (list)
 
     if (list.repos)
     {
-	// check if any item is loaded and changed height in the meantime
-
-	if (list.speed > 0.01) 
-	{
-	    for (let item of list.items)
-	    {
-		let rect = item.getBoundingClientRect()
-		if (item.old_height < rect.height)
-		{	    
-		    list.top_pos -= rect.height - item.old_height
-		    item.old_height = rect.height
-		}
-	    }
-	}
 	
 	// bounce
 
