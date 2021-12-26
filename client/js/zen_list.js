@@ -5,18 +5,19 @@ zen_list_attach = function (list,
 			    anim_start_func,
 			    anim_stop_func)
 {
-    list.items = [] // item html elements
+    list.items = []  // item html elements
     list.top_ind = 0 // current top index
     list.bot_ind = 0 // current bottom index
 
-    list.full = 0 // list is full, no fillup needed currently
-    list.top = 0.0 // current position of top list
-    list.speed = 0.0 // current scroll speed
+    list.full = 0      // list is full, no fillup needed currently
+    list.top = 0.0     // current position of top list
+    list.speed = 0.0   // current scroll speed
+    list.repos = false // list needs element repositioning
+
     list.preload_size = preload_size // preload distance from top and bottom
-    list.repos // list needs element repositioning
     
-    list.item_func = item_func   // item generator
-    list.destroy_func = destroy_func // item destroyer
+    list.item_func = item_func              // item generator
+    list.destroy_func = destroy_func        // item destroyer
     list.anim_start_func = anim_start_func
     list.anim_stop_func = anim_stop_func
     
@@ -87,11 +88,11 @@ zen_list_insert = function ( list, index, size )
 {
     let ind
 
-    for (ind = 0 ; ind < list.items.length ; ind++)
-    {
-	console.log("A",ind,list.items[ind].id)
-	console.log("B",ind,list.childNodes[ind].id)
-    }
+    // for (ind = 0 ; ind < list.items.length ; ind++)
+    // {
+    // 	console.log("A",ind,list.items[ind].id)
+    // 	console.log("B",ind,list.childNodes[ind].id)
+    // }
 
     // insert items from index, animate other items down or up
     
@@ -207,11 +208,13 @@ zen_list_update = function (list)
 	    {
 		head.style.position = "relative"
 		head.style.top = Math.round(list.top) + "px"
-		
+
 		list.appendChild(head)
 		list.items.push(head)
 		list.repos = true
 		list.full = false
+
+		head.old_height = head.getBoundingClientRect().height
 	    }
 	}
 	else
@@ -235,6 +238,8 @@ zen_list_update = function (list)
 		    list.top_ind -= 1
 		    list.repos = true
 		    list.full = false
+
+		   item.old_height = item.getBoundingClientRect().height
 
 		    // apply new top to all items
 
@@ -273,6 +278,8 @@ zen_list_update = function (list)
 		    
 		    list.bot_ind += 1
 		    list.full = false	    
+
+		    item.old_height = item.getBoundingClientRect().height
 		}
 	    }
 	    else if (rect.top > prel_bot && list.items.length > 1) // remove tail
@@ -287,56 +294,72 @@ zen_list_update = function (list)
 	}
     }
 
+    let stop_flag = false
+    
     // move
 
     list.top += list.speed
     list.speed *= 0.8
+
     if (list.speed > 0.01 || list.speed < -0.01)
     {
 	list.full = false
 	list.repos = true
     }
-    else list.anim_stop_func()
-
-    // if (list.repos)
-    // {
-    // list.repos = false
-    // list.full = false
+    else stop_flag = true
 
     if (list.repos)
     {
+	// check if the head is loaded and changed height in the meantime
 
-	let item = list.items[0]
-	rect = item.getBoundingClientRect()
-	
+	if (list.speed > 0.01) 
+	{
+	    for (let item of list.items)
+	    {
+		let rect = item.getBoundingClientRect()
+		if (item.old_height < rect.height)
+		{	    
+		    list.top -= rect.height - item.old_height
+		    item.old_height = rect.height
+		}
+	    }
+	}
+	    
 	// li = list.items[list.items.length - 1]
 	// rect = li.getBoundingClientRect()
 	
 	// bounce top
-	//if (rect.top > list_rect.top) list.top += ( list_rect.top - rect.top ) / 5;
+	let item = list.items[0]
+	let rect = item.getBoundingClientRect()
+
+	if (rect.top > list_rect.top) list.top += ( list_rect.top - rect.top ) / 5;
 	
 	// bounce bottom
 	// if (rect.bottom < list_rect.bottom) list.top += (list_rect.bottom - (rect.top + rect.height)) / 5
 
-	    
 	for (item of list.items)
 	{
-	    // if (item.hasAttribute("delta"))
-	    // {
-	    // 	let delta = parseInt(item.getAttribute("delta"))
-	    // 	delta += -delta / 6
+	    if (item.hasAttribute("delta"))
+	    {
+		let delta = parseInt(item.getAttribute("delta"))
+		delta += -delta / 6
 
-	    // 	item.setAttribute("delta",delta)
+		item.setAttribute("delta",delta)
+		
+		item.style.top = Math.round(list.top) - delta + "px"
 
-	    // 	item.style.top = Math.round(list.top) - delta + "px"
+		if (Math.abs(delta) < 0.001) item.removeAttribute("delta")
 
-	    // 	if (Math.abs(delta) < 0.001) item.removeAttribute("delta")
-	    // }
-	    // else
-	    // {
+		stop_flag = false
+	    }
+	    else
+	    {
 		item.style.top = Math.round(list.top) + "px"
-	    // }
+		item.old_height = item.getBoundingClientRect().height
+	    }
 	}
     }
+
+    if (stop_flag) list.anim_stop_func()
 }
 
