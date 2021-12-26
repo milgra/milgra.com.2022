@@ -55,8 +55,6 @@ zen_list_wheel = function (event)
     list.full = false
 
     list.anim_start_func()
-
-    //zen_list_update(list)
 }
 
 zen_log_item = function (ni,lr)
@@ -189,105 +187,94 @@ zen_list_delete = function (list , index , size)
 
 zen_list_update = function (list)
 {
-    let lr = list.getBoundingClientRect() // list rect
-    let prel_top = lr.top - list.preload_size // preload top
-    let prel_bot = lr.bottom + list.preload_size // preload bottom
-    let ci  // current item
-    let cir // current item rect
-    let ni  // new item
-    let nir // new item rect
+    let list_rect = list.getBoundingClientRect() // list rect
+    let prel_top = list_rect.top - list.preload_size // preload top
+    let prel_bot = list_rect.bottom + list.preload_size // preload bottom
     
     if (!list.full)
     {
-	if (list.items.length == 0)
+	list.full = true
+	
+	if (list.items.length == 0) // first item
 	{
-	    // first item
-	    
-	    ni = list.item_func(list,list.top_ind)
+	    let item = list.item_func(list,list.top_ind)
 
-	    if (ni)
+	    if (item)
 	    {
-		ni.style.position = "relative"
+		item.style.position = "relative"
 		
-		list.appendChild(ni)
-		list.items.push(ni)
+		list.appendChild(item)
+		list.items.push(item)
 		list.repos = true
+		list.full = false
+
+	    	item.real_pos = list.top
 	    }
-	    else list.full = true
 	}
 	else
 	{		
-	    fi = list.items[0]
-	    fir = fi.getBoundingClientRect()
+	    let last = list.items[0]
+	    let rect = last.getBoundingClientRect()
 	    
-	    if (fir.top >= prel_top)
+	    if (rect.top >= prel_top) // fill up head
 	    {
-		// fill up head if needed
-
-		ni = list.item_func(list,list.top_ind - 1)
+		let item = list.item_func(list,list.top_ind - 1)
 		
-		if (ni)
+		if (item)
 		{
-		    ni.style.position = "relative"
+		    item.style.position = "relative"
 		    
-		    list.insertBefore(ni,fi)
-		    list.items.unshift(ni)
+		    list.insertBefore(item,last)
+		    list.items.unshift(item)
 		    
-		    list.top -= ni.getBoundingClientRect().height
+		    list.top -= item.getBoundingClientRect().height
 		    list.top_ind -= 1
 		    list.repos = true
 		    list.full = false
+
+		    item.real_pos = last.real_pos + item.getBoundingClientRect().height
 		}
-		else list.full = true
 	    }
-	    else if (fir.bottom < prel_top && list.items.length > 1)
+	    else if (rect.bottom < prel_top && list.items.length > 1) // remove head
 	    {
-		// remove head if needed
-
-		list.removeChild(fi)
+		list.removeChild(last)
 		list.items.shift()
-		list.top += fir.height
+		list.top += rect.height
 		list.top_ind += 1
-		list.full = true
+		list.full = false
 
-		list.destroy_func(fi,lr)
+		list.destroy_func(last)
 	    }
-	    else list.full = true
 	    
-	    li = list.items[list.items.length - 1]
-	    lir = li.getBoundingClientRect()
+	    last = list.items[list.items.length - 1]
+	    rect = last.getBoundingClientRect()
 
-	    if (lir.bottom <= prel_bot)
+	    if (rect.bottom <= prel_bot) // fill up tail
 	    {
-		// fill up tail if needed
-		
-		ni = list.item_func(list,list.bot_ind + 1)
+		let item = list.item_func(list,list.bot_ind + 1)
 
-		if (ni)
+		if (item)
 		{
-		    ni.style.position = "relative"
+		    item.style.position = "relative"
 
-		    list.appendChild(ni)
-		    list.items.push(ni)
+		    list.appendChild(item)
+		    list.items.push(item)
 		    
 		    list.bot_ind += 1
 		    list.full = false
-		    list.repos = true
-		}
-		else list.full = true
-	    }
-	    else if (lir.top > prel_bot && list.items.length > 1)
-	    {
-		// remove tail if needed
 
-		list.removeChild(li)
+		    item.real_pos = last.real_pos + item.getBoundingClientRect().height
+		}
+	    }
+	    else if (rect.top > prel_bot && list.items.length > 1) // remove tail
+	    {
+		list.removeChild(last)
 		list.items.pop()
 		list.bot_ind -= 1
-		list.full = true
+		list.full = false
 
-		list.destroy_func(li)
+		list.destroy_func(last)
 	    }
-	    else list.full = true
 	}
     }
 
@@ -302,45 +289,43 @@ zen_list_update = function (list)
     }
     else list.anim_stop_func()
 
-
     // if (list.repos)
     // {
     // list.repos = false
     // list.full = false
 
-
     if (list.repos)
     {
 
-	fi = list.items[0]
-	fir = fi.getBoundingClientRect()
+	let item = list.items[0]
+	rect = item.getBoundingClientRect()
 	
 	// li = list.items[list.items.length - 1]
-	// lir = li.getBoundingClientRect()
+	// rect = li.getBoundingClientRect()
 	
 	// bounce top
-	if (fir.top > lr.top) list.top += ( lr.top - fir.top ) / 5;
+	if (rect.top > list_rect.top) list.top += ( list_rect.top - rect.top ) / 5;
 	
 	// bounce bottom
-	// if (lir.bottom < lr.bottom) list.top += (lr.bottom - (lir.top + lir.height)) / 5
+	// if (rect.bottom < list_rect.bottom) list.top += (list_rect.bottom - (rect.top + rect.height)) / 5
 
 	    
-	for (ci of list.items)
+	for (item of list.items)
 	{
-	    if (ci.hasAttribute("delta"))
+	    if (item.hasAttribute("delta"))
 	    {
-		let delta = parseInt(ci.getAttribute("delta"))
+		let delta = parseInt(item.getAttribute("delta"))
 		delta += -delta / 6
 
-		ci.setAttribute("delta",delta)
+		item.setAttribute("delta",delta)
 
-		ci.style.top = Math.round(list.top) - delta + "px"
+		item.style.top = Math.round(list.top) - delta + "px"
 
-		if (Math.abs(delta) < 0.001) ci.removeAttribute("delta")
+		if (Math.abs(delta) < 0.001) item.removeAttribute("delta")
 	    }
 	    else
 	    {
-		ci.style.top = Math.round(list.top) + "px"
+		item.style.top = Math.round(list.top) + "px"
 	    }
 	}
     }
