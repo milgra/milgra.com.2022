@@ -343,7 +343,7 @@ zen_list_update = function (list)
 	}
 	
 	let tail = list.items[list.items.length - 1]
-	if (tail.list_tail)
+	if (tail.list_tail && list.items.length > 1)
 	{
 	    let trect = tail.getBoundingClientRect()
 	    if (trect.bottom < list_rect.bottom) list.top_pos += (list_rect.bottom - trect.bottom) / 5
