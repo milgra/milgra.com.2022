@@ -15,6 +15,7 @@ milgra_init = function ( )
     list.id = "main_list"
 
     zen_list_attach( list,
+		     0,
 		     milgra_item_for_index,
 		     milgra_destroy_item,
 		     milgra_start_anim,
