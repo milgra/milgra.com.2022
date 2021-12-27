@@ -9,7 +9,7 @@ months = [ "January", "February", "March", "April", "May", "June", "July", "Augu
 
 // main functions
 
-milgra_init = function ( )
+milgra_init = function()
 {
     list = document.createElement( "div" )
     list.id = "main_list"
@@ -33,16 +33,14 @@ milgra_init = function ( )
     }
 }
 
-milgra_start_anim = function ( )
+milgra_start_anim = function()
 {
-    console.log("START ANIM")
-    if (!anim) window.requestAnimationFrame( milgra_step )
+    if ( !anim ) window.requestAnimationFrame( milgra_step )
     anim = true
 }
 
-milgra_stop_anim = function ( )
+milgra_stop_anim = function()
 {
-    console.log("STOP ANIM")
     anim = false
 }
 
@@ -50,7 +48,7 @@ milgra_step = function( timestamp )
 {
     zen_list_update( list )
 
-    if (anim) window.requestAnimationFrame( milgra_step )
+    if ( anim ) window.requestAnimationFrame( milgra_step )
 }
 
 milgra_load = function ( pRoot , pReverse , pOpen)
@@ -58,29 +56,29 @@ milgra_load = function ( pRoot , pReverse , pOpen)
     root = pRoot
     let url = "items/" + root
     
-    fetch(url)
-	.then((response) => response.json())
-	.then((data) => {
+    fetch( url )
+	.then( (response) => response.json() )
+	.then( (data) => {
 
 	    // create detailed item map from path list
 	    
-	    items = data.map((item) => { return { "path" : item , "type" : "file" }})
+	    items = data.map( (item) => { return { "path" : item , "type" : "file" } } )
 
 	    // reverse and open if needed
 	    
-	    if (pReverse) items.reverse( )
-	    if (pOpen) milgra_item_open( items[0] )
+	    if ( pReverse ) items.reverse()
+	    if ( pOpen ) milgra_item_open( items[0] )
 	    
 	    // extract folders
 
 	    let folders = new Set()
 
-	    for ( { path } of items)
+	    for ( let { path } of items)
 	    {
-		let parts = path.split("/")
+		let parts = path.split( "/" )
 		let folder = root + "/"
 		
-		for ( ind = 1; ind < parts.length - 1; ind++ )
+		for ( let ind = 1; ind < parts.length - 1; ind++ )
 		{
 		    folder += parts[ ind ] + "/"
 		    folders.add( folder )
@@ -89,7 +87,7 @@ milgra_load = function ( pRoot , pReverse , pOpen)
 
 	    // count folders
 
-	    for ( folder of folders )
+	    for ( let folder of folders )
 	    {
 		let count = 0
 		for ( { path } of items )
@@ -104,7 +102,7 @@ milgra_load = function ( pRoot , pReverse , pOpen)
 
 	    for ( folder of folders )
 	    {
-		for ( ind = 0; ind < items.length; ind++ )
+		for ( let ind = 0; ind < items.length; ind++ )
 		{
 		    let { path } = items[ ind ]
 		    
@@ -116,38 +114,35 @@ milgra_load = function ( pRoot , pReverse , pOpen)
 		}
 	    }
 	    
-	    zen_list_reset(list)
+	    zen_list_reset( list )
 	})
 }
 
-
-milgra_search = function ( text )
+milgra_search = function( text )
 {
     let url = "items/search=" + text
     
-    fetch(url)
-	.then((response) => response.json())
-	.then((data) => {
+    fetch( url )
+	.then( (response) => response.json() )
+	.then( (data) => {
 
 	    // create detailed item map from path list
 	    
-	    items = data.map((item) => { return { "path" : item , "type" : "file" }})
+	    items = data.map( (item) => { return { "path" : item , "type" : "file" }} )
 	    	    
-	    zen_list_reset(list)
+	    zen_list_reset( list )
 	})
 }
 
-
-milgra_comment_send = function ( path, nick, comment )
+milgra_comment_send = function( path, nick, comment )
 {
-    console.log("SEND", path,nick,comment)
-
     let body = JSON.stringify(
 	{
 	    "path" : path ,
 	    "nick" : nick ,
 	    "comment" : comment
 	})
+    
     let url = "comment"
     let params = {
 	headers : { "content-type":"application/json" } ,
@@ -155,33 +150,27 @@ milgra_comment_send = function ( path, nick, comment )
 	body : body
     }
     
-    fetch(url,params)
-	.then((response) => response.json())
-	.then((data) => {
-	    milgra_delete_item({"path" : path , "type" : "comment"})
-	    milgra_insert_items([{"path" : path , "type" : "comment"}])
+    fetch( url, params )
+	.then( (response) => response.json() )
+	.then( (data) => {
+	    milgra_delete_item( {"path" : path , "type" : "comment"} )
+	    milgra_insert_items( [ {"path" : path , "type" : "comment"} ] )
 	})
-	.catch((error) => console.log("send comment error", error))
-
+	.catch( (error) => console.log( "send comment error", error ) )
 }
-
-
-// list handling
-
 
 milgra_item_for_index = function( list, index )
 {
-    if ( items.length > 0 && index < items.length && -1 < index)
+    if ( items.length > 0 && index < items.length && -1 < index )
     {
 	const item = items[index]
-	if (item.type == "file") return milgra_file_item( item )
-	if (item.type == "folder") return milgra_folder_item( item )
-	if (item.type == "viewer") return milgra_viewer_item( item )
-	if (item.type == "comment") return milgra_comment_item( item )
+	if ( item.type == "file" ) return milgra_file_item( item )
+	if ( item.type == "folder" ) return milgra_folder_item( item )
+	if ( item.type == "viewer" ) return milgra_viewer_item( item )
+	if ( item.type == "comment" ) return milgra_comment_item( item )
     }
     else return null;
 }
-
 
 milgra_destroy_item = function( item )
 {
@@ -189,15 +178,14 @@ milgra_destroy_item = function( item )
     item.listItem = null
     item.loadContent = null
     item.onclick = null
-    if (item.childNodes.length > 0 ) item.childNodes[0].remove()
+    if ( item.childNodes.length > 0 ) item.childNodes[0].remove()
 }
 
-
-milgra_folder_item = function ( item )
+milgra_folder_item = function( item )
 {
-    let elem = document.createElement("div")
-    let info = document.createElement("div")
-    let parts = item.path.split("/")
+    let elem = document.createElement( "div" )
+    let info = document.createElement( "div" )
+    let parts = item.path.split( "/" )
  
     elem.onclick = milgra_item_click
     elem.className = "folder_item"
@@ -213,7 +201,7 @@ milgra_folder_item = function ( item )
     let text = parts[1]
     let color = colors[0]
     
-    if (parts.length == 4)
+    if ( parts.length == 4 )
     {
 	// in case of blog, we show the month name
 	text = months[ parseInt( parts[2] ) - 1 ]
@@ -229,12 +217,11 @@ milgra_folder_item = function ( item )
     return elem
 }
 
-
 milgra_file_item = function ( item )
 {
-    let elem = document.createElement("div")
-    let info = document.createElement("div")
-    let parts = item.path.split("/")
+    let elem = document.createElement( "div" )
+    let info = document.createElement( "div" )
+    let parts = item.path.split( "/" )
 
     elem.onclick = milgra_item_click
     elem.className = "file_item"
@@ -242,38 +229,37 @@ milgra_file_item = function ( item )
     elem.id = item.path
     
     info.className = "item_info"
-    info.innerText = item.path.substring(13,15) // show day in info
-    if (parts.length == 3) info.innerText = parts[2].substring(0, 4) //
+    info.innerText = item.path.substring( 13, 15 ) // show day in info
+    if (parts.length == 3) info.innerText = parts[2].substring( 0, 4 )
     
     let text = parts[parts.length - 1]
     
-    if (parts.length == 4) text = text.substring(3, text.indexOf('.html'))
+    if ( parts.length == 4 ) text = text.substring( 3, text.indexOf('.html') )
     //else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
-    else text = text.substring(0,text.indexOf(".html"))
+    else text = text.substring( 0, text.indexOf(".html") )
     
     elem.style.backgroundColor = colors[2]        
     elem.style.paddingLeft = 40 + "px"    
     elem.innerText = text
-    elem.appendChild(info)
+    elem.appendChild( info )
 
     return elem
 }
 
-
-milgra_viewer_item = function ( item )
+milgra_viewer_item = function( item )
 {
-    let elem = document.createElement("div")
-    let parts = item.path.split("/")
+    let elem = document.createElement( "div" )
+    let parts = item.path.split( "/" )
     
     elem.className = "viewer_item"
     elem.listItem = item    
     elem.id = item.path
     
-    elem.load = function ( contentUrl )
+    elem.load = function( contentUrl )
     {
-	fetch(contentUrl)
-	    .then((response) => response.text())
-	    .then((html) => {
+	fetch( contentUrl )
+	    .then( (response) => response.text() )
+	    .then( (html) => {
 		this.innerHTML = html
 	    })
     }
@@ -283,36 +269,35 @@ milgra_viewer_item = function ( item )
     return elem
 }
 
-
-milgra_comment_item = function ( item )
+milgra_comment_item = function( item )
 {
-    let elem = document.createElement("div")
-    let info = document.createElement("div")
-    let parts = item.path.split("/")
+    let elem = document.createElement( "div" )
+    let info = document.createElement( "div" )
+    let parts = item.path.split( "/" )
 
     let paddingLeft = 0
     
-    elem.appendChild(info)
+    elem.appendChild( info )
     elem.className = "viewer_item"
     elem.listItem = item
     elem.id = item.path
     
     info.className = "item_info"
     
-    elem.load = function ( contentUrl )
+    elem.load = function( contentUrl )
     {
-	fetch(contentUrl)
-	    .then((response) => response.text())
-	    .then((html) => {
+	fetch( contentUrl )
+	    .then( (response) => response.text() )
+	    .then( (html) => {
 		
 		// show response if it is "No Comments"
 		
-		if (html != "No Comments") this.innerHTML = html
+		if ( html != "No Comments" ) this.innerHTML = html
 		else this.innerHTML = ""
 		
 		// add comment button in case of comment item
 		
-		let button = document.createElement("div")
+		let button = document.createElement( "div" )
 		
 		button.style.display = "absolute"
 		button.style.width = "100%"
@@ -334,10 +319,6 @@ milgra_comment_item = function ( item )
     return elem
 }
 
-
-// events
-
-
 milgra_item_click = function( event )
 {
     let elem = event.currentTarget
@@ -345,52 +326,49 @@ milgra_item_click = function( event )
     milgra_item_open( elem.listItem )
 }
 
-
 milgra_comment_click = function( event )
 {
     let elem = event.currentTarget.parentNode
 
-    let button = document.createElement("div")
-    let editor = document.createElement("input")
-    let nick = document.createElement("input")
+    let button = document.createElement( "div" )
+    let editor = document.createElement( "input" )
+    let nick = document.createElement( "input" )
 
     button.style.cursor = "pointer"
-    button.onclick = function () {milgra_comment_send(elem.id,nick.value,editor.value)}    
+    button.onclick = function() { milgra_comment_send( elem.id, nick.value, editor.value ) }    
     button.innerText = "Send"
     
     editor.id = "editor"
     editor.value = "comment"
     editor.style.width = "100%"
     editor.style.height = "100px"
-    editor.onfocus = function () {editor.value = ""}
+    editor.onfocus = function() { editor.value = "" }
 
     nick.id = "nick"
     nick.value = "nick"
     nick.style.width = "100%"
-    nick.onfocus = function ( ) {nick.value = ""}
+    nick.onfocus = function() { nick.value = "" }
 
-    elem.insertBefore(button,elem.childNodes[0])
-    elem.insertBefore(editor,elem.childNodes[0])
-    elem.insertBefore(nick,elem.childNodes[0])
+    elem.insertBefore( button,elem.childNodes[0] )
+    elem.insertBefore( editor,elem.childNodes[0] )
+    elem.insertBefore( nick,elem.childNodes[0] )
 
     event.currentTarget.remove()
 }
 
-// helper functions
-
-milgra_item_open = function ( { path, type } )
+milgra_item_open = function( { path, type } )
 {
     if ( type == "file" )
     {
-	if ( opened[ path ] )
+	if ( opened[path] )
 	{
 	    milgra_delete_item( { path , type } )
 
-	    delete opened[ path ]	    
+	    delete opened[path]	    
 	}
 	else
 	{
-	    opened[ path ] = true
+	    opened[path] = true
 
 	    // add viewer and comment list item
 	    
@@ -400,14 +378,13 @@ milgra_item_open = function ( { path, type } )
     }	
 }
 
-
-milgra_insert_items = function ( newItems )
+milgra_insert_items = function( newItems )
 {
     if ( newItems.length > 0 )
     {
 	for ( const newItem of newItems )
 	{
-	    for ( let ind = items.length - 1 ; ind > -1 ; ind-- )
+	    for ( let ind = items.length - 1; ind > -1; ind-- )
 	    {
 		const item = items[ ind ]
 
@@ -424,8 +401,7 @@ milgra_insert_items = function ( newItems )
     }
 }
 
-
-milgra_delete_item = function ( item )
+milgra_delete_item = function( item )
 {
     if ( items.length > 0 )
     {
@@ -440,10 +416,9 @@ milgra_delete_item = function ( item )
 	{
 	    const { path: onePath , type: oneType } = items[ind]
 
-	    if (onePath.includes( path ))
+	    if ( onePath.includes( path ) )
 	    {
-
-		if (type == "file")
+		if ( type == "file" )
 		{
 		    if (oneType == "viewer" || oneType == "comment")
 		    {
@@ -453,15 +428,13 @@ milgra_delete_item = function ( item )
 			
 		    }
 		}
-		if (type == "comment")
+		if ( type == "comment" )
 		{
 		    items.splice( ind, 1 )
 		    count++
 		    index = ind
 		}
-		
 	    }
-	    
 	}
 	
 	// remove items from list
