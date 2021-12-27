@@ -84,8 +84,8 @@ zenlist_insert = function( list, index, size )
     {
 	// insert items from index, animate other items down or up
 
-	start_ind = index - list.top_ind
-	next_item = list.items[ start_ind ]
+	const start_ind = index - list.top_ind
+	const next_item = list.items[ start_ind ]
 	
 	let height = 0
 	for ( let ind = start_ind; ind < start_ind + size; ind++ )

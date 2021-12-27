@@ -46,7 +46,7 @@
                 okay (if time
                        (> (- unix time) (* 1000 60 60 24))
                        true)]
-            (if true ;; check if request came within 24 hours
+            (if okay ;; check if request came within 24 hours
               (let [path (str "resources/public/" path)]
                 (io/make-parents path)
                 (swap! ips assoc (:remote-addr request) unix) ;; store timestamp for ip
@@ -65,5 +65,5 @@
       (wrap-json-response)
       (wrap-json-body {:key-fn keyword})
       (wrap-cors
-       :access-control-allow-origin [#".*"]
+       :access-control-allow-origin [#"https://milgra.com"]
        :access-control-allow-methods [:get :post])))

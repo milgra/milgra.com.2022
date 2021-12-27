@@ -87,10 +87,10 @@ milgra_step = function( timestamp )
     if ( milgra.animate ) window.requestAnimationFrame( milgra_step )
 }
 
-milgra_load = function ( pGroup , pReverse , pOpen)
+milgra_load = function ( group , reverse , open)
 {
-    milgra.group = pGroup
-    const url = "items/" + pGroup
+    milgra.group = group
+    const url = "items/" + group
 
     fetch( url )
 	.then( (response) => response.json() )
@@ -102,8 +102,8 @@ milgra_load = function ( pGroup , pReverse , pOpen)
 
 	    // reverse and open if needed
 	    
-	    if ( pReverse ) milgra.items.reverse()
-	    if ( pOpen ) milgra_item_open( milgra.items[0] )
+	    if ( reverse ) milgra.items.reverse()
+	    if ( open ) milgra_item_open( milgra.items[0] )
 	    
 	    // extract folders
 
@@ -112,7 +112,7 @@ milgra_load = function ( pGroup , pReverse , pOpen)
 	    for ( let { path } of milgra.items)
 	    {
 		let parts = path.split( "/" )
-		let folder = pGroup + "/"
+		let folder = group + "/"
 		
 		for ( let ind = 1; ind < parts.length - 1; ind++ )
 		{
