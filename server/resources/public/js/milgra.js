@@ -1,29 +1,34 @@
-root = null // path root ( blog, apps, tabs, work )
-list = null // infinite scroller
-anim = false // animate?
-items = [] // current items
-opened = {} // opened items
-counts = {} // folder counter
-colors = [ "#88AACC", "#99BBDD", "#AACCEE" ] // item colors
-months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ] // month names for blog 
+// namespace vars
+
+milgra = {
+    group   : null ,  // file group ( blog, apps, tabs, work )
+    list    : null ,  // infinite scroller
+    animate : false , // animate?
+    items   : [] ,    // current items
+    opened  : {} ,    // opened items
+    counts  : {} ,    // folder counter
+    colors  : [ "#88AACC", "#99BBDD", "#AACCEE" ] , // item colors
+    months  : [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ] // month names for blog 
+}
 
 // main functions
 
 milgra_init = function()
 {
-    list = document.createElement( "div" )
-    list.id = "main_list"
+    milgra.list = document.createElement( "div" )
+    milgra.list.id = "main_list"
 
-    zen_list_attach( list,
+    document.getElementById( "center" ).appendChild( milgra.list )
+
+    zenlist_attach( milgra.list,
 		     0,
 		     milgra_item_for_index,
 		     milgra_destroy_item,
 		     milgra_start_anim,
 		     milgra_stop_anim )
 
-    document.getElementById( "center" ).appendChild( list )
 
-    let search = document.getElementById( "milgra_search_input" )
+    const search = document.getElementById( "milgra_search_input" )
     
     search.onkeyup = function ({key}) {
 	if (key === "Enter") {
@@ -31,52 +36,78 @@ milgra_init = function()
 	    search.blur()
 	}
     }
+
+    const query = window.location.search;
+    const params = new URLSearchParams(query);
+
+    // load items based on query params
+    
+    if ( params.has("show_file") )
+    {
+	const path = params.get("show_file")
+	
+	milgra.items = [ {"path" : path , "type" : "file" } ,
+		  {"path" : path , "type" : "viewer" }  ,
+		  {"path" : "comments/" + path , "type" : "comment" } ]
+
+	zenlist_reset( milgra.list )
+    }
+    else if ( params.has("show_group") )
+    {
+	const group = params.get("show_group")
+
+	milgra_load( group )
+    }
+    else
+    {
+	milgra_load("blog",true,true)
+    }
 }
 
 milgra_start_anim = function()
 {
-    if ( !anim ) window.requestAnimationFrame( milgra_step )
-    anim = true
+    if ( !milgra.animate ) window.requestAnimationFrame( milgra_step )
+    milgra.animate = true
 }
 
 milgra_stop_anim = function()
 {
-    anim = false
+    milgra.animate = false
 }
 
 milgra_step = function( timestamp )
 {
-    zen_list_update( list )
+    zenlist_update( milgra.list )
 
-    if ( anim ) window.requestAnimationFrame( milgra_step )
+    if ( milgra.animate ) window.requestAnimationFrame( milgra_step )
 }
 
-milgra_load = function ( pRoot , pReverse , pOpen)
+milgra_load = function ( pGroup , pReverse , pOpen)
 {
-    root = pRoot
-    let url = "items/" + root
-    
+    milgra.group = pGroup
+    const url = "items/" + pGroup
+
     fetch( url )
 	.then( (response) => response.json() )
 	.then( (data) => {
 
 	    // create detailed item map from path list
 	    
-	    items = data.map( (item) => { return { "path" : item , "type" : "file" } } )
+	    milgra.items = data.map( (item) => { return { "path" : item , "type" : "file" } } )
 
 	    // reverse and open if needed
 	    
-	    if ( pReverse ) items.reverse()
-	    if ( pOpen ) milgra_item_open( items[0] )
+	    if ( pReverse ) milgra.items.reverse()
+	    if ( pOpen ) milgra_item_open( milgra.items[0] )
 	    
 	    // extract folders
 
 	    let folders = new Set()
 
-	    for ( let { path } of items)
+	    for ( let { path } of milgra.items)
 	    {
 		let parts = path.split( "/" )
-		let folder = root + "/"
+		let folder = pGroup + "/"
 		
 		for ( let ind = 1; ind < parts.length - 1; ind++ )
 		{
@@ -90,31 +121,31 @@ milgra_load = function ( pRoot , pReverse , pOpen)
 	    for ( let folder of folders )
 	    {
 		let count = 0
-		for ( { path } of items )
+		for ( { path } of milgra.items )
 		{
 		    if ( path.search( folder ) > -1 ) count++
 		}
 		
-		counts[ folder ] = count
+		milgra.counts[ folder ] = count
 	    }
 
 	    // insert folders into items
 
 	    for ( folder of folders )
 	    {
-		for ( let ind = 0; ind < items.length; ind++ )
+		for ( let ind = 0; ind < milgra.items.length; ind++ )
 		{
-		    let { path } = items[ ind ]
+		    let { path } = milgra.items[ ind ]
 		    
 		    if ( path.search( folder ) > -1 )
 		    {
-			items.splice( ind , 0 , { "path" : folder , "type" : "folder" } )
+			milgra.items.splice( ind , 0 , { "path" : folder , "type" : "folder" } )
 			break;
 		    }
 		}
 	    }
 	    
-	    zen_list_reset( list )
+	    zenlist_reset( milgra.list )
 	})
 }
 
@@ -128,9 +159,9 @@ milgra_search = function( text )
 
 	    // create detailed item map from path list
 	    
-	    items = data.map( (item) => { return { "path" : item , "type" : "file" }} )
+	    milgra.items = data.map( (item) => { return { "path" : item , "type" : "file" }} )
 	    	    
-	    zen_list_reset( list )
+	    zenlist_reset( milgra.list )
 	})
 }
 
@@ -161,9 +192,9 @@ milgra_comment_send = function( path, nick, comment )
 
 milgra_item_for_index = function( list, index )
 {
-    if ( items.length > 0 && index < items.length && -1 < index )
+    if ( milgra.items.length > 0 && index < milgra.items.length && -1 < index )
     {
-	const item = items[index]
+	const item = milgra.items[index]
 	if ( item.type == "file" ) return milgra_file_item( item )
 	if ( item.type == "folder" ) return milgra_folder_item( item )
 	if ( item.type == "viewer" ) return milgra_viewer_item( item )
@@ -193,19 +224,19 @@ milgra_folder_item = function( item )
     elem.id = item.path
 
     info.className = "item_info"
-    info.innerText = counts[ item.path ] + " items" // show item count in info
+    info.innerText = milgra.counts[ item.path ] + " items" // show item count in info
 
     // we show the first part - year in case of blog - by default
     
     let left = 10
     let text = parts[1]
-    let color = colors[0]
+    let color = milgra.colors[0]
     
     if ( parts.length == 4 )
     {
 	// in case of blog, we show the month name
-	text = months[ parseInt( parts[2] ) - 1 ]
-	color = colors[1]
+	text = milgra.months[ parseInt( parts[2] ) - 1 ]
+	color = milgra.colors[1]
 	left = 30	
     }
 
@@ -238,7 +269,7 @@ milgra_file_item = function ( item )
     //else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
     else text = text.substring( 0, text.indexOf(".html") )
     
-    elem.style.backgroundColor = colors[2]        
+    elem.style.backgroundColor = milgra.colors[2]        
     elem.style.paddingLeft = 40 + "px"    
     elem.innerText = text
     elem.appendChild( info )
@@ -360,18 +391,20 @@ milgra_item_open = function( { path, type } )
 {
     if ( type == "file" )
     {
-	if ( opened[path] )
+	window.history.pushState('path', 'path', '?show_file=' + path);
+
+	if ( milgra.opened[path] )
 	{
 	    milgra_delete_item( { path , type } )
 
-	    delete opened[path]	    
+	    delete milgra.opened[path]	    
 	}
 	else
 	{
-	    opened[path] = true
+	    milgra.opened[path] = true
 
 	    // add viewer and comment list item
-	    
+
 	    milgra_insert_items( [ {"path" : path , "type" : "viewer" }  ,
 				   {"path" : "comments/" + path , "type" : "comment" } ] )
 	}
@@ -384,16 +417,16 @@ milgra_insert_items = function( newItems )
     {
 	for ( const newItem of newItems )
 	{
-	    for ( let ind = items.length - 1; ind > -1; ind-- )
+	    for ( let ind = milgra.items.length - 1; ind > -1; ind-- )
 	    {
-		const item = items[ ind ]
+		const item = milgra.items[ ind ]
 
 		// insert after the last similar item
 		
 		if ( newItem.path.includes( item.path ) )
 		{
-		    items.splice( ind + 1, 0, ... newItems )		    
-		    zen_list_insert( list , ind + 1 , newItems.length )
+		    milgra.items.splice( ind + 1, 0, ... newItems )		    
+		    zenlist_insert( milgra.list , ind + 1 , newItems.length )
 		    return
 		}
 	    }
@@ -403,10 +436,10 @@ milgra_insert_items = function( newItems )
 
 milgra_delete_item = function( item )
 {
-    if ( items.length > 0 )
+    if ( milgra.items.length > 0 )
     {
 	const { path , type } = item
-	let ind = items.length
+	let ind = milgra.items.length
 	let count = 0
 	let index = -1
 
@@ -414,7 +447,7 @@ milgra_delete_item = function( item )
 	
 	while ( ind-- )
 	{
-	    const { path: onePath , type: oneType } = items[ind]
+	    const { path: onePath , type: oneType } = milgra.items[ind]
 
 	    if ( onePath.includes( path ) )
 	    {
@@ -422,7 +455,7 @@ milgra_delete_item = function( item )
 		{
 		    if (oneType == "viewer" || oneType == "comment")
 		    {
-			items.splice( ind, 1 )
+			milgra.items.splice( ind, 1 )
 			count++
 			index = ind
 			
@@ -430,7 +463,7 @@ milgra_delete_item = function( item )
 		}
 		if ( type == "comment" )
 		{
-		    items.splice( ind, 1 )
+		    milgra.items.splice( ind, 1 )
 		    count++
 		    index = ind
 		}
@@ -439,7 +472,7 @@ milgra_delete_item = function( item )
 	
 	// remove items from list
 
-	if ( index > -1 ) zen_list_delete( list, index, count )
+	if ( index > -1 ) zenlist_delete( milgra.list, index, count )
     }
 }
 

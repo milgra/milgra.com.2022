@@ -1,5 +1,3 @@
-?showfile=sdgsad, ?showfolder=sdagasgd
-url savban aktualis file/group
 css sanitize
 open/close group
 komment kuldesnel hibauzenetek!!!
