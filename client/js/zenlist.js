@@ -333,14 +333,13 @@ zenlist_update = function( list )
 	// bounce
 
 	let head = list.items[0]
+	let tail = list.items[ list.items.length - 1 ]
 
 	if ( head.list_head )
 	{
 	    let hrect = head.getBoundingClientRect()
 	    if ( hrect.top > list_rect.top ) list.top_pos += ( list_rect.top - hrect.top ) / 5;
 	}
-	
-	let tail = list.items[ list.items.length - 1 ]
 	if ( tail.list_tail && list.items.length > 1 )
 	{
 	    let trect = tail.getBoundingClientRect()

@@ -51,8 +51,8 @@
                 (io/make-parents path)
                 (swap! ips assoc (:remote-addr request) unix) ;; store timestamp for ip
                 (with-open [wrtr (io/writer path :append true)]
-                  (.write wrtr (str "<br>Nick:" nick "<br>"))
-                  (.write wrtr (str comment "<br>"))
+                  (.write wrtr (str "<nick>" nick "</nick>"))
+                  (.write wrtr (str "<comment>" comment "</comment>"))
                 (response/response {"success" "true"}))
               (response/response {"error" "ip is locked for 24 hours"}))))))
 

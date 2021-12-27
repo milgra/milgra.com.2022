@@ -1,4 +1,4 @@
-milgra = {
+milgra = {            // namespace variables
     list    : null ,  // infinite scroller element
     group   : null ,  // file group ( blog, apps, tabs, work )
     animate : false , // trigger list animation
@@ -11,21 +11,24 @@ milgra = {
 
 milgra_init = function()
 {
+    // init zenlist component
+    
     milgra.list = document.createElement( "div" )
     milgra.list.id = "main_list"
 
     document.getElementById( "center" ).appendChild( milgra.list )
 
     zenlist_attach( milgra.list,
-		    0,
+		    50,
 		    milgra_item_for_index,
 		    milgra_destroy_item,
 		    milgra_start_anim,
 		    milgra_stop_anim )
-    
 
-    const search = document.getElementById( "milgra_search_input" )
+    // init search
     
+    const search = document.getElementById( "milgra_search_input" )
+ 
     search.onkeyup = function ({key}) {
 	if (key === "Enter") {
 	    milgra_search(search.value)
@@ -33,13 +36,15 @@ milgra_init = function()
 	}
     }
 
+    // load items based on query params
+
     const query = window.location.search;
     const params = new URLSearchParams(query);
-
-    // load items based on query params
     
     if ( params.has("show_file") )
     {
+	// show requested file
+	
 	const path = params.get("show_file")
 	
 	milgra.items = [ {"path" : path , "type" : "file" } ,
@@ -50,13 +55,17 @@ milgra_init = function()
     }
     else if ( params.has("show_group") )
     {
+	// show requested group
+	
 	const group = params.get("show_group")
 
 	milgra_load( group )
     }
     else
     {
-	milgra_load("blog",true,true)
+	// show blog by default
+	
+	milgra_load( "blog", true, true)
     }
 }
 
@@ -305,7 +314,6 @@ milgra_comment_item = function( item )
     let paddingLeft = 0
     
     elem.appendChild( info )
-    elem.className = "viewer_item"
     elem.listItem = item
     elem.id = item.path
     
@@ -316,28 +324,32 @@ milgra_comment_item = function( item )
 	fetch( contentUrl )
 	    .then( (response) => response.text() )
 	    .then( (html) => {
+
+		let button = document.createElement( "div" )
+
+		button.className = "comment_item"
+		//button.style.display = "absolute"
+		//button.style.width = "100%"
+		//button.style.margin = "auto"
+		//button.style.padding = "10px"
+		button.style.backgroundColor = "#446688"
+		button.style.cursor = "pointer"
+		button.style.color = "white"
+		button.onclick = milgra_comment_click
+		
+		button.innerHTML = "Add new comment"
+
+		this.appendChild( button )
+
+		let content = document.createElement( "div" )
+		content.className = "comment_item"
+
+		this.appendChild( content )
 		
 		// show response if it is "No Comments"
 		
-		if ( html != "No Comments" ) this.innerHTML = html
-		else this.innerHTML = ""
-		
-		// add comment button in case of comment item
-		
-		let button = document.createElement( "div" )
-		
-		button.style.display = "absolute"
-		button.style.width = "100%"
-		button.style.padding = "10px"
-		button.style.backgroundColor = "#446688"
-		button.style.cursor = "pointer"
-		button.onclick = milgra_comment_click
-		
-		button.innerHTML = "New Comment"
-		
-		this.insertBefore( button, this.childNodes[0] )
-		
-		elem.style.backgroundColor = "#AACCEE"		
+		if ( html != "No Comments" ) content.innerHTML = html
+		else content.innerHTML = ""		
 	    })
     }
     
