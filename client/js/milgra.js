@@ -335,6 +335,7 @@ milgra_comment_item = function( item )
 		button.style.backgroundColor = "#446688"
 		button.style.cursor = "pointer"
 		button.style.color = "white"
+		button.style.fontSize = "18px"
 		button.onclick = milgra_comment_click
 		
 		button.innerHTML = "Add new comment"
@@ -369,29 +370,34 @@ milgra_comment_click = function( event )
 {
     let elem = event.currentTarget.parentNode
 
+    let form = document.createElement("comment_editor")
+    form.className = "comment_form"
+    
     let button = document.createElement( "div" )
-    let editor = document.createElement( "input" )
+    let editor = document.createElement( "textarea" )
     let nick = document.createElement( "input" )
 
     button.style.cursor = "pointer"
     button.onclick = function() { milgra_comment_send( elem.id, nick.value, editor.value ) }    
     button.innerText = "Send"
+    button.className = "send"
     
     editor.id = "editor"
     editor.value = "comment"
-    editor.style.width = "100%"
-    editor.style.height = "100px"
     editor.onfocus = function() { editor.value = "" }
-
+    editor.className = "comment"
+    
     nick.id = "nick"
     nick.value = "nick"
-    nick.style.width = "100%"
+    nick.className = "nick"
     nick.onfocus = function() { nick.value = "" }
 
-    elem.insertBefore( button,elem.childNodes[0] )
-    elem.insertBefore( editor,elem.childNodes[0] )
-    elem.insertBefore( nick,elem.childNodes[0] )
+    form.appendChild( nick )
+    form.appendChild( editor )
+    form.appendChild( button )
 
+    elem.insertBefore( form, elem.childNodes[0] )
+    
     event.currentTarget.remove()
 }
 

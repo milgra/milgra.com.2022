@@ -16,6 +16,13 @@ body {
     font-size: 20px;
 }
 
+img {
+    max-width:100%;
+    max-height:100%;
+    display: block;
+    margin: auto;
+}
+
 a {
     color: #003300;
     text-decoration : none;
@@ -40,10 +47,7 @@ code {
 
 textarea, input {
     background : #445577;
-    text-align: right;
     color: white;
-    border : none;
-    border-bottom : 2px solid white;
 
     font-size : 20px;
     font-family: 'Commissioner', sans-serif;    
@@ -62,23 +66,72 @@ textarea:focus, input:focus{
     outline: none;
 }
 
-# items
-
-nick {
-    background-color: red;
-}
-
-comment {
-    background-color: blue;
-}
-
 #milgra_search_input {
     flex: 1 1;
+    text-align: right;
+    border : none;
+    border-bottom : 2px solid white;
     #margin: 5px;
     #margin-left: auto;
     #margin-right: 0px;
     #line-height: 20px;
     #width: 100%;
+}
+
+nick {
+    display: block;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    background-color: #AACCEE;
+}
+
+comment {
+    display: block;
+    padding: 10px;
+    font-size: 15px;
+    font-style: italic;
+    background-color: #AFCFEF;
+}
+
+.nick {
+    margin: auto;
+    border : none;
+    border-bottom : 2px solid white;
+    display: block;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #446688;
+}
+
+.comment {
+    margin: auto;
+    border: none;
+    border-bottom : 2px solid white;
+    display: block;
+    height: 50px;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #446688;
+}
+
+.send {
+    display: block;
+    padding: 10px;
+    margin: auto;
+    color: white;
+    font-size: 18px;
+    background-color: #446688;
+}
+
+.comment_form {
+    display: block;
+    padding: 10px;
+    font-size: 15px;
+    background-color: #446688;
 }
 
 #main {
@@ -176,10 +229,10 @@ comment {
     cursor: auto;
     text-align: justify;
     padding: 40px;
-    font-size: 20px;
+
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #AABBDD;
+    background-color: #99BBEE;
 }
 
 .item_info {
