@@ -1,4 +1,4 @@
-Freelancing
+Freelancing Between 2001 and 2005
 
 Flash,2D,3D design, flash programming for small for small businesses ( config.sys kft, micro-lib bt )
 
