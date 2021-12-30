@@ -1,42 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@300;500&display=swap');
 
+/* built-in */
+
 html {
     height: 100%;
 }
 
 body {
-    margin: 0px;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    background-color: #223355;
-    
-    font-family: 'Commissioner', sans-serif;    
+    margin: 0px;
+    overflow: hidden;    
+    font-size: 18px;
     font-weight: 300;
-    font-size: 20px;
+    font-family: 'Commissioner', sans-serif;    
+    background-color: #223355;
 }
 
 img {
-    max-width:100%;
-    max-height:100%;
-    display: block;
     margin: auto;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 a {
     color: #003300;
-    text-decoration : none;
     font-weight: 500;
 }
 
 h1 {
-    font-weight: 500;
     font-size: 22px;
+    font-weight: 500;
+    margin-block-start: 0px;
 }
 
 h6 {
-    font-weight: 300;
-    font-size: 18px;
     font-style: italic;
 }
 
@@ -46,116 +45,36 @@ p {
 }
 
 code {
-    font-family: monospace;
     font-size: 14px;
+    font-family: monospace;
 }
 
-textarea, input {
-    background : #445577;
-    color: white;
-
-    font-size : 20px;
+textarea,input {
     font-family: 'Commissioner', sans-serif;    
     font-weight: 300;
-
-    #box-shadow : 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
-    #padding : 5px;
-    #box-sizing: border-box;
-    #margin-left: auto;
-    #margin-right: auto;
-    #margin-top: 20px;
-    #margin-bottom: 20px;                        
 }
 
 textarea:focus, input:focus{
     outline: none;
 }
 
-#milgra_search_input {
-    flex: 1 1;
-    text-align: right;
-    border : none;
-    border-bottom : 2px solid white;
-    #margin: 5px;
-    #margin-left: auto;
-    margin-right: 0px;
-    #line-height: 20px;
-    #width: 100%;
-}
-
-nick {
-    display: block;
-    padding: 10px;
-    font-size: 15px;
-    background-color: #DDEEFF;
-}
-
-comment {
-    display: block;
-    font-size: 15px;
-    font-style: italic;
-
-    box-shadow : 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
-    padding : 10px;
-    margin: 5px;
-    background-color: #EEFFFF;
-}
-
-.comment_editor_nick {
-    box-sizing: border-box;
-    border : none;
-    display: block;
-    margin-top: 5px;
-    padding: 10px;
-    font-size: 18px;
-    font-weight: 500;
-    background-color: #DAEAFA;
-    color: black;
-    width: 100%;
-}
-
-.comment_editor_text {
-    box-sizing: border-box;
-    border: none;
-    display: block;
-    height: 50px;
-    padding: 10px;
-    font-size: 18px;
-    background-color: #DAEAFA;
-    color: black;
-    width: 100%;
-}
-
-.comment_editor_send {
-    cursor: pointer;
-    display: block;
-    padding: 10px;
-    color: white;
-    font-size: 18px;
-    background-color: #DDEEFF;
-    color: black;
-}
-
-.comment_form {
-    display: block;
-    padding: 10px;
-    font-size: 15px;
-#    background-color: #446688;
-}
+/* page structure */
 
 #main {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     height: 100%;
     margin: 0px;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 #main_top {
-    flex: 1 1
-    margin: 0px auto;
+    flex: 1 1;
     width: 100%;
+    margin: 0px auto;
     background-color: #445577;
+    z-index: 100;
+    box-shadow : 0px 0px 5px 0 rgba(0, 0, 0, 0.5);
 }
 
 #main_bottom {
@@ -164,7 +83,63 @@ comment {
     overflow: hidden;
 }
 
-#logo {
+#main_top_menu {
+    flex: 0 0;
+    margin: 0px auto;
+    display: flex;
+    flex-wrap: wrap;
+    max-width : 800px;
+}
+
+.main_top_menu_btn {
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#main_bottom_left {
+    flex: 1 1;
+    overflow: hidden;
+}
+
+#main_bottom_right {
+    z-index: -1;
+    flex: 1 1;
+    overflow: hidden;
+}
+
+#main_bottom_center {
+    flex: 0 0 100%;
+    height: 100%;
+    margin: 0px;
+    max-width: 800px;
+    background: #334466;
+}
+
+#main_list {
+    height: 100%;
+    box-sizing: border-box;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #DDEEFF;
+}
+
+/* fix elements */
+
+#milgra_search_input {
+    flex: 1 1;
+    color: white;
+    border : none;
+    font-size : 18px;
+    text-align: right;
+    background-color : #445577;
+    margin-right: 10px;
+}
+
+#main_logo_0 {
     float: right;
     font-size: 350px;
     font-weight: 500;
@@ -174,7 +149,7 @@ comment {
     transform-origin: top right;
 }
 
-#logo1 {
+#main_logo_1 {
     font-size: 350px;
     font-weight: 500;
     text-align: left;
@@ -183,7 +158,7 @@ comment {
     transform: translate(-50px , -230px ) rotate(0deg);
 }
 
-#logo2 {
+#main_logo_2 {
     float: right;
     font-size: 300px;
     font-weight: 500;
@@ -192,134 +167,124 @@ comment {
     color: #334466;
     letter-spacing: -20px;
     transform: translate(240px,100px) rotate(-90deg);
-#    transform-origin: top left;
 }
 
-#main_list {
-    box-sizing: border-box;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 100%;
-    height: 100%;
-    background-color: #445577;
-}
+/* list items */
 
-.folder_item {
+.list_item_folder {
     box-sizing: border-box;
     width: 100%;
     font-style: italic;    
-    cursor: pointer;
     text-align: left;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 18px;
+    background-color: #CCDDEE;
 }
 
-.file_item {
+.list_item_file {
     box-sizing: border-box;
     width: 100%;
     cursor: pointer;
     text-align: left;
     padding: 15px;
-    font-size: 18px;
+    background-color: #DDEEFF;
 }
 
-.viewer_item {
+.list_item_viewer {
     box-sizing: border-box;
     width: 100%;
     cursor: auto;
     text-align: justify;
     padding: 10px;
-    font-size: 18px;
     background-color: #DDEEFF;
+}
+
+.list_item_info {
+    display: relative;
+    float: right;
 }
 
 .article_item {
     box-shadow : 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
     padding : 15px;
-    margin : 5px;
+    margin : 0px;
     box-sizing: border-box;
     background-color: #FFFFEE;
 }
 
-.comment_item {
-    box-sizing: border-box;
-    width: 100%;
-    cursor: auto;
-    text-align: justify;
-    padding: 10px;
-    background-color: #DDEEFF;
-}
+/* comments */
 
-.item_info {
-    display: relative;
-    float: right;
-}
-
-#center {
-    background: #334466;
-    max-width: 800px;
-    flex: 0 0 100%;
-    margin: 0px;
-    height: 100%;
-#    overflow: hidden;
-}
-
-#menu {
-    flex: 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    max-width : 800px;
-    margin: 0px auto;
-}
-
-
-#list {
-    flex: 1 1 100%;
-}
-
-#left {
-    flex: 1 1;
-    overflow: hidden;
-}
-
-#right {
-    z-index: -1;
-    flex: 1 1;
-    overflow: hidden;
-}
-
-.btn {
-    text-align: center;
-    line-height: 40px;
-    cursor: pointer;
-    font-weight: 300;
+nick {
+    display: block;
     padding-left: 10px;
-    padding-right: 10px;
+    padding-top: 10px;
+    font-size: 15px;
+    color: red;
 }
 
-#btn_a {
-    color: white;
-}
-#btn_b {
-    color: white;
-}
-#btn_c {
-    color: white;
-}
-#btn_d {
-    color: white;
-}
-#btn_e {
-    margin-left: auto;
-    color: white;
-}
-#btn_f {
-    color: white;
+comment {
+    display: block;
+    padding-left: 10px;
+    font-size: 15px;
+    font-style: italic;
+    padding-bottom: 10px;
 }
 
-#btn_g {
-    flex: 1 1;
+.comment_box {
+    box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    background-color: #EEFFFF;
+}
+
+.comment_add_btn {
+    width: 100%;
+    cursor: pointer;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+    font-style: italic;
+    text-align: right;
+}
+    
+.comment_form {
+    display: block;
+    margin: 10px;
+    font-size: 15px;
+    box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.comment_editor_nick {
+    box-sizing: border-box;
+    border: none;
+    display: block;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #EFFFFF;
+    color: black;
+    width: 100%;
+}
+
+.comment_editor_text {
+    box-sizing: border-box;
+    display: block;
+    border: none;
+    height: 100px;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #EAFAFA;
+    color: black;
+    width: 100%;
+}
+
+.comment_editor_send {
+    cursor: pointer;
+    display: block;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #DAEAEA;
+    color: black;
 }

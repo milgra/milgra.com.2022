@@ -5,8 +5,6 @@ milgra = {            // namespace variables
     items   : [] ,    // current items
     opened  : {} ,    // opened items
     counts  : {} ,    // folder counter
-    //colors  : [ "#667799", "#6F7F9F", "#AACCEE" ] , // item colors
-    colors  : [ "#CCDDEE", "#DDEEFF", "#AACCEE" ] , // item colors
     months  : [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ] // month names for blog 
 }
 
@@ -17,7 +15,7 @@ milgra_init = function()
     milgra.list = document.createElement( "div" )
     milgra.list.id = "main_list"
 
-    document.getElementById( "center" ).appendChild( milgra.list )
+    document.getElementById( "main_bottom_center" ).appendChild( milgra.list )
 
     zenlist_attach( milgra.list,
 		    50,
@@ -227,29 +225,25 @@ milgra_folder_item = function( item )
     let parts = item.path.split( "/" )
  
     elem.onclick = milgra_item_click
-    elem.className = "folder_item"
+    elem.className = "list_item_folder"
     elem.listItem = item
     elem.id = item.path
 
-    info.className = "item_info"
+    info.className = "list_item_info"
     info.innerText = milgra.counts[ item.path ] + " items" // show item count in info
 
     // we show the first part - year in case of blog - by default
     
     let left = 10
     let text = parts[1]
-    let color = milgra.colors[0]
     
     if ( parts.length == 4 )
     {
 	// in case of blog, we show the month name
 	text = milgra.months[ parseInt( parts[2] ) - 1 ] + " " + parts[1]
-	color = milgra.colors[0]
 	left = 30	
     }
 
-    elem.style.backgroundColor = color
-    //elem.style.paddingLeft = left + "px"
     elem.innerText = text
     elem.appendChild( info )
 
@@ -263,22 +257,19 @@ milgra_file_item = function ( item )
     let parts = item.path.split( "/" )
 
     elem.onclick = milgra_item_click
-    elem.className = "file_item"
+    elem.className = "list_item_file"
     elem.listItem = item
     elem.id = item.path
     
-    info.className = "item_info"
+    info.className = "list_item_info"
     info.innerText = item.path.substring( 13, 15 ) // show day in info
     if (parts.length == 3) info.innerText = parts[2].substring( 0, 4 )
     
     let text = parts[parts.length - 1]
     
     if ( parts.length == 4 ) text = text.substring( 3, text.indexOf('.html') )
-    //else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
     else text = text.substring( 0, text.indexOf(".html") )
     
-    elem.style.backgroundColor = milgra.colors[1]        
-    //elem.style.paddingLeft = 40 + "px"    
     elem.innerText = text
     elem.appendChild( info )
 
@@ -290,7 +281,7 @@ milgra_viewer_item = function( item )
     let elem = document.createElement( "div" )
     let parts = item.path.split( "/" )
     
-    elem.className = "viewer_item"
+    elem.className = "list_item_viewer"
     elem.listItem = item    
     elem.id = item.path
     
@@ -325,9 +316,9 @@ milgra_comment_item = function( item )
     elem.appendChild( info )
     elem.listItem = item
     elem.id = item.path
-    elem.className = "comment_item"
+    elem.className = "list_item_comment"
     
-    info.className = "item_info"
+    info.className = "list_item_info"
     
     elem.load = function( contentUrl )
     {
@@ -336,28 +327,16 @@ milgra_comment_item = function( item )
 	    .then( (html) => {
 
 		let button = document.createElement( "div" )
-
-		button.className = "comment_item"
-		//button.style.display = "absolute"
-		//button.style.width = "100%"
-		//button.style.margin = "auto"
-		//button.style.padding = "10px"
-		button.style.cursor = "pointer"
-		button.style.fontStyle = "italic"
-		//button.style.color = "white"
-		button.style.fontSize = "18px"
-		button.onclick = milgra_comment_click
-		
-		button.innerHTML = "Add new comment"
-
-		this.appendChild( button )
-
 		let content = document.createElement( "div" )
-		//content.className = "comment_item"
 
-		this.appendChild( content )
+		button.className = "comment_add_btn"
+		button.onclick = milgra_comment_click		
+		button.innerHTML = "Leave comment"
+
+		content.className = "comment_box"
 		
-		// show response if it is "No Comments"
+		this.appendChild( button )
+		this.appendChild( content )
 		
 		if ( html != "No Comments" ) content.innerHTML = html
 		else content.innerHTML = ""		

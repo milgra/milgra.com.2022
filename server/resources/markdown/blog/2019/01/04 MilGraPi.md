@@ -1,5 +1,5 @@
 #MilGraPi
-_Coding,Raspberry_
+_2019/01/04 Coding,Raspberry_
 
 Preparing a Raspberry Pi for OpenCV development is really time consuming, OpenCV takes hours to compile and a lot of other things have to be set up, so I just share my SD Card image here to speed up Raspberry OpenCV development for others. 
 

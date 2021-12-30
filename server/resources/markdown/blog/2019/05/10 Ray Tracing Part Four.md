@@ -1,5 +1,5 @@
 #Ray Tracing Part Four
-_3D,C,Coding_
+_2019/05/10 3D,C,Coding_
 
 Okay, we have diffuse and specular colors, refraction and reflection but the algorithm is not generic. We need a recursive function that follows the ray throughout its lifetime, splits up the ray into multiple rays in case of refraction and reflection and averages the resulting colors.
 

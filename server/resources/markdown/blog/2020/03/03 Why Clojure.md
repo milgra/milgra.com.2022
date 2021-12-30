@@ -1,5 +1,5 @@
 #Why Clojure?
-_Clojure,Coding_
+_2020/03/03 Clojure,Coding_
 
 This will be the post where I try to explain why Clojure is an awesome language, It will be updated continuously.
 

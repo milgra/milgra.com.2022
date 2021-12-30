@@ -1,5 +1,5 @@
 #The new milgra.com is ready
-_Clojure,Datomic_
+_2020/03/03 Clojure,Datomic_
 
 After four weeks of development ( 2 weeks learning datomic/css/compojure/reagent and setting up a basic project, 2 weeks finishing/refining ) my new site is ready, it was a pleasant ride!
 

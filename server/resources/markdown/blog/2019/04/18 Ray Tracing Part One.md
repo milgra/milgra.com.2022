@@ -1,5 +1,5 @@
 #Ray Tracing Part One
-_3D,C,Coding_
+_2019/04/10 3D,C,Coding_
 
 Let's create a simple ray tracing engine just for fun and to showcase how simple and how CPU intensive the underlying algorithm is compared to rasterization.
 We won't use any libraries, frameworks, GPU drivers and other terrible things, let's stick with the linux framebuffer and the standard C libraries, it still can be done within a hundred code lines.

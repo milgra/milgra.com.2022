@@ -1,5 +1,5 @@
 #Ray Tracing Part Two
-_3D,C,Coding_
+_2019/04/24 3D,C,Coding_
 
 Let's create a movable camera first. In the first part we fixed the camera to the z axis and the camera window was lying on the xy plane so it was simple to build up the camera window grid. But if we want to move the focus point or the target point to an arbitrary place in the 3D space we have to build up the camera window grid in the 3D space.
 We get the camera window normal by substracting the focus point from the target point. To get the camera window horizontal axis we have to get the cross product of a vector lying on the xy plane ( 0 , 1 , 0 ) and the normal vector.

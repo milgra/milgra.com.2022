@@ -1,5 +1,5 @@
 #Going through changes
-_Life_
+_2020/03/03 Life_
 
 Last year I became 40 and I dropped everything that I got used to in the last 15 years for my work. And I'm totally suprised by how easy was it to learn new things and how good is my new workflow.
 

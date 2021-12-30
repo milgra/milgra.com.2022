@@ -1,4 +1,4 @@
-css sanitize
+list freeze because of comment inside viewer element
 caching
 add consts, let's where needed
 case insensitive search
