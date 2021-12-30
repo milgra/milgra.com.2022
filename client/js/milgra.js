@@ -253,7 +253,6 @@ milgra_folder_item = function( item )
 milgra_file_item = function ( item )
 {
     let elem = document.createElement( "div" )
-    let info = document.createElement( "div" )
     let parts = item.path.split( "/" )
 
     elem.onclick = milgra_item_click
@@ -261,17 +260,12 @@ milgra_file_item = function ( item )
     elem.listItem = item
     elem.id = item.path
     
-    info.className = "list_item_info"
-    info.innerText = item.path.substring( 13, 15 ) // show day in info
-    if (parts.length == 3) info.innerText = parts[2].substring( 0, 4 )
-    
     let text = parts[parts.length - 1]
     
     if ( parts.length == 4 ) text = text.substring( 3, text.indexOf('.html') )
     else text = text.substring( 0, text.indexOf(".html") )
     
     elem.innerText = text
-    elem.appendChild( info )
 
     return elem
 }
