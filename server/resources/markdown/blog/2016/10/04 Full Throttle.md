@@ -1,4 +1,3 @@
-#Full Throttle
 _Bikes_
 
 I've been learning to wheelie for 6 months now. I always wanted to do it but never took it too seriously before.

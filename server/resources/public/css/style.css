@@ -40,6 +40,11 @@ h6 {
     font-style: italic;
 }
 
+p {
+    margin-block-start: 0px;
+    margin-block-end: 10px;
+}
+
 code {
     font-family: monospace;
     font-size: 14px;
@@ -73,65 +78,69 @@ textarea:focus, input:focus{
     border-bottom : 2px solid white;
     #margin: 5px;
     #margin-left: auto;
-    #margin-right: 0px;
+    margin-right: 0px;
     #line-height: 20px;
     #width: 100%;
 }
 
 nick {
     display: block;
-    margin-top: 5px;
     padding: 10px;
     font-size: 15px;
-    font-weight: 500;
-    background-color: #AACCEE;
+    background-color: #DDEEFF;
 }
 
 comment {
     display: block;
-    padding: 10px;
     font-size: 15px;
     font-style: italic;
-    background-color: #AFCFEF;
+
+    box-shadow : 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
+    padding : 10px;
+    margin: 5px;
+    background-color: #EEFFFF;
 }
 
-.nick {
-    margin: auto;
+.comment_editor_nick {
+    box-sizing: border-box;
     border : none;
-    border-bottom : 2px solid white;
     display: block;
     margin-top: 5px;
     padding: 10px;
     font-size: 18px;
     font-weight: 500;
-    background-color: #446688;
+    background-color: #DAEAFA;
+    color: black;
+    width: 100%;
 }
 
-.comment {
-    margin: auto;
+.comment_editor_text {
+    box-sizing: border-box;
     border: none;
-    border-bottom : 2px solid white;
     display: block;
     height: 50px;
     padding: 10px;
     font-size: 18px;
-    background-color: #446688;
+    background-color: #DAEAFA;
+    color: black;
+    width: 100%;
 }
 
-.send {
+.comment_editor_send {
+    cursor: pointer;
     display: block;
     padding: 10px;
-    margin: auto;
     color: white;
     font-size: 18px;
-    background-color: #446688;
+    background-color: #DDEEFF;
+    color: black;
 }
 
 .comment_form {
     display: block;
     padding: 10px;
     font-size: 15px;
-    background-color: #446688;
+#    background-color: #446688;
 }
 
 #main {
@@ -187,9 +196,12 @@ comment {
 }
 
 #main_list {
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
     width: 100%;
     height: 100%;
-    background-color: #88AACC;
+    background-color: #445577;
 }
 
 .folder_item {
@@ -198,8 +210,11 @@ comment {
     font-style: italic;    
     cursor: pointer;
     text-align: left;
-    padding: 15px;
-    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
 }
 
 .file_item {
@@ -208,7 +223,7 @@ comment {
     cursor: pointer;
     text-align: left;
     padding: 15px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .viewer_item {
@@ -216,11 +231,17 @@ comment {
     width: 100%;
     cursor: auto;
     text-align: justify;
-    padding: 40px;
-    font-size: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #BBDDFF;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #DDEEFF;
+}
+
+.article_item {
+    box-shadow : 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
+    padding : 15px;
+    margin : 5px;
+    box-sizing: border-box;
+    background-color: #FFFFEE;
 }
 
 .comment_item {
@@ -228,11 +249,8 @@ comment {
     width: 100%;
     cursor: auto;
     text-align: justify;
-    padding: 40px;
-
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #99BBEE;
+    padding: 10px;
+    background-color: #DDEEFF;
 }
 
 .item_info {

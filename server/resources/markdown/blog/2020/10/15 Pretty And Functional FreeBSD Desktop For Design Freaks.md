@@ -1,4 +1,4 @@
-#Pretty and functional FreeBSD desktop for design freaks  
+#Pretty and Functional FreeBSD Desktop
 _FreeBSD,Unix_
 
 After one year of Linux I switched to FreeBSD. I wanted to do that right after MacOS but wifi and GPU drivers were missing from FreeBSD for my Lenovo Legion but the 13.0 CURRENT branch of FreeBSD finally has them so I could move to FreeBSD.

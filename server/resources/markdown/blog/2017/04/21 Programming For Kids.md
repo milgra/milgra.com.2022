@@ -1,4 +1,3 @@
-#Programming For Kids
 _Coding,Kids_
 
 A lot of friends asked me recently to teach a little programming to their children. After a few occasions I've decided to start a video series on youtube about programming - for kids. I proudly present the first two episodes.

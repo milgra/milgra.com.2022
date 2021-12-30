@@ -1,4 +1,3 @@
-#WebGL Performance
 _3D,C,WebGL_
 
 I'm working on a multi-platform C and OpenGL based UI renderer and displaying things in 60 fps is essential. 

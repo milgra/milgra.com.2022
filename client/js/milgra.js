@@ -5,7 +5,8 @@ milgra = {            // namespace variables
     items   : [] ,    // current items
     opened  : {} ,    // opened items
     counts  : {} ,    // folder counter
-    colors  : [ "#88AACC", "#99BBDD", "#AACCEE" ] , // item colors
+    //colors  : [ "#667799", "#6F7F9F", "#AACCEE" ] , // item colors
+    colors  : [ "#CCDDEE", "#DDEEFF", "#AACCEE" ] , // item colors
     months  : [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ] // month names for blog 
 }
 
@@ -117,9 +118,11 @@ milgra_load = function ( group , reverse , open)
 		for ( let ind = 1; ind < parts.length - 1; ind++ )
 		{
 		    folder += parts[ ind ] + "/"
-		    folders.add( folder )
 		}
+		folders.add( folder )
 	    }
+
+	    console.log("FOLDERS",folders)
 
 	    // count folders
 
@@ -240,13 +243,13 @@ milgra_folder_item = function( item )
     if ( parts.length == 4 )
     {
 	// in case of blog, we show the month name
-	text = milgra.months[ parseInt( parts[2] ) - 1 ]
-	color = milgra.colors[1]
+	text = milgra.months[ parseInt( parts[2] ) - 1 ] + " " + parts[1]
+	color = milgra.colors[0]
 	left = 30	
     }
 
     elem.style.backgroundColor = color
-    elem.style.paddingLeft = left + "px"
+    //elem.style.paddingLeft = left + "px"
     elem.innerText = text
     elem.appendChild( info )
 
@@ -274,8 +277,8 @@ milgra_file_item = function ( item )
     //else if (parts.length == 3) text = text.substring(5,text.indexOf(".html"))
     else text = text.substring( 0, text.indexOf(".html") )
     
-    elem.style.backgroundColor = milgra.colors[2]        
-    elem.style.paddingLeft = 40 + "px"    
+    elem.style.backgroundColor = milgra.colors[1]        
+    //elem.style.paddingLeft = 40 + "px"    
     elem.innerText = text
     elem.appendChild( info )
 
@@ -296,7 +299,13 @@ milgra_viewer_item = function( item )
 	fetch( contentUrl )
 	    .then( (response) => response.text() )
 	    .then( (html) => {
-		this.innerHTML = html
+		//..this.innerHTML = html
+
+		let elem = document.createElement("div")
+		elem.className = "article_item"
+		elem.innerHTML = html
+
+		this.appendChild(elem)
 	    })
     }
     
@@ -316,6 +325,7 @@ milgra_comment_item = function( item )
     elem.appendChild( info )
     elem.listItem = item
     elem.id = item.path
+    elem.className = "comment_item"
     
     info.className = "item_info"
     
@@ -332,9 +342,9 @@ milgra_comment_item = function( item )
 		//button.style.width = "100%"
 		//button.style.margin = "auto"
 		//button.style.padding = "10px"
-		button.style.backgroundColor = "#446688"
 		button.style.cursor = "pointer"
-		button.style.color = "white"
+		button.style.fontStyle = "italic"
+		//button.style.color = "white"
 		button.style.fontSize = "18px"
 		button.onclick = milgra_comment_click
 		
@@ -343,7 +353,7 @@ milgra_comment_item = function( item )
 		this.appendChild( button )
 
 		let content = document.createElement( "div" )
-		content.className = "comment_item"
+		//content.className = "comment_item"
 
 		this.appendChild( content )
 		
@@ -377,19 +387,18 @@ milgra_comment_click = function( event )
     let editor = document.createElement( "textarea" )
     let nick = document.createElement( "input" )
 
-    button.style.cursor = "pointer"
     button.onclick = function() { milgra_comment_send( elem.id, nick.value, editor.value ) }    
     button.innerText = "Send"
-    button.className = "send"
+    button.className = "comment_editor_send"
     
     editor.id = "editor"
     editor.value = "comment"
     editor.onfocus = function() { editor.value = "" }
-    editor.className = "comment"
+    editor.className = "comment_editor_text"
     
     nick.id = "nick"
     nick.value = "nick"
-    nick.className = "nick"
+    nick.className = "comment_editor_nick"
     nick.onfocus = function() { nick.value = "" }
 
     form.appendChild( nick )

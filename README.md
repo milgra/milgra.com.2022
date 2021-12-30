@@ -1,6 +1,7 @@
 css sanitize
 caching
 add consts, let's where needed
+case insensitive search
 videos should fit in width on mobiles like images
 touch scroll adaptive
 open/close group

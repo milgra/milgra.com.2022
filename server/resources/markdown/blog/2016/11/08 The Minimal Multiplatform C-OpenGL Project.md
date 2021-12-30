@@ -1,6 +1,4 @@
-The Minimal Multiplatform C/OpenGL Project
-2016-11-08T23:59:00
-3D,C,OpenGL,WebGL
+_3D,C,OpenGL,WebGL_
 
 In the past year I've created a few very nice wrappers for different platforms and operating systems that wrap the same controller file to simplify multi-platform C development for my stuff. For your edification and pleasure they are now yours on github!
 

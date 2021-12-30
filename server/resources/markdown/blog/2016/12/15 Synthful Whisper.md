@@ -1,6 +1,4 @@
-Synthful Whisper
-2016-12-15T16:33:00
-Music
+_Music_
 
 Synthwave revival is really kind for my heart and this sweetness is the actual peak for me : 
 

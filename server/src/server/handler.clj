@@ -44,7 +44,7 @@
           (let [unix (System/currentTimeMillis)
                 time (get @ips (:remote-addr request))
                 okay (if time
-                       (> (- unix time) (* 1000 60 60 24))
+                       (> (- unix time) (* 1000 60 60))
                        true)]
             (if okay ;; check if request came within 24 hours
               (let [path (str "resources/public/" path)]
