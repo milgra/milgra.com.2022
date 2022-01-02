@@ -8,7 +8,7 @@ milgra = {            // namespace variables
     months  : [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ] // month names for blog 
 }
 
-milgra_init = function()
+milgra_init = () =>
 {
     // init zenlist component
     
@@ -28,7 +28,7 @@ milgra_init = function()
     
     const search = document.getElementById( "milgra_search_input" )
  
-    search.onkeyup = function ({key}) {
+    search.onkeyup = ({key}) => {
 	if (key === "Enter") {
 	    milgra_search(search.value)
 	    search.blur()
@@ -68,25 +68,25 @@ milgra_init = function()
     }
 }
 
-milgra_start_anim = function()
+milgra_start_anim = () =>
 {
     if ( !milgra.animate ) window.requestAnimationFrame( milgra_step )
     milgra.animate = true
 }
 
-milgra_stop_anim = function()
+milgra_stop_anim = () =>
 {
     milgra.animate = false
 }
 
-milgra_step = function( timestamp )
+milgra_step = ( timestamp ) =>
 {
     zenlist_update( milgra.list )
 
     if ( milgra.animate ) window.requestAnimationFrame( milgra_step )
 }
 
-milgra_load = function ( group , reverse , open)
+milgra_load = ( group , reverse , open) =>
 {
     milgra.group = group
     const url = "items/" + group
@@ -155,7 +155,7 @@ milgra_load = function ( group , reverse , open)
 	})
 }
 
-milgra_search = function( text )
+milgra_search = ( text ) =>
 {
     let url = "items/search=" + text
     
@@ -171,7 +171,7 @@ milgra_search = function( text )
 	})
 }
 
-milgra_comment_send = function( path, nick, comment )
+milgra_comment_send = ( path, nick, comment ) =>
 {
     let body = JSON.stringify(
 	{
@@ -196,7 +196,7 @@ milgra_comment_send = function( path, nick, comment )
 	.catch( (error) => console.log( "send comment error", error ) )
 }
 
-milgra_item_for_index = function( list, index )
+milgra_item_for_index = ( list, index ) =>
 {
     if ( milgra.items.length > 0 && index < milgra.items.length && -1 < index )
     {
@@ -209,7 +209,7 @@ milgra_item_for_index = function( list, index )
     else return null;
 }
 
-milgra_destroy_item = function( item )
+milgra_destroy_item = ( item ) =>
 {
     item.id = null
     item.listItem = null
@@ -218,7 +218,7 @@ milgra_destroy_item = function( item )
     if ( item.childNodes.length > 0 ) item.childNodes[0].remove()
 }
 
-milgra_folder_item = function( item )
+milgra_folder_item = ( item ) =>
 {
     let elem = document.createElement( "div" )
     let info = document.createElement( "div" )
@@ -250,7 +250,7 @@ milgra_folder_item = function( item )
     return elem
 }
 
-milgra_file_item = function ( item )
+milgra_file_item = ( item ) =>
 {
     let elem = document.createElement( "div" )
     let parts = item.path.split( "/" )
@@ -270,7 +270,7 @@ milgra_file_item = function ( item )
     return elem
 }
 
-milgra_viewer_item = function( item )
+milgra_viewer_item = ( item ) =>
 {
     let elem = document.createElement( "div" )
     let parts = item.path.split( "/" )
@@ -279,18 +279,20 @@ milgra_viewer_item = function( item )
     elem.listItem = item    
     elem.id = item.path
     
-    elem.load = function( contentUrl )
+    elem.load = ( contentUrl ) =>
     {
 	fetch( contentUrl )
 	    .then( (response) => response.text() )
 	    .then( (html) => {
 		//..this.innerHTML = html
 
-		let elem = document.createElement("div")
-		elem.className = "article_item"
-		elem.innerHTML = html
+		let article = document.createElement("div")
+		article.className = "article_item"
+		article.innerHTML = html
 
-		this.appendChild(elem)
+		elem.appendChild(article)
+
+		zenlist_update(milgra.list)
 	    })
     }
     
@@ -299,7 +301,7 @@ milgra_viewer_item = function( item )
     return elem
 }
 
-milgra_comment_item = function( item )
+milgra_comment_item = ( item ) =>
 {
     let elem = document.createElement( "div" )
     let info = document.createElement( "div" )
@@ -314,7 +316,7 @@ milgra_comment_item = function( item )
     
     info.className = "list_item_info"
     
-    elem.load = function( contentUrl )
+    elem.load = ( contentUrl ) =>
     {
 	fetch( contentUrl )
 	    .then( (response) => response.text() )
@@ -329,11 +331,13 @@ milgra_comment_item = function( item )
 
 		content.className = "comment_box"
 		
-		this.appendChild( button )
-		this.appendChild( content )
+		elem.appendChild( button )
+		elem.appendChild( content )
 		
 		if ( html != "No Comments" ) content.innerHTML = html
-		else content.innerHTML = ""		
+		else content.innerHTML = ""
+
+		zenlist_update(milgra.list)
 	    })
     }
     
@@ -342,14 +346,14 @@ milgra_comment_item = function( item )
     return elem
 }
 
-milgra_item_click = function( event )
+milgra_item_click = ( event ) =>
 {
     let elem = event.currentTarget
 
     milgra_item_open( elem.listItem )
 }
 
-milgra_comment_click = function( event )
+milgra_comment_click = ( event ) =>
 {
     let elem = event.currentTarget.parentNode
 
@@ -360,19 +364,19 @@ milgra_comment_click = function( event )
     let editor = document.createElement( "textarea" )
     let nick = document.createElement( "input" )
 
-    button.onclick = function() { milgra_comment_send( elem.id, nick.value, editor.value ) }    
+    button.onclick = () => { milgra_comment_send( elem.id, nick.value, editor.value ) }    
     button.innerText = "Send"
     button.className = "comment_editor_send"
     
     editor.id = "editor"
     editor.value = "comment"
-    editor.onfocus = function() { editor.value = "" }
+    editor.onfocus = () => { editor.value = "" }
     editor.className = "comment_editor_text"
     
     nick.id = "nick"
     nick.value = "nick"
     nick.className = "comment_editor_nick"
-    nick.onfocus = function() { nick.value = "" }
+    nick.onfocus = () => { nick.value = "" }
 
     form.appendChild( nick )
     form.appendChild( editor )
@@ -381,9 +385,11 @@ milgra_comment_click = function( event )
     elem.insertBefore( form, elem.childNodes[0] )
     
     event.currentTarget.remove()
+
+    zenlist_update(milgra.list)
 }
 
-milgra_item_open = function( { path, type } )
+milgra_item_open = ( { path, type } ) =>
 {
     if ( type == "file" )
     {
@@ -407,7 +413,7 @@ milgra_item_open = function( { path, type } )
     }	
 }
 
-milgra_insert_items = function( newItems )
+milgra_insert_items = ( newItems ) =>
 {
     if ( newItems.length > 0 )
     {
@@ -430,7 +436,7 @@ milgra_insert_items = function( newItems )
     }
 }
 
-milgra_delete_item = function( item )
+milgra_delete_item = ( item ) =>
 {
     if ( milgra.items.length > 0 )
     {
@@ -471,4 +477,3 @@ milgra_delete_item = function( item )
 	if ( index > -1 ) zenlist_delete( milgra.list, index, count )
     }
 }
-

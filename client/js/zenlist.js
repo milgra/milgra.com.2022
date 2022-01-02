@@ -1,9 +1,9 @@
-zenlist_attach = function (list,
-			   preload_size,
-			   newitem_fun,
-			   delitem_fun,
-			   startanim_fun,
-			   stopanim_fun)
+zenlist_attach = (list,
+		  preload_size,
+		  newitem_fun,
+		  delitem_fun,
+		  startanim_fun,
+		  stopanim_fun) =>
 {
     list.items = []  // item html elements
     list.top_ind = 0 // current top index
@@ -30,14 +30,14 @@ zenlist_attach = function (list,
     list.style.overflow = "hidden" // this is a must for the list, don't set it from css
 }
 
-zenlist_touch_start = function( event )
+zenlist_touch_start = ( event ) =>
 {
     let list = event.currentTarget
 
     list.touch = event.touches[0].pageY
 }
 
-zenlist_touch_move = function( event )
+zenlist_touch_move = ( event ) =>
 {
     let list = event.currentTarget
     let delta = list.touch - event.touches[0].pageY
@@ -49,7 +49,7 @@ zenlist_touch_move = function( event )
     list.startanim_fun()
 }
 
-zenlist_wheel = function( event )
+zenlist_wheel = ( event ) =>
 {
     let list = event.currentTarget
     
@@ -59,7 +59,7 @@ zenlist_wheel = function( event )
     list.startanim_fun()
 }
 
-zenlist_reset = function( list )
+zenlist_reset = ( list ) =>
 {
     list.full = false
 
@@ -78,7 +78,7 @@ zenlist_reset = function( list )
     list.startanim_fun()
  }
 
-zenlist_insert = function( list, index, size )
+zenlist_insert = ( list, index, size ) =>
 {
     if ( list.top_ind <= index  && index <= list.bot_ind )
     {
@@ -140,7 +140,7 @@ zenlist_insert = function( list, index, size )
     list.startanim_fun()
 }
 
-zenlist_delete = function( list , index , size )
+zenlist_delete = ( list , index , size ) =>
 {
     if ( list.top_ind <= index && index <= list.bot_ind )
     {
@@ -177,7 +177,7 @@ zenlist_delete = function( list , index , size )
     list.startanim_fun()
 }
 
-zenlist_update = function( list )
+zenlist_update = ( list ) =>
 {
     let list_rect = list.getBoundingClientRect() // list rect
     let prel_top = list_rect.top - list.preload_size // preload top
@@ -231,7 +231,7 @@ zenlist_update = function( list )
 	{		
 	    let head = list.items[0]
 	    let rect = head.getBoundingClientRect()
-	    
+
 	    if ( rect.top >= prel_top ) // fill up head
 	    {
 		let item = list.newitem_fun( list,list.top_ind - 1 )
