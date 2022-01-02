@@ -184,23 +184,20 @@ zenlist_update = ( list ) =>
     let prel_bot = list_rect.bottom + list.preload_size // preload bottom
 
     // check if any item's height is changed in the meantime
-    
-    if ( list.speed > 0.01 ) 
-    {
-	let changed = false
-	for ( let item of list.items )
-	{
-	    let rect = item.getBoundingClientRect()
-	    if ( item.old_height < rect.height )
-	    {
-		list.top_pos -= rect.height - item.old_height
-		item.old_height = rect.height
-		changed = true
-	    }
-	}
 
-	if ( changed ) for ( item of list.items ) item.style.top = Math.round(list.top_pos) + "px"
+    let changed = false
+    for ( let item of list.items )
+    {
+	let rect = item.getBoundingClientRect()
+	if ( (item == list.items[0] || list.speed > 0.01 ) && item.old_height < rect.height )
+	{
+	    list.top_pos -= rect.height - item.old_height
+	    item.old_height = rect.height
+	    changed = true
+	}
     }
+
+    if ( changed ) for ( item of list.items ) item.style.top = Math.round(list.top_pos) + "px"
 
     let iter = 0 // guard loop against wrong css settings
     
@@ -318,7 +315,6 @@ zenlist_update = ( list ) =>
     // move
 
     list.top_pos += list.speed
-    list.speed *= 0.8
 
     if ( list.speed > 0.01 || list.speed < -0.01 )
     {
@@ -327,9 +323,10 @@ zenlist_update = ( list ) =>
     }
     else stop_flag = true
 
+    list.speed *= 0.8
+    
     if ( list.repos )
     {
-	
 	// bounce
 
 	let head = list.items[0]

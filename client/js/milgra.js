@@ -47,8 +47,10 @@ milgra_init = () =>
 	const path = params.get("show_file")
 	
 	milgra.items = [ {"path" : path , "type" : "file" } ,
-			 {"path" : path , "type" : "viewer" }  ,
-			 {"path" : "comments/" + path , "type" : "comment" } ]
+			 {"path" : path , "type" : "viewer" } 
+			// {"path" : "comments/" + path , "type" : "comment" }
+
+		       ]
 
 	zenlist_reset( milgra.list )
     }
@@ -112,15 +114,15 @@ milgra_load = ( group , reverse , open) =>
 	    {
 		let parts = path.split( "/" )
 		let folder = group + "/"
+		let added = false
 		
 		for ( let ind = 1; ind < parts.length - 1; ind++ )
 		{
 		    folder += parts[ ind ] + "/"
+		    added = true
 		}
-		folders.add( folder )
+		if (added) folders.add( folder )
 	    }
-
-	    console.log("FOLDERS",folders)
 
 	    // count folders
 
@@ -171,11 +173,11 @@ milgra_search = ( text ) =>
 	})
 }
 
-milgra_comment_send = ( path, nick, comment ) =>
+milgra_comment_send = ( elem, path, nick, comment ) =>
 {
     let body = JSON.stringify(
 	{
-	    "path" : path ,
+	    "path" : "comments/" + path ,
 	    "nick" : nick ,
 	    "comment" : comment
 	})
@@ -186,20 +188,35 @@ milgra_comment_send = ( path, nick, comment ) =>
 	method : "POST" ,
 	body : body
     }
-    
+
+    let comment_content = elem.childNodes[ elem.childNodes.length - 2]
+    let comment_form = elem.childNodes[ elem.childNodes.length - 1]
+    let inner_html = comment_content.innerHTML
+
     fetch( url, params )
 	.then( (response) => response.json() )
 	.then( (data) => {
-	    milgra_delete_item( {"path" : path , "type" : "comment"} )
-	    milgra_insert_items( [ {"path" : path , "type" : "comment"} ] )
+
+	    if (data["success"]) inner_html = inner_html + "<nick>" + nick + "</nick>" + "<comment>" + comment + "</comment>"
+	    else inner_html = inner_html + "<nick>SERVER ERROR:" + data["error"] + "</nick>"
+	    
+	    comment_content.innerHTML = inner_html
+	    comment_form.remove()
 	})
-	.catch( (error) => console.log( "send comment error", error ) )
+	.catch( (error) => {
+
+	    inner_html = inner_html + "<br>SERVER ERROR:" + error
+	    comment_content.innerHTML = inner_html
+	    comment_form.remove()            
+        })
 }
 
 milgra_item_for_index = ( list, index ) =>
 {
     if ( milgra.items.length > 0 && index < milgra.items.length && -1 < index )
     {
+	console.log("ITEM FOR INDEX",index)
+	
 	const item = milgra.items[index]
 	if ( item.type == "file" ) return milgra_file_item( item )
 	if ( item.type == "folder" ) return milgra_folder_item( item )
@@ -211,6 +228,7 @@ milgra_item_for_index = ( list, index ) =>
 
 milgra_destroy_item = ( item ) =>
 {
+    console.log("DESTROY",item.id)
     item.id = null
     item.listItem = null
     item.loadContent = null
@@ -243,6 +261,8 @@ milgra_folder_item = ( item ) =>
 	text = milgra.months[ parseInt( parts[2] ) - 1 ] + " " + parts[1]
 	left = 30	
     }
+
+    console.log("TEXT",text,item.path)
 
     elem.innerText = text
     elem.appendChild( info )
@@ -291,6 +311,37 @@ milgra_viewer_item = ( item ) =>
 		article.innerHTML = html
 
 		elem.appendChild(article)
+
+		zenlist_update(milgra.list)
+
+		// load comment
+
+		elem.load_comments("comments/" + item.path)
+	    })
+    }
+
+    elem.load_comments = ( commentUrl ) =>
+    {
+	fetch( commentUrl )
+	    .then( (response) => response.text() )
+	    .then( (html) => {
+
+		console.log("load comments",commentUrl,html)
+
+		let button = document.createElement( "div" )
+		let content = document.createElement( "div" )
+
+		button.className = "comment_add_btn"
+		button.onclick = milgra_comment_click		
+		button.innerHTML = "Leave comment"
+
+		content.className = "comment_box"
+		
+		elem.appendChild( content )
+		elem.appendChild( button )
+		
+		if ( html != "No Comments" ) content.innerHTML = html
+		else content.innerHTML = ""
 
 		zenlist_update(milgra.list)
 	    })
@@ -364,7 +415,7 @@ milgra_comment_click = ( event ) =>
     let editor = document.createElement( "textarea" )
     let nick = document.createElement( "input" )
 
-    button.onclick = () => { milgra_comment_send( elem.id, nick.value, editor.value ) }    
+    button.onclick = () => { milgra_comment_send( elem, elem.id, nick.value, editor.value ) }    
     button.innerText = "Send"
     button.className = "comment_editor_send"
     
@@ -382,7 +433,7 @@ milgra_comment_click = ( event ) =>
     form.appendChild( editor )
     form.appendChild( button )
 
-    elem.insertBefore( form, elem.childNodes[0] )
+    elem.appendChild( form)
     
     event.currentTarget.remove()
 
@@ -407,8 +458,9 @@ milgra_item_open = ( { path, type } ) =>
 
 	    // add viewer and comment list item
 
-	    milgra_insert_items( [ {"path" : path , "type" : "viewer" }  ,
-				   {"path" : "comments/" + path , "type" : "comment" } ] )
+	    milgra_insert_items( [ {"path" : path , "type" : "viewer" }
+				 //  {"path" : "comments/" + path , "type" : "comment" }
+				 ] )
 	}
     }	
 }

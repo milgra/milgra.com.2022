@@ -4,7 +4,7 @@ _2019/05/10 3D,C,Coding_
 Okay, we have diffuse and specular colors, refraction and reflection but the algorithm is not generic. We need a recursive function that follows the ray throughout its lifetime, splits up the ray into multiple rays in case of refraction and reflection and averages the resulting colors.
 
 
-<code>
+```
 uint32_t get_ray_color( v3_t s_p , v3_t e_p , rect_t* source_rect , uint32_t* iterations_u)
 {
 	uint32_t color = bckgrnd_col_u;
@@ -94,7 +94,7 @@ uint32_t get_ray_color( v3_t s_p , v3_t e_p , rect_t* source_rect , uint32_t* it
 
 	return color;
 }
-</code>
+```
 
 As you see not much happened compared to the previous version, I just pulled out the ray handling part from the screen window point iteration loop and created a more generic function from it. To make things more spectacular arrow keys now move the first rectangle instead of the camera so you can see shadows, refraction and reflection better on the second rectangle.
 

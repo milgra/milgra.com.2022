@@ -8,7 +8,7 @@ We need two things in our scene : a camera, defined by a focus point and a camer
 
 Check out the code :
 
-<code>
+```bash
 #include <stdio.h>
 #include <stdint.h>	// for uint8 and uint32
 #include <fcntl.h>		// for open()
@@ -86,7 +86,6 @@ uint32_t pixel_color( uint8_t r, uint8_t g, uint8_t b, struct fb_var_screeninfo 
 
 int main( )
 {
-
 	// get framebuffer
 
 	struct fb_fix_screeninfo finfo;
@@ -220,7 +219,7 @@ int main( )
 
 	return 0;
 }
-</code>
+```
 
 In the upper part of the code we define a vector structure with three members for three dimensions and a few functions to manipulate them. ( addition, substraction, dot product, scaling and length ).
 

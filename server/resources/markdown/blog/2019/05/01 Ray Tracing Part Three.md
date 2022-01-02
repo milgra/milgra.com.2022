@@ -6,7 +6,7 @@ We will add an other rectangle, shadow and animated camera in this part.
 To use an arbitrary number of rectangles we will need a rectangle structure and an array that holds them. A rectangle  is defined by it's base point, side point and it's normal vector. We will pre-calculate the width and height of the rectangle. We  need members for transparency, diffuse and specular color also.
 
 
-<code>
+```
 #include <stdio.h>
 
 typedef struct
@@ -28,12 +28,12 @@ typedef struct
 
 int rect_cnt_i = 2;
 rect_t rectangles[ 2 ];
-</code>
+```
 
 With this we can organize intersection detection to a separate function that returns the nearest rect intersecting with the given line.
 
 
-<code>
+```
 #include <stdio.h>
 
 nearest_res_t get_nearest_rect( v3_t start_p , v3_t end_p , rect_t* exclude_r )
@@ -100,11 +100,11 @@ nearest_res_t get_nearest_rect( v3_t start_p , v3_t end_p , rect_t* exclude_r )
 	return result;
 	
 }
-</code>
+```
 
 To introduce shadows we need to modify the window grid iteration loop a little. If there is an obstacle ( rectangle ) between the intersection point and the light we set that point to the shadow color, if not we calculate diffuse and specular color.
 
-<code>
+```
 #include <stdio.h>
 
 // create rays going through the camera window quad starting from the top left corner
@@ -182,18 +182,18 @@ for ( int row_i = 0 ; row_i < grid_rows_i ; row_i++ )
 	}
 
 }
-</code>
+```
 
 Finally let's make the camera movable with the arrow keys. Let's put the whole grid iteration in an infinite loop and check for keypress in every iteration.
 
-<code>
+```
 #include <stdio.h>
 
 int code = getch( );
 
 if ( code == 67 ) camera_focus_p.x += 10.0;
 if ( code == 68 ) camera_focus_p.x -= 10.0;
-</code>
+```
 
 Final result :
 

@@ -37,7 +37,7 @@
            result)))
   
   (POST "/comment" {{:keys [path nick comment]} :body :as request}
-        ;; todo check original post existence
+        ;; todo check original post existence, check if path contains comments/
         (if (or (clojure.string/starts-with? path "/")
                 (clojure.string/includes? path "..")) 
           (response/response {"error" "not today"}) ;; avoid hackers to create files outside www folder
@@ -53,8 +53,8 @@
                 (with-open [wrtr (io/writer path :append true)]
                   (.write wrtr (str "<nick>" nick "</nick>"))
                   (.write wrtr (str "<comment>" comment "</comment>"))
-                (response/response {"success" "true"}))
-              (response/response {"error" "ip is locked for 24 hours"}))))))
+                (response/response {"success" "true"})))
+              (response/response {"error" "ip is locked for 1 hour"})))))
 
   (route/not-found "No Comments"))
 

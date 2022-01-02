@@ -8,7 +8,7 @@ With that we can get the vertical axis with another cross product. If we have th
 ![raytrace](/images/20190424_camera.png)
 
 
-<code>
+```
 #include <stdio.h>
 
 v3_t camera_focus_p = { 40.0 , 20.0 , 100.0 };
@@ -62,12 +62,12 @@ void framebuffer_drawsquare( int sx , int sy , int size , uint32_t color )
 		}
 	}
 }
-</code>
+```
 
 Finally let's create a light source and let's create a specularish reflection of the light from the surface. It's quite simple, we will mirror the light ray on the surface normal and check if the resulting vector'angle is close enought to the focus point - intersection point vector's angle.
 
 
-<code>
+```
 #include <stdio.h>
 
 // set up light
@@ -97,7 +97,7 @@ uint32_t color = coloru << 24 | coloru << 16 | coloru << 8 | 0xFF;
 
 framebuffer_drawsquare( screen_grid_x , screen_grid_y , screen_step_size_f , color );
 
-</code>
+```
 
 Final result :
 
