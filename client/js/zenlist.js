@@ -1,9 +1,7 @@
 zenlist_attach = (list,
 		  preload_size,
 		  newitem_fun,
-		  delitem_fun,
-		  startanim_fun,
-		  stopanim_fun) =>
+		  delitem_fun) =>
 {
     list.items = []  // item html elements
     list.top_ind = 0 // current top index
@@ -20,21 +18,30 @@ zenlist_attach = (list,
     
     list.newitem_fun = newitem_fun        // item generator
     list.delitem_fun = delitem_fun        // item destroyer
-    list.stopanim_fun = stopanim_fun
-    list.startanim_fun = startanim_fun
     
-    list.addEventListener( "wheel", zenlist_wheel,{ passive : true } )
-    list.addEventListener( 'touchmove', zenlist_touch_move, { passive : true } )
-    list.addEventListener( 'touchstart', zenlist_touch_start, { passive : true } )
-
     list.style.overflow = "hidden" // this is a must for the list, don't set it from css
+
+    list.addEventListener( "wheel", zenlist_wheel)
+    list.addEventListener( 'touchmove', zenlist_touch_move)
+    list.addEventListener( 'touchstart', zenlist_touch_start)
+    list.addEventListener( 'touchend', zenlist_touch_end)
+    list.addEventListener( 'touchcancel', zenlist_touch_cancel)
 }
 
 zenlist_touch_start = ( event ) =>
 {
     let list = event.currentTarget
-
     list.touch = event.touches[0].pageY
+}
+
+zenlist_touch_end = ( event ) =>
+{
+    let list = event.currentTarget
+}
+
+zenlist_touch_cancel = ( event ) =>
+{
+    let list = event.currentTarget
 }
 
 zenlist_touch_move = ( event ) =>
@@ -46,17 +53,33 @@ zenlist_touch_move = ( event ) =>
     list.speed -= delta / 4
     list.full = false
 
-    list.startanim_fun()
+    zenlist_start_anim(list)
 }
 
 zenlist_wheel = ( event ) =>
-{
+{ 
     let list = event.currentTarget
-    
+
     list.speed -= event.deltaY / 4
     list.full = false
 
-    list.startanim_fun()
+    zenlist_start_anim(list)
+}
+
+zenlist_start_anim = (list) =>
+{
+    if ( !list.interval ) list.interval = setInterval(zenlist_step, 15,list)
+}
+
+zenlist_stop_anim = (list) =>
+{
+    if ( list.interval ) clearInterval( list.interval )
+    list.interval = null
+}
+
+zenlist_step = (list) =>
+{
+    zenlist_update( milgra.list )
 }
 
 zenlist_reset = ( list ) =>
@@ -75,7 +98,7 @@ zenlist_reset = ( list ) =>
     list.top_ind = 0
     list.top_pos = 0
 
-    list.startanim_fun()
+    zenlist_start_anim(list)
  }
 
 zenlist_insert = ( list, index, size ) =>
@@ -137,7 +160,7 @@ zenlist_insert = ( list, index, size ) =>
     }
     else list.full = false
 
-    list.startanim_fun()
+    zenlist_start_anim(list)
 }
 
 zenlist_delete = ( list , index , size ) =>
@@ -174,7 +197,7 @@ zenlist_delete = ( list , index , size ) =>
 	}
     }
 
-    list.startanim_fun()
+    zenlist_start_anim(list)
 }
 
 zenlist_update = ( list ) =>
@@ -363,6 +386,6 @@ zenlist_update = ( list ) =>
 	}
     }
 
-    if ( stop_flag ) list.stopanim_fun()
+    if ( stop_flag ) zenlist_stop_anim(list)
 }
 

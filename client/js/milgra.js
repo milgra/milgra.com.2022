@@ -1,7 +1,6 @@
 milgra = {            // namespace variables
     list    : null ,  // infinite scroller element
     group   : null ,  // file group ( blog, apps, tabs, work )
-    animate : false , // trigger list animation
     items   : [] ,    // current items
     opened  : {} ,    // opened items
     counts  : {} ,    // folder counter
@@ -20,9 +19,7 @@ milgra_init = () =>
     zenlist_attach( milgra.list,
 		    50,
 		    milgra_item_for_index,
-		    milgra_destroy_item,
-		    milgra_start_anim,
-		    milgra_stop_anim )
+		    milgra_destroy_item)
 
     // init search
     
@@ -47,10 +44,7 @@ milgra_init = () =>
 	const path = params.get("show_file")
 	
 	milgra.items = [ {"path" : path , "type" : "file" } ,
-			 {"path" : path , "type" : "viewer" } 
-			// {"path" : "comments/" + path , "type" : "comment" }
-
-		       ]
+			 {"path" : path , "type" : "viewer" } ]
 
 	zenlist_reset( milgra.list )
     }
@@ -68,24 +62,6 @@ milgra_init = () =>
 	
 	milgra_load( "blog", true, true)
     }
-}
-
-milgra_start_anim = () =>
-{
-    if ( !milgra.animate ) window.requestAnimationFrame( milgra_step )
-    milgra.animate = true
-}
-
-milgra_stop_anim = () =>
-{
-    milgra.animate = false
-}
-
-milgra_step = ( timestamp ) =>
-{
-    zenlist_update( milgra.list )
-
-    if ( milgra.animate ) window.requestAnimationFrame( milgra_step )
 }
 
 milgra_load = ( group , reverse , open) =>
@@ -215,20 +191,16 @@ milgra_item_for_index = ( list, index ) =>
 {
     if ( milgra.items.length > 0 && index < milgra.items.length && -1 < index )
     {
-	console.log("ITEM FOR INDEX",index)
-	
 	const item = milgra.items[index]
 	if ( item.type == "file" ) return milgra_file_item( item )
 	if ( item.type == "folder" ) return milgra_folder_item( item )
 	if ( item.type == "viewer" ) return milgra_viewer_item( item )
-	if ( item.type == "comment" ) return milgra_comment_item( item )
     }
     else return null;
 }
 
 milgra_destroy_item = ( item ) =>
 {
-    console.log("DESTROY",item.id)
     item.id = null
     item.listItem = null
     item.loadContent = null
@@ -261,8 +233,6 @@ milgra_folder_item = ( item ) =>
 	text = milgra.months[ parseInt( parts[2] ) - 1 ] + " " + parts[1]
 	left = 30	
     }
-
-    console.log("TEXT",text,item.path)
 
     elem.innerText = text
     elem.appendChild( info )
@@ -352,51 +322,6 @@ milgra_viewer_item = ( item ) =>
     return elem
 }
 
-milgra_comment_item = ( item ) =>
-{
-    let elem = document.createElement( "div" )
-    let info = document.createElement( "div" )
-    let parts = item.path.split( "/" )
-
-    let paddingLeft = 0
-    
-    elem.appendChild( info )
-    elem.listItem = item
-    elem.id = item.path
-    elem.className = "list_item_comment"
-    
-    info.className = "list_item_info"
-    
-    elem.load = ( contentUrl ) =>
-    {
-	fetch( contentUrl )
-	    .then( (response) => response.text() )
-	    .then( (html) => {
-
-		let button = document.createElement( "div" )
-		let content = document.createElement( "div" )
-
-		button.className = "comment_add_btn"
-		button.onclick = milgra_comment_click		
-		button.innerHTML = "Leave comment"
-
-		content.className = "comment_box"
-		
-		elem.appendChild( button )
-		elem.appendChild( content )
-		
-		if ( html != "No Comments" ) content.innerHTML = html
-		else content.innerHTML = ""
-
-		zenlist_update(milgra.list)
-	    })
-    }
-    
-    elem.load( item.path )
-    
-    return elem
-}
-
 milgra_item_click = ( event ) =>
 {
     let elem = event.currentTarget
@@ -458,9 +383,7 @@ milgra_item_open = ( { path, type } ) =>
 
 	    // add viewer and comment list item
 
-	    milgra_insert_items( [ {"path" : path , "type" : "viewer" }
-				 //  {"path" : "comments/" + path , "type" : "comment" }
-				 ] )
+	    milgra_insert_items( [ {"path" : path , "type" : "viewer" } ] )
 	}
     }	
 }
@@ -507,19 +430,13 @@ milgra_delete_item = ( item ) =>
 	    {
 		if ( type == "file" )
 		{
-		    if (oneType == "viewer" || oneType == "comment")
+		    if (oneType == "viewer")
 		    {
 			milgra.items.splice( ind, 1 )
 			count++
 			index = ind
 			
 		    }
-		}
-		if ( type == "comment" )
-		{
-		    milgra.items.splice( ind, 1 )
-		    count++
-		    index = ind
 		}
 	    }
 	}
