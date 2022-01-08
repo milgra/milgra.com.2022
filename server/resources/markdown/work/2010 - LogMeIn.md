@@ -1,8 +1,4 @@
-2010 - 2018 LogMeIn Inc.
+#2010 - 2013, 2015 - 2018 LogMeIn Inc.
 
-join.me flash, javascript, iOS, MacOS clients
+After failing with our own company in 2009 I started working for LogMeIn Inc, a very successful post-startup company. I worked almost on all products, did actionscript, javascript, Objective-C, C, C++, Python, Ruby programming. My favorite part was working on the embedded C clients for microcontrollers in  for the product Xively, which is now part of Google's ioT portfolio.
 
-Xively embedded RTMP clients for microcontrollers
-
-
-Article - Sound Synthesis

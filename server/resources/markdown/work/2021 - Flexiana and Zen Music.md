@@ -1,3 +1,3 @@
-Started working at Flexiana
+# 2021 Started working at Flexiana
 
-Clojure-focused company
+Flexiana is a company that gathers clojure programmers and outsources them to projects and they are becoming the third biggest Clojure programmer employers in the world. A friend of mine invited me to the company and after four rounds of interview I was hired. This is my current workplace.
