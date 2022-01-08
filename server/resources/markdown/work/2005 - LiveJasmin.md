@@ -6,4 +6,4 @@ The stack was based on Flash, servers were Flash Media Servers.
 
 We became the biggest adult streaming service in the world during my tech lead.
 
-WBy 2008 we used 80 percent of Hungary's international bandwidth.
+By 2008 we used 80 percent of Hungary's international bandwidth.
