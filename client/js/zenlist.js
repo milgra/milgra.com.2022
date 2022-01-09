@@ -12,8 +12,8 @@ zenlist_attach = (list,
 
     list.touch = 0.0   // last y position of finger
     list.speed = 0.0   // current scroll speed
+    list.delta = 0.0   // last touch delta
     list.top_pos = 0.0 // current position of top list
-    list.last_tch = 0     // last touch timestamp
     
     list.preload_size = preload_size // preload distance from top and bottom
     
@@ -33,12 +33,14 @@ zenlist_touch_start = ( event ) =>
 {
     let list = event.currentTarget
     list.touch = event.touches[0].pageY
-    list.last_tch = event.timeStamp
 }
 
 zenlist_touch_end = ( event ) =>
 {
     let list = event.currentTarget
+    list.speed = list.delta
+
+    zenlist_start_anim(list)
 }
 
 zenlist_touch_cancel = ( event ) =>
@@ -48,17 +50,14 @@ zenlist_touch_cancel = ( event ) =>
 
 zenlist_touch_move = ( event ) =>
 {
-    console.log("MOVE",event)
     let list = event.currentTarget
-    let delta = list.touch - event.touches[0].pageY
-    let time = event.timeStamp - list.last_tch
-    list.last_tch = event.timeStamp
     
+    list.delta = event.touches[0].pageY - list.touch
     list.touch = event.touches[0].pageY
-    list.speed -= delta / 2
     list.full = false
 
-    zenlist_start_anim(list)
+    list.top_pos += list.delta
+    zenlist_update( list )
 }
 
 zenlist_wheel = ( event ) =>
