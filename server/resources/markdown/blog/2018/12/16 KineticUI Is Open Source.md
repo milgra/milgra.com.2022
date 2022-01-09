@@ -1,5 +1,5 @@
 # KineticUI Is Open Source
-_C,Coding_
+_2018/12/16 C,Coding_
 
 I really like UI renderers. I really like beautiful UI's. I'm really not satisfied with the state of UI currently. With todays technology, super sophisticated animations, font animation can be done and should be used. This is my take on a modern, smooth UI renderer. 
 

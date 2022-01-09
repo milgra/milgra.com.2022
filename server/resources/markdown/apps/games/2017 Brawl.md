@@ -1,7 +1,7 @@
 #Brawl
 _2D,Action,C,Coding,Sidescroller_
 
-![Icon](/images/brawl_icon.png)
+![Icon](/images/apps/brawl_icon.png)
 
 Brawl is a game about intense action with super realistic physics. You have to lead your gang to victory in a crime-infected town.
 

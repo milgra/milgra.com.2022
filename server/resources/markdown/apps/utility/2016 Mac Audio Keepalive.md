@@ -1,7 +1,7 @@
 #Mac Audio Keepalive
 _C,Mac,Music_
 
-![Icon](/images/mak_icon.png)
+![Icon](/images/apps/mak_icon.png)
 
 Do you use an optical audio cable or HDMI to connect your mac and your amplifier? Do you experience one second silences in high fidelity music, lost words and lost sounds in movies? Well, it's not your nor your hardware's fault - it's an energy saving feature of these audio interfaces. And Audio Keepalive is the solution for you!!!
 

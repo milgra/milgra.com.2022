@@ -1,7 +1,7 @@
 #AirPods Sound Quality Fixer
 _Audio,C,Coding_
 
-![Icon](/images/asqf_icon.png)
+![Icon](/images/apps/asqf_icon.png)
 
 **...And Battery Life Enhancer**
 

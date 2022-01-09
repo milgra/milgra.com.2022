@@ -1,7 +1,7 @@
 #Mac Media Key Forwarder
 _C,Coding,Music_
 
-![Icon](/images/mmkf_icon.png)
+![Icon](/images/apps/mmkf_icon.png)
 
 Forwards media keys to iTunes or Spotify directly.
 

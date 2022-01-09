@@ -39,11 +39,11 @@ First set up the ipv4 address records (A) for the domain, the mail and the www s
 ```
 record : A
 name : @
-value : 116.203.87.141 86400
+value : 116.203.87.141
 
 record : A
 name : mail.milgra.com
-value : 78.47.127.52 86400
+value : 78.47.127.52
 
 record : A
 name : www.milgra.com
@@ -74,7 +74,7 @@ name : @
 value : mail
 ```
 
-First the name server and SOA records have to be added here also
+Name server and SOA records have to be added here also
 
 ```
 record : NS

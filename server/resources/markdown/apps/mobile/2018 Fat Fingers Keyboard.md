@@ -1,7 +1,7 @@
 #Fat Fingers Keyboard
 _Utility,iOS_
 
-![Icon](/images/fatfingers_icon.png)
+![Icon](/images/apps/fatfingers_icon.png)
 
 **No more typos!**
 

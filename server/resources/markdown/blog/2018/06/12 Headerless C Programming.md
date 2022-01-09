@@ -1,5 +1,5 @@
 #Headerless C programming
-_C,Coding_
+_2018/06/12 C,Coding_
 
 Header files in C can be painful. They duplicate the file count, increase complexity heavily, make refactoring painful. There are solutions to get rid of them. It's possible to use header generators ( https://www.hwaci.com/sw/mkhdr/ - makeheaders ), write you own headerless c dialect with a precompiler like me ( https://github.com/milgra/clc class-c ) or use `"#ifdef FOO_IMPLEMENTATION"` blocks inside header files to define everything in one file but they are unelegant and confusing and have a lot of other problems.
 
@@ -9,7 +9,7 @@ So just create a single file, write the header declarations at the top, write th
 
 Example : mtvec.c
 
-<code>
+```
 #ifndef mtvec_h
 #define mtvec_h
 
@@ -61,7 +61,7 @@ void mtvec_reset( mtvec_t* vector )
 }
 
 #endif
-</code>
+```
 
 At the moment I don't see any pitfalls in this solution, do you? Please add your thoughts in the issues, thank you.
 

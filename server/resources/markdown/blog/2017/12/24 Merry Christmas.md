@@ -1,5 +1,5 @@
 #Merry Christmas!
-_Life,Music_
+_2017/12/24 Life,Music_
 
 I sing in a jazz choir and it is a very important part of my life, I'm really grateful that altough I'm just a gifted amateur they accepted me. Please listen to one of my favorite Keep Smiling Jazz Vocal songs - Michelle, originally from the Beatles.
 

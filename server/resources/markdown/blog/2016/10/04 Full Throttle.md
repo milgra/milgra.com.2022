@@ -1,4 +1,5 @@
-_Bikes_
+#Full Throttle
+_2016/10/04 Bikes_
 
 I've been learning to wheelie for 6 months now. I always wanted to do it but never took it too seriously before.
 
@@ -6,7 +7,7 @@ I started with my bicycle. It's a nice trek 7.3 with a massive frame, very easy 
 
 I have a quite used KTM 640 LC4 used by an experienced supermoto biker before.
 
-![KTM](/images/20161004_full_throttle_0.jpg)
+![KTM](/images/blog/2016/10/20161004_full_throttle_0.jpg)
 
 I bought it in this state on purpose because I didn't have the heart to hurt my previous shiny DRZ 400. Having it for two years now I have to say it is far superior to the DRZ in every aspect IMHO.
 

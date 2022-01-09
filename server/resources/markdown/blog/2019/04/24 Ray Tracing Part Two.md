@@ -5,7 +5,7 @@ Let's create a movable camera first. In the first part we fixed the camera to th
 We get the camera window normal by substracting the focus point from the target point. To get the camera window horizontal axis we have to get the cross product of a vector lying on the xy plane ( 0 , 1 , 0 ) and the normal vector.
 With that we can get the vertical axis with another cross product. If we have this two vectors we can resize them to the window grid stepping size and we can use them to build up any point on the window grid.
 
-![raytrace](/images/20190424_camera.png)
+![raytrace](/images/blog/2019/04/20190424_camera.png)
 
 
 ```
@@ -101,6 +101,6 @@ framebuffer_drawsquare( screen_grid_x , screen_grid_y , screen_step_size_f , col
 
 Final result :
 
-![raytrace](/images/20190424_raytrace.png)
+![raytrace](/images/blog/2019/04/20190424_raytrace.png)
 
 Download the code : [raytrace_part_two.c](/downloads/raytrace/raytrace_part_two.c)

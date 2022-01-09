@@ -12,5 +12,5 @@ opened articles on top of list?
 
 i3-overview, zenmusic cikk!!!
 
-rsync -avP --exclude project.clj /home/milgra/Projects/milgra.com root@116.203.87.141:/root/
+rsync -avP --delete --exclude "server/resources/public/comments" /home/milgra/Projects/milgra.com root@116.203.87.141:/root/
 find markdown -type f -name "*.md" -exec sed -i -e 's/$/   /' {} \; 

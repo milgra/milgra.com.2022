@@ -197,6 +197,6 @@ if ( code == 68 ) camera_focus_p.x -= 10.0;
 
 Final result :
 
-![raytrace](/images/20190501_raytrace.png)
+![raytrace](/images/blog/2019/05/20190501_raytrace.png)
 
 Download the code : [raytrace_part_three.c](/downloads/raytrace/raytrace_part_three.c)

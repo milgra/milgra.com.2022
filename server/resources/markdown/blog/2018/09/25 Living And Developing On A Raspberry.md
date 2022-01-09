@@ -1,5 +1,5 @@
 #Living and Developing on a Raspberry Pi
-_C,Coding,Raspberry_
+_2018/09/25 C,Coding,Raspberry_
 
 My new game will run on all platforms possible but the first supported platform will be the Raspberry Pi because of 80's nostalgia. I love the fact that there is a super cheap home computer again that ages well - they don't double the cpu speed every year, they still sell the first version so you can optimise for the hardware and you also have to because it's not that strong - and I love this fact.
 

@@ -100,6 +100,6 @@ As you see not much happened compared to the previous version, I just pulled out
 
 Final result :
 
-![raytrace](/images/20190510_raytrace.gif)
+![raytrace](/images/blog/2019/05/20190510_raytrace.gif)
 
 Download the code : [raytrace_part_four.c](/downloads/raytrace/raytrace_part_four.c)

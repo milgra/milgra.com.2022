@@ -1,5 +1,5 @@
 #PreziThreeD Is Open Source
-_C,Coding_
+_2018/12/14 C,Coding_
 
 I was always curious why prezi didn't create a 3D version out of their app. It turned out that they experimented with it and dropped it in the end. So I created my own version and I really like how it looks like, how "rooms" can improve the mood of the presentation. But it complicates presentation creation big time for sure.  
 

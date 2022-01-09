@@ -230,11 +230,11 @@ The most complicated part is the line-plane ( ray - rectangle ) intersection and
 
 Ray-Rectangle intersection in our scene setup :
 
-![raytrace](/images/20190418_lineplane.png)
+![raytrace](/images/blog/2019/04/20190418_lineplane.png)
 
 Point to Line projection
 
-![raytrace](/images/20190418_pointline.png)
+![raytrace](/images/blog/2019/04/20190418_pointline.png)
 
 After we have both points we can check easily if the line intersects with the rectangle or not and we can draw our pixels.
 
@@ -253,6 +253,6 @@ If you don't see anything you probably have to switch to console mode because yo
 
 You should see this : 
 
-![raytrace](/images/20190418_raytrace.png)
+![raytrace](/images/blog/2019/04/20190418_raytrace.png)
 
 In the next part we make our camera movable, use squares instead of dots and we add light sources!!!

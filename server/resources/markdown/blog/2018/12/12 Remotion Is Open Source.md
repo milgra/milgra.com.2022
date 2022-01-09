@@ -1,5 +1,5 @@
 #Remotion Is Open Source
-_C,Coding_
+_2018/12/12 C,Coding_
 
 One of my earlier projects with a moderate success was to make a wiimote out of an iphone wiht the help of the accelerometers. I created an iphone app and a small macos host application, they find each other via bonjour, and the host injects the motion information as mouse coordinates. It's six years old, might not compile on newer macos'es.
 

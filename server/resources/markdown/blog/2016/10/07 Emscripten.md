@@ -1,8 +1,9 @@
-_3D,C,Coding,Emscripten,WebGL_
+#Emscripten
+_2016/10/07 3D,C,Coding,Emscripten,WebGL_
 
 Emscripten compiles C code to javascript. Not any kind of C code, just carefully, platform-independently written C code. Not to plain javascript, but to superfast asm.js javascript. It converts OpenGL3/ES2 calls to WebGL calls, it converts BSD sockets to Websockets, it puts MEMFS/IDBFS file systems under your file I/O and you don't have to deal with anything! ( Okay, you can't use POSIX threads but if you really need them you can work it around with webworkers ).
 
-![emscripten](/images/20161007_emscripten.png)
+![emscripten](/images/blog/2016/10/20161007_emscripten.png)
 
 So you just take previously written C/OPENGL games/prototypes and you compile them for the BROWSER!!! It's madness!
 

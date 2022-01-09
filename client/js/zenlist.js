@@ -55,7 +55,7 @@ zenlist_touch_move = ( event ) =>
     list.last_tch = event.timeStamp
     
     list.touch = event.touches[0].pageY
-    list.speed -= (delta / time) * 4
+    list.speed -= delta / 2
     list.full = false
 
     zenlist_start_anim(list)

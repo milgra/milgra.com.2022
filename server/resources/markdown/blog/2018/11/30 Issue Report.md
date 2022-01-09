@@ -1,6 +1,6 @@
 #Issue Report
-_C,Coding_
+_2018/11/30 C,Coding_
 
 I received this on github today, I love it! :)
 
-![Issue](/images/20181130_best_issue.jpg)
+![Issue](/images/blog/2018/11/20181130_best_issue.jpg)

@@ -1,7 +1,7 @@
 #SteamBerry Suite
 _2020/05/26 C,Coding,OpenCV_
 
-![steamberry](/images/20190516_steamberry.png)
+![steamberry](/images/blog/2019/05/20190516_steamberry.png)
 
 This year I opened the café of my dreams : it is half café, half co-working space, half geeky-nerdy community space with raspberry pi's, musical instruments, japanese kimono and live cat and puppy streams. 
 I use raspberrys for everything : for cat/puppy streaming, for synthetizing sound for the MIDI keyboard, for playing music from youtube, for scratch for kids and for motion/face detection.

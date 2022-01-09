@@ -1,5 +1,5 @@
 #Termite Is Open Source
-_C,Coding,Games_
+_2018/11/28 C,Coding,Games_
 
 
 The time has come, finally I was able to release the full multiplatform, multi-store-integrated code of Termite on github to help everyone who is in the same boat. I'm working on the multiplatformization of Termite for months now and I was struggling a lot of times. Then plan was to finish it up quickly but life ( and the systems created by programmers ) had other plans! I stucked a lot of times at issues that seemed so tiny at first glance and I had to spend hours figuring it out.
