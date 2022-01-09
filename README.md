@@ -5,8 +5,8 @@ Uses zenlist.js, an infinite-scrollong javascript list with on-deman item loadin
 
 ## todo ##
 
-caching
-case insensitive search
-videos should fit in width on mobiles like images
-story section to all apps
-some pictures don't need shadow
+* caching
+* case insensitive search
+* videos should fit in width on mobiles like images
+* story section to all apps
+* some pictures don't need shadow
