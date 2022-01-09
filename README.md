@@ -1,15 +1,12 @@
+# milgra.com
 
+A blog engine written in pure javascript on the client side, clojure on the server site, uses files for post/comment storage and search.
+Uses zenlist.js, an infinite-scrollong javascript list with on-deman item loading and unloading.
 
+## todo ##
 
 caching
-add consts, let's where needed
 case insensitive search
 videos should fit in width on mobiles like images
-access control milgra.com!
-story section minden apphoz - html, css reader, etc
-amig sublistat scrollozod, apa element mindig maradjon fixen fent
-opened articles on top of list?
-
-i3-overview, zenmusic cikk!!!
-
-find markdown -type f -name "*.md" -exec sed -i -e 's/$/   /' {} \; 
+story section to all apps
+some pictures don't need shadow
