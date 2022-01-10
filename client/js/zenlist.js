@@ -32,6 +32,7 @@ zenlist_attach = (list,
 zenlist_touch_start = ( event ) =>
 {
     let list = event.currentTarget
+    list.delta = 0
     list.touch = event.touches[0].pageY
 }
 

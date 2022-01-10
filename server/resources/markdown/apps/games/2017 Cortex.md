@@ -1,7 +1,7 @@
 #Cortex
 _Action,Ambient,Reflex_
 
-![Icon](/images/cortex_icon.png)
+![Icon](/images/apps/cortex_icon.png)
 
 The psychedelic tunnel-runner.
 

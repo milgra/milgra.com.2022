@@ -1,7 +1,7 @@
 #Termite
 _2D,3D,Action,Real-Time,Strategy_
 
-![Icon](/images/termite_icon.png)
+![Icon](/images/apps/termite_icon.png)
 
 Termite is the ultimate psychedelic real-time action strategy experience.
 You are the leader of a termite hive with three objectives :
