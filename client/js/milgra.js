@@ -135,7 +135,7 @@ milgra_load = ( group , reverse , open) =>
 
 milgra_search = ( text ) =>
 {
-    let url = "items/search=" + text
+    let url = "search/" + text
     
     fetch( url )
 	.then( (response) => response.json() )
@@ -274,8 +274,6 @@ milgra_viewer_item = ( item ) =>
 	fetch( contentUrl )
 	    .then( (response) => response.text() )
 	    .then( (html) => {
-		//..this.innerHTML = html
-
 		let article = document.createElement("div")
 		article.className = "article_item"
 		article.innerHTML = html
@@ -283,8 +281,6 @@ milgra_viewer_item = ( item ) =>
 		elem.appendChild(article)
 
 		zenlist_update(milgra.list)
-
-		// load comment
 
 		elem.load_comments("comments/" + item.path)
 	    })
@@ -295,9 +291,6 @@ milgra_viewer_item = ( item ) =>
 	fetch( commentUrl )
 	    .then( (response) => response.text() )
 	    .then( (html) => {
-
-		console.log("load comments",commentUrl,html)
-
 		let button = document.createElement( "div" )
 		let content = document.createElement( "div" )
 
@@ -317,7 +310,7 @@ milgra_viewer_item = ( item ) =>
 	    })
     }
     
-    elem.load( item.path )
+    elem.load( "contents/" + item.path )
     
     return elem
 }

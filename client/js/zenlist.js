@@ -22,11 +22,11 @@ zenlist_attach = (list,
     
     list.style.overflow = "hidden" // this is a must for the list, don't set it from css
 
-    list.addEventListener( "wheel", zenlist_wheel)
-    list.addEventListener( 'touchmove', zenlist_touch_move)
-    list.addEventListener( 'touchstart', zenlist_touch_start)
-    list.addEventListener( 'touchend', zenlist_touch_end)
-    list.addEventListener( 'touchcancel', zenlist_touch_cancel)
+    list.addEventListener( "wheel", zenlist_wheel,{passive: true})
+    list.addEventListener( 'touchmove', zenlist_touch_move,{passive: true})
+    list.addEventListener( 'touchstart', zenlist_touch_start,{passive: true})
+    list.addEventListener( 'touchend', zenlist_touch_end,{passive: true})
+    list.addEventListener( 'touchcancel', zenlist_touch_cancel,{passive: true})
 }
 
 zenlist_touch_start = ( event ) =>
