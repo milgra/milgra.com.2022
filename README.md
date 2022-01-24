@@ -5,6 +5,8 @@ Uses zenlist.js, an infinite-scrollong javascript list with on-deman item loadin
 
 ## todo ##
 
+* latest comments tab
+* in case of one element no bottom scroll stop
 * caching
 * case insensitive search
 * videos should fit in width on mobiles like images
