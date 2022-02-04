@@ -62,6 +62,16 @@ milgra_init = () =>
 	
 	milgra_load( "blog", true, true)
     }
+
+    // load latest comments into main_bottom_right
+
+    fetch( "/comments" )
+	.then( (response) => response.json() )
+	.then( (data) => {
+	    const newdata = data.map( (elem) => { return "<a href=\"?show_file=" + elem + "\">" + elem + "</a>"} )
+	    const comment_div = document.getElementById( "main_comments" )
+	    comment_div.innerHTML = "Latest comments:<br>" + newdata.join("<br>")
+	})
 }
 
 milgra_load = ( group , reverse , open) =>

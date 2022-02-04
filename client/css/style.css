@@ -110,7 +110,6 @@ textarea:focus, input:focus{
 }
 
 #main_bottom_right {
-    z-index: -1;
     flex: 1 1;
     overflow: hidden;
 }
@@ -171,6 +170,18 @@ textarea:focus, input:focus{
     color: #334466;
     letter-spacing: -20px;
     transform: translate(240px,100px) rotate(-90deg);
+}
+
+#main_comments {
+    top: 50px;
+    position: absolute;
+    color: #FFFFFF;
+}
+
+#main_comments a{
+    color: #AABBCC;
+    font-weight: 200;
+    text-decoration: none;
 }
 
 /* list items */

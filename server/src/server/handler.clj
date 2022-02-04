@@ -25,6 +25,13 @@
              result (sort (map #(clojure.string/replace-first (.getCanonicalPath %) prefix (:* params)) (filter #(.isFile %) (file-seq file))))]
          result))
 
+  (GET "/comments" {params :route-params :as request}
+       (let [path "resources/public/comments/"
+             file (io/file path)
+             prefix (.getAbsolutePath file)
+             result (sort (map #(clojure.string/replace-first (.getCanonicalPath %) prefix "") (filter #(.isFile %) (file-seq file))))]
+         result))
+
   (GET "/search/*" {params :route-params :as request}
        (let [text (:* params)
              command_name (str "find resources/public/contents resources/public/comments" " -name '*" text "*'")
