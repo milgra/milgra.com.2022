@@ -172,18 +172,6 @@ textarea:focus, input:focus{
     transform: translate(240px,100px) rotate(-90deg);
 }
 
-#main_comments {
-    top: 50px;
-    position: absolute;
-    color: #FFFFFF;
-}
-
-#main_comments a{
-    color: #AABBCC;
-    font-weight: 200;
-    text-decoration: none;
-}
-
 /* list items */
 
 .list_item_folder {

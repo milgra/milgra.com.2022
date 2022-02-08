@@ -62,16 +62,6 @@ milgra_init = () =>
 	
 	milgra_load( "blog", true, true)
     }
-
-    // load latest comments into main_bottom_right
-
-    fetch( "/comments" )
-	.then( (response) => response.json() )
-	.then( (data) => {
-	    const newdata = data.map( (elem) => { return "<a href=\"?show_file=" + elem + "\">" + elem + "</a>"} )
-	    const comment_div = document.getElementById( "main_comments" )
-	    comment_div.innerHTML = "Latest comments:<br>" + newdata.join("<br>")
-	})
 }
 
 milgra_load = ( group , reverse , open) =>
@@ -143,6 +133,18 @@ milgra_load = ( group , reverse , open) =>
 	})
 }
 
+milgra_load_new_comments = () =>
+{
+    const url = "/comments"
+   
+    fetch( url )
+	.then( (response) => response.json() )
+	.then( (data) => {
+	    milgra.items = data.map( (item) => { return { "path" : item , "type" : "file" } } )	    
+	    zenlist_reset( milgra.list )
+	})
+}
+
 milgra_search = ( text ) =>
 {
     let url = "search/" + text
@@ -154,6 +156,8 @@ milgra_search = ( text ) =>
 	    // create detailed item map from path list
 	    
 	    milgra.items = data.map( (item) => { return { "path" : item , "type" : "file" }} )
+	    milgra.items.reverse()
+	    milgra_item_open( milgra.items[0] )
 	    	    
 	    zenlist_reset( milgra.list )
 	})
