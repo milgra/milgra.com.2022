@@ -1,0 +1,68 @@
+<h1>Headerless C programming</h1>
+
+<p><em>2018/06/12 C,Coding</em></p>
+
+<p>Header files in C can be painful. They duplicate the file count, increase complexity heavily, make refactoring painful. There are solutions to get rid of them. It&rsquo;s possible to use header generators ( https://www.hwaci.com/sw/mkhdr/ - makeheaders ), write you own headerless c dialect with a precompiler like me ( https://github.com/milgra/clc class-c ) or use <code>"#ifdef FOO_IMPLEMENTATION"</code> blocks inside header files to define everything in one file but they are unelegant and confusing and have a lot of other problems.</p>
+
+<p>The ultimate solution seems to be using the <code>__INCLUDE_LEVEL__</code> preprocessor macro. It&rsquo;s value is zero if we are in a source file that was added directly to the compiler as parameter and greater than zero if we are in a file that was included as a header file from an other file.</p>
+
+<p>So just create a single file, write the header declarations at the top, write the implementation under that and guard the implementation with an <code>#if __INCLUDE_LEVEL__ == 0</code> macro and you never have to use header files again. You can include all files written this way as header files and add these files as source files to the compiler, everything will work as before.</p>
+
+<p>Example : mtvec.c</p>
+
+<pre><code>#ifndef mtvec_h
+#define mtvec_h
+
+#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+
+typedef struct mtvec_t mtvec_t;
+
+struct mtvec_t
+{
+    void** data;
+    uint32_t length;
+    uint32_t length_real;
+};
+
+mtvec_t* mtvec_alloc(void);
+void mtvec_dealloc( void* vector );
+void mtvec_reset( mtvec_t* vector );
+
+#endif
+
+#if __INCLUDE_LEVEL__ == 0
+
+mtvec_t* mtvec_alloc( )
+{
+    mtvec_t* vector = mtmem_calloc( sizeof( mtvec_t ) , mtvec_dealloc );
+    vector-&gt;data = mtmem_calloc( sizeof( void* ) * 10 , NULL );
+    vector-&gt;length = 0;
+    vector-&gt;length_real = 10;
+    return vector;
+}
+
+void mtvec_dealloc( void* pointer )
+{
+    mtvec_t* vector = pointer;
+
+    for ( uint32_t index = 0 ; index &lt; vector-&gt;length ; index++ ) {
+    mtmem_release( vector-&gt;data[index] );
+    }
+    mtmem_release( vector-&gt;data );
+}
+
+void mtvec_reset( mtvec_t* vector )
+{
+    for ( uint32_t index = 0 ; index &lt; vector-&gt;length ; index++ ) 
+        mtmem_release( vector-&gt;data[index] );
+
+    vector-&gt;length = 0;
+}
+
+#endif
+</code></pre>
+
+<p>At the moment I don&rsquo;t see any pitfalls in this solution, do you? Please add your thoughts in the issues, thank you.</p>
+
+<p><a href="https://github.com/milgra/headerless_c">check out the github project</a></p>

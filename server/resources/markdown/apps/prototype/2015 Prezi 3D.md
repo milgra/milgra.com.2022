@@ -1,10 +1,10 @@
-#Remotion
-_AR,Games_
+#Prezi 3D
+_3D_
 
-One of my earlier projects with a moderate success was to make a wiimote out of an iphone wiht the help of the accelerometers. I created an iphone app and a small macos host application, they find each other via bonjour, and the host injects the motion information as mouse coordinates. It's six years old, might not compile on newer macos'es.
+I really like the zooming presentation idea of Prezi but what about doing it in 3D? I created a prototype based on my KineticUI rendering engine.
 
-[Check it out on github](https://github.com/milgra/remotion)
+[Check it out on github](https://github.com/milgra/prezithreed)
 
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4ZQ-mv6S_SM" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N7G-w_UtRoY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>

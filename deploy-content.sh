@@ -4,4 +4,4 @@ rsync -avP root@116.203.87.141:/root/milgra.com/server/resources/public/comments
 
 # copy contents to server
 
-rsync -avP /home/milgra/Projects/milgra.com/server/resources/public root@116.203.87.141:/root/milgra.com/server/resources
+rsync -avP server/resources/public root@116.203.87.141:/root/milgra.com/server/resources

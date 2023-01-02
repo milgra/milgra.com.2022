@@ -1,0 +1,258 @@
+<h1>Ray Tracing Part One</h1>
+
+<p><em>2019/04/10 3D,C,Coding</em></p>
+
+<p>Let&rsquo;s create a simple ray tracing engine just for fun and to showcase how simple and how CPU intensive the underlying algorithm is compared to rasterization.
+We won&rsquo;t use any libraries, frameworks, GPU drivers and other terrible things, let&rsquo;s stick with the linux framebuffer and the standard C libraries, it still can be done within a hundred code lines.</p>
+
+<p>We need two things in our scene : a camera, defined by a focus point and a camera window, and some geometry, for example a rectangle. The process is simple : we create lines ( rays ) starting from the camera foucs point and going through the camera window starting from the top left corner with a specific stepping, and we check if these rays are colliding with the geometry ( the lines are intersecting with the rectangle ). If there is an intersection, the screen point will be white, if not, it will be blue for demonstration purposes. This is what we do for start.</p>
+
+<p>Check out the code :</p>
+
+<pre><code class="bash">#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt; // for uint8 and uint32
+#include &lt;fcntl.h&gt;      // for open()
+#include &lt;float.h&gt;      // for FLT_MAX
+#include &lt;sys/mman.h&gt;   // for mmap()
+#include &lt;sys/ioctl.h&gt;  // for framebuffer access
+#include &lt;linux/fb.h&gt;   // for framebuffer access
+
+typedef struct _v3_t
+{
+    float x, y, z;
+} v3_t;
+
+/* add two vectors */
+
+v3_t v3_add( v3_t a , v3_t b )
+{
+    v3_t v;
+
+    v.x = a.x + b.x;
+    v.y = a.y + b.y;
+    v.z = a.z + b.z;
+
+    return v;
+}
+
+/* substracts b from a */
+
+v3_t v3_sub( v3_t a , v3_t b )
+{
+    v3_t v;
+
+    v.x = a.x - b.x;
+    v.y = a.y - b.y;
+    v.z = a.z - b.z;
+
+    return v;
+}
+
+/* creates dot product of two vectors */
+
+float v3_dot( v3_t a , v3_t b )
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+/* scales vector */
+
+v3_t v3_scale( v3_t a , float f )
+{
+    v3_t v;
+
+    v.x = a.x * f;
+    v.y = a.y * f;
+    v.z = a.z * f;
+
+    return v;
+}
+
+/* returns squared length to avoid square root operation */
+
+float v3_length_squared( v3_t a )
+{
+    return a.x * a.x + a.y * a.y + a.z * a.z;
+}
+
+/* creates pixel color suitable for the actual screen info */
+
+uint32_t pixel_color( uint8_t r, uint8_t g, uint8_t b, struct fb_var_screeninfo *vinfo )
+{
+    return  ( r &lt;&lt; vinfo-&gt;red.offset ) | 
+            ( g &lt;&lt; vinfo-&gt;green.offset ) | 
+            ( b &lt;&lt; vinfo-&gt;blue.offset );
+}
+
+int main( )
+{
+    // get framebuffer
+
+    struct fb_fix_screeninfo finfo;
+    struct fb_var_screeninfo vinfo;
+
+    int fb_fd = open( "/dev/fb0" , O_RDWR );
+
+    // get and set screen information
+
+    ioctl( fb_fd, FBIOGET_VSCREENINFO, &amp;vinfo);
+
+    vinfo.grayscale = 0;
+    vinfo.bits_per_pixel = 32;
+
+    ioctl( fb_fd, FBIOPUT_VSCREENINFO, &amp;vinfo );
+    ioctl( fb_fd, FBIOGET_VSCREENINFO, &amp;vinfo );
+    ioctl( fb_fd, FBIOGET_FSCREENINFO, &amp;finfo );
+
+    long screensize_l = vinfo.yres_virtual * finfo.line_length;
+
+    uint8_t *fbp = mmap( 0 , screensize_l , PROT_READ | PROT_WRITE , MAP_SHARED , fb_fd , ( off_t ) 0 );
+
+    v3_t screen_d = { vinfo.xres , vinfo.yres };    // screen dimensions
+
+    // start ray tracing
+
+    // set up camera
+
+    v3_t camera_focus_p = { 0.0 , 0.0 , 100.0 };        // camera focus point
+
+    // set up geometry
+
+    v3_t rect_side_p = { -50.0 , 0.0 , -100.0 };    // left side center point of square
+    v3_t rect_center_p = { 0 , 0 , -100.0 };        // center point of square
+    v3_t rect_normal_v = { 0 , 0 , 100.0 };         // normal vector of square
+
+    float rect_wth2_f = 50.0;                       // half width of square
+    float rect_hth2_f = 40.0;                       // half height of square
+
+    // create corresponding grid in screen and in camera window 
+
+    int grid_cols_i = 100;
+
+    v3_t window_d = { 100.0 , 100.0 * screen_d.y / screen_d.x };    // camera window dimensions
+
+    float screen_step_size_f = screen_d.x / grid_cols_i;    // screen block size
+    float window_step_size_f = window_d.x / grid_cols_i;    // window block size
+
+    int grid_rows_i = screen_d.y / screen_step_size_f;
+
+    // create rays going through the camera window quad starting from the top left corner
+
+    for ( int row_i = 0 ; row_i &lt; grid_rows_i ; row_i++ )
+    {
+        for ( int col_i = 0 ; col_i &lt; grid_cols_i ; col_i++ )
+        {
+
+            float window_grid_x = - window_d.x / 2.0 + window_step_size_f * col_i;
+            float window_grid_y =   window_d.y / 2.0 - window_step_size_f * row_i;
+
+            v3_t window_grid_v = { window_grid_x , window_grid_y , 0.0 };
+
+            // ray/pixel location on screen
+
+            int screen_grid_x = screen_step_size_f * col_i;
+            int screen_grid_y = screen_step_size_f * row_i;
+
+            // pixel location in framebuffer
+
+            long location = ( screen_grid_x + vinfo.xoffset ) * ( vinfo.bits_per_pixel / 8 ) + 
+                            ( screen_grid_y + vinfo.yoffset ) * finfo.line_length;
+
+            // project ray from camera focus point through window grid point to square plane
+            // line - plane intersection point calculation with dot products :
+            // C = A + dot(AP,N) / dot( AB,N) * AB
+
+            v3_t AB = v3_sub( window_grid_v , camera_focus_p );
+            v3_t AP = v3_sub( rect_center_p , camera_focus_p );
+
+            float dotABN = v3_dot( AB , rect_normal_v );
+            float dotAPN = v3_dot( AP , rect_normal_v );
+
+            if ( dotABN &lt; FLT_MIN * 10.0 || dotABN &gt; - FLT_MIN * 10.0 )
+            {
+                // if dot product is not close to zero there is an intersection 
+
+                float scale_f = dotAPN / dotABN;
+                v3_t isect_p = v3_add( camera_focus_p , v3_scale( AB , scale_f ) );
+
+                // let's find if intersection point is in the rectangle
+
+                // project intersection point to center line of rectangle
+                // C = A + dot(AP,AB) / dot(AB,AB) * AB
+
+                AB = v3_sub( rect_center_p , rect_side_p );
+                AP = v3_sub( isect_p , rect_side_p );
+
+                float dotAPAB = v3_dot( AP , AB );
+                float dotABAB = v3_dot( AB , AB );
+
+                scale_f = dotAPAB / dotABAB;
+
+                v3_t proj_p = v3_add( rect_side_p , v3_scale( AB , scale_f ) );
+
+                // check x and y distance of intersection point from square center
+
+                float dist_x = v3_length_squared( v3_sub( proj_p , rect_center_p ) );
+                float dist_y = v3_length_squared( v3_sub( proj_p , isect_p ) );
+
+                // compare squared distances with squared distances of rectangle
+
+                if ( dist_x &lt; rect_wth2_f * rect_wth2_f &amp;&amp; 
+                     dist_y &lt; rect_hth2_f * rect_hth2_f )
+                {
+                    // cross point is inside square, we draw it white
+
+                    *((uint32_t*)(fbp + location)) = pixel_color( 0xFF, 0xFF, 0xFF, &amp;vinfo );
+                }
+                else
+                {
+                    // cross point is outside square, we draw it blue
+
+                    *((uint32_t*)(fbp + location)) = pixel_color( 0x00, 0x00, 0xFF , &amp;vinfo );          
+                }
+
+            }
+
+        }
+
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p>In the upper part of the code we define a vector structure with three members for three dimensions and a few functions to manipulate them. ( addition, substraction, dot product, scaling and length ).</p>
+
+<p>The first part of the main function is dealing with the linux framebuffer, we map it to an uint buffer. There&rsquo;s not much to  explain in this, I just copied this part of the code from a linux pro&rsquo;s tutorial.</p>
+
+<p>The second part is the ray tracing itself. We set up our world here, create the grid on the screen and on the camera window and start iterating.
+The most complicated part is the line-plane ( ray - rectangle ) intersection and the point - rectangle center line projection. Both are done with dot product calculations in a slightly different way.</p>
+
+<p>Ray-Rectangle intersection in our scene setup :</p>
+
+<p><img src="/images/blog/2019/04/20190418_lineplane.png" alt="raytrace" /></p>
+
+<p>Point to Line projection</p>
+
+<p><img src="/images/blog/2019/04/20190418_pointline.png" alt="raytrace" /></p>
+
+<p>After we have both points we can check easily if the line intersects with the rectangle or not and we can draw our pixels.</p>
+
+<p>How to run it :</p>
+
+<p>Just copy the code above, create a file called raytrace.c and paste everything in it. Then compile the file :
+&lsquo;gcc raytrace.c -o raytrace&rsquo;</p>
+
+<p>And then run it :
+&lsquo;./raytrace&rsquo;</p>
+
+<p>On some linux distros you may need root access rights to access the framebuffer, this case type :
+&lsquo;sudo ./raytrace&rsquo;</p>
+
+<p>If you don&rsquo;t see anything you probably have to switch to console mode because your window manager interferes with your framebuffer. Just switch to a console with CTRL+ALT+F1.</p>
+
+<p>You should see this :</p>
+
+<p><img src="/images/blog/2019/04/20190418_raytrace.png" alt="raytrace" /></p>
+
+<p>In the next part we make our camera movable, use squares instead of dots and we add light sources!!!</p>

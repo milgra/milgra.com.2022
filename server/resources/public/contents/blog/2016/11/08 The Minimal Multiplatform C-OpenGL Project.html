@@ -1,0 +1,57 @@
+<h1>The Minimal Multiplatform C/OpenGL Project</h1>
+
+<p><em>2016/11/08 3D,C,OpenGL,WebGL</em></p>
+
+<p>In the past year I&rsquo;ve created a few very nice wrappers for different platforms and operating systems that wrap the same controller file to simplify multi-platform C development for my stuff. For your edification and pleasure they are now yours on github!</p>
+
+<p>TMMCP is a wrapper/project collection for C programmers who like it quick &amp; simple &amp; with total control. A TMMCP wrapper provides:</p>
+
+<ul>
+<li>an OpenGL context</li>
+<li>device input events</li>
+<li>native audio/video playback</li>
+<li>native video to texture rendering</li>
+<li>some other functions I found userful during game development</li>
+</ul>
+
+
+<p>The wrappers are very simple, after a little reading you can easily extend them if you need some special functionality.</p>
+
+<h3>Current list of wrappers and projects</h3>
+
+<ul>
+<li>iOS - Xcode</li>
+<li>MacOS - Xcode</li>
+<li>Android - Android Studio</li>
+<li>asmjs/html5 ( emscripten ) - bash script</li>
+</ul>
+
+
+<h3>What is the license?</h3>
+
+<p>Everything in this repo is in the public domain. Take it use it learn from it.</p>
+
+<h3>How to use it</h3>
+
+<p>Open &ldquo;template/sources/controller.c&rdquo; in your favorite editor and start coding. After you finished open the wanted platform&rsquo;s project file and build/compile/run/deploy. You may have to add newly created source files / include paths to the project settings.</p>
+
+<h3>Cool, do you have any documentation?</h3>
+
+<p>The documentation is in-line in controller.c. If you don&rsquo;t get it check out the demo projects. demo_dragbox shows a draggable white box over a purple background - it shows off basic OpenGL/input handling and audio playing. demo_conference is an advanced demo, it creates a 3D conference room with video avatars using the wrapper&rsquo;s render video-to-texture functionality - even in html5!. But not on android, I&rsquo;m still in the middle of the implementation, it will show blank avatars.</p>
+
+<h2>Contributors Wanted</h2>
+
+<p>Windows and Linux wrappers/projects would be awesome for start but any platform is welcomed warmly!</p>
+
+<h3>Credits</h3>
+
+<p>I&rsquo;m using some stuff in the demos from these beautiful people :</p>
+
+<ul>
+<li>Sean Barret - <a href="http://nothings.org">nothings.org</a> - (png and ttf rendering libs)</li>
+<li>Per Ola Kristennson - <a href="http://pokristensson.com/software.html">pokristensson.com</a> - (hashmap basics)</li>
+<li>Alon Zakai - <a href="https://github.com/kripken">https://github.com/kripken</a> - (the creator of emscripten)</li>
+</ul>
+
+
+<p>Check it out under <a href="https://github.com/milgra/tmmcp">https://github.com/milgra/tmmcp</a></p>

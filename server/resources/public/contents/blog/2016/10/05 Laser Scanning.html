@@ -1,0 +1,19 @@
+<h1>Laser Scanning</h1>
+
+<p><em>2016/10/05 Emscripten,WebGL</em></p>
+
+<p>Last week I badly wanted to see my face as a voxel cloud on the screen so I entered the 3D scanning territory. There are two ways for a mid-class person to do it in an affordable way : reconstruction from photo series or triangulation based on a laser line. The first method is quite inaccurate and needs complex algorithms ( Autodesk123D is the biggest free solution, ), the seconds one is dead simple, accurate but it is very hard to add texture data. So I chose the latter. It needs only two things : a line laser and my mobile&rsquo;s camera.</p>
+
+<p>So I went to the local home improvement store and bought a Bosch Quigo laser level, set up a simple scene and started coding.</p>
+
+<p>The theory : you know the distance between the laser emitter and the camera lens focus point, you know the angle between the laser and the camera axis and you also know the field of view of the camera. From these data you can link an angle to every pixel of an image created by the camera, and from that angle you can tell the distance from the camera.</p>
+
+<p><img src="/images/blog/2016/10/20161005_laser_scanning_0.png" alt="laser scanning" /></p>
+
+<p>The red line is the laser, the blue line is the camera axis. d1 is the distance between them, it is set by you. a1 is the angle of the camera axis, it is also set by you. The black line is the line between the camera and the touch point of the laser on an object. The yellow line is the projection plane of the camera, the green lines are the field of view of the camera. The field of view is also known, you can check it up at your phones vendor or calculate it based on the focus length and sensor size ( in case of my iPhone 6s they are 4.15mm and 4.5mm so the focal angle is atan( ( 4.5/2.0 ) / 4.15 ) * 2 so roughly 56 degrees when you hold it horizontally ) or put down a one meter width something on the ground and take a picture of it from 2 meters away and do the math based on the image.</p>
+
+<p>So the point is that the black line will have a corresponding pixel on the image, you know angle a2 ( which is the field of view divided by two ) so you can calculate angle a3 since they have a linear correlation to the pixel count. So ( image width / 2 ) / ( FOV / 2 ) = ( black dot pixel distance from center / wanted angle ). And after you have angle a3 you know the angle between the red line and the black line and a cosine function will give you the length of the black line : cos(angle) = d1/ wanted length.</p>
+
+<p>This is my actual state, <a href="https://milgra.github.io/laserscan/">check it out here</a>.</p>
+
+<p>The next steps will be to make it freely movable, and possibly transforming the actual scan based on the motion sensor data to get a full scan of anything. Yaaay.</p>

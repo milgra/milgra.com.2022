@@ -1,0 +1,25 @@
+<h1>Why Clojure?</h1>
+
+<p><em>2020/03/03 Clojure,Coding</em></p>
+
+<p>This will be the post where I try to explain why Clojure is an awesome language, It will be updated continuously.</p>
+
+<p>Clojure forces you to do fantastic things!!!</p>
+
+<p>Instead of just lazily throwing in operations and function calls in the function body and fucking up the code you have to think everything out thoroughly.</p>
+
+<p>You cannot return from a function at an arbitrary place, only from tail positions. You cannot just bind values at an arbitrary place, you have to do it in a let block. These things also make it easier to realize if a function does too much.</p>
+
+<p>You still can fuck up the code but with much more effort and with that effort you have the choice to do it right.</p>
+
+<p>If you were able to fuck up the code even with these in mind the code immediately becomes unmaintainable so the next time you reach that part you have to re-think it so you will stop working/thinking twice because you are lazy! :)</p>
+
+<p>It forces you to use maps for everything. You cannot store pointers or references to objects so you will store identifiers and you can get the wanted data from other maps based on the identifiers. It makes programs cleaner and less confusing.</p>
+
+<p>It forces you to prepare data before manipulating it. For example you can&rsquo;t iterate over a list or vector with a for loop and use the counter as index so if you want to have the index of an element ( in a map or reduce ) you have to index your source vector first ( with map-indexed for example ) and use the result in map or reduce, and you just avoided an ugly imperative for loop this way.</p>
+
+<p>Inline evaluation</p>
+
+<p>Checking the actual state of a function with inline evaluation right inside your IDE makes development so much faster and easier. You can call it with different parameters inline so you can test your function thoroughly while you are writing it. Awesome!</p>
+
+<p>It becomes even better when you are developing a database handler application, you can feed, query the database inline, see the results and fix the errors while you are writing you function.</p>

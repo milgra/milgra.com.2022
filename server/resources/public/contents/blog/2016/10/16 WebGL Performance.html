@@ -1,0 +1,37 @@
+<h1>WebGL Performance</h1>
+
+<p><em>2016/10/16 3D,C,WebGL</em></p>
+
+<p>I&rsquo;m working on a multi-platform C and OpenGL based UI renderer and displaying things in 60 fps is essential.</p>
+
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LEnWsJc9S-o" allow="fullscreen"></iframe>
+</p>
+
+
+<p>It works well on desktop and mobile OS&rsquo;s and it looks good in WebGL on my non-retina Macbook Air but sadly on retina Macbook Pro&rsquo;s the framerate is dying in case of big browser windows ( ~more than 50% of the screen ).</p>
+
+<p>After a few days of trial and research I figured out the following :</p>
+
+<ul>
+<li>Google Chrome&rsquo;s webGL implementation on OS X is much faster than Safari&rsquo;s</li>
+<li>enabling/disabling preserved drawing buffer makes no difference</li>
+<li>using scissor test to draw only a fragment of the screen makes no difference</li>
+<li>switching off antialiasing and the context&rsquo;s alpha channel makes difference</li>
+<li>disabling alpha blending speeds up frame rendering big time</li>
+<li>if frame rate is dying then every single javascript call inbetween makes everything slower ( thanks to single-threadedness )</li>
+<li>in os x&rsquo;s high and maximum display scaling mode the maximum framerate you can achieve with a full-size browser window with a full size canvas is 35-40 fps. In lower modes 60 fps is reachable.</li>
+<li>full texture upload at any time kills performance</li>
+</ul>
+
+
+<p>So what did I learn?</p>
+
+<ul>
+<li>webGL will never be as fast as standard (windowed) openGL because the browser has to blend the webGL canvas into the web page with every frame and this slows down rendering big time</li>
+<li>webGL is smart enough not to swap frame buffers if gl context is not changed</li>
+<li>for a full-scale retina os x webGL UI renderer experience I have to wait for the next generations of MacBooks</li>
+</ul>
+
+
+<p>Anyway I rewrote my UI renderer to use as few function calls as possible, use as much glTexSubImage2D and glBufferSubData calls as possible instead of full uploads and now it uses bitmaps for text fields instead of individual textured quads for letters and I&rsquo;m almost satisfied.</p>
